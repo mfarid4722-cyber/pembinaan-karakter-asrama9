@@ -633,10 +633,14 @@
 
         // Environment Variables (handled by platform)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'absensi-ibadah-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            // Mock config fallback if run outside environment
-            projectId: "mock-project", 
-        };
+        const firebaseConfig = {
+  apiKey: "AIzaSyChgFUt1F9B1Xqflaz23-h5DCGCnqUWvj8",
+  authDomain: "simkip-4a5d1.firebaseapp.com",
+  projectId: "simkip-4a5d1",
+  storageBucket: "simkip-4a5d1.firebasestorage.app",
+  messagingSenderId: "40541221435",
+  appId: "1:40541221435:web:2da235456e4016a8e0621e"
+};
 
         // Init Firebase
         const app = initializeApp(firebaseConfig);
