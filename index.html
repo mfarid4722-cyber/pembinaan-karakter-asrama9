@@ -220,7 +220,7 @@
                 </div>
 
                 <!-- Admin Catatan Pelanggaran -->
-                <div class="glass-panel rounded-3xl p-6 md:p-8 animate-fade-in delay-200 shadow-sm border border-gray-100">
+                <div class="glass-panel rounded-3xl p-6 md:p-8 animate-fade-in delay-200 shadow-sm border border-gray-100 mb-6">
                     <h3 class="font-extrabold text-gray-800 mb-5 flex items-center text-xl">
                         <span class="bg-red-100 p-2 rounded-lg mr-3">
                             <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
@@ -262,6 +262,41 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Admin Setoran Hafalan -->
+                <div class="glass-panel rounded-3xl p-6 md:p-8 animate-fade-in delay-300 shadow-sm border border-gray-100">
+                    <h3 class="font-extrabold text-gray-800 mb-5 flex items-center text-xl">
+                        <span class="bg-indigo-100 p-2 rounded-lg mr-3">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </span>
+                        Manajemen Setoran Hafalan
+                    </h3>
+                    
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm mb-6">
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Pilih Peserta (Santri)</label>
+                            <select id="hafalan-user-select" onchange="renderAdminHafalan()" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-gray-800 font-medium transition-all">
+                                <option value="" disabled selected>-- Pilih Peserta --</option>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Daftar Hafalan Wajib</label>
+                            <div id="hafalan-checkboxes" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 max-h-[350px] overflow-y-auto pr-2">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-4 border-t border-gray-100">
+                            <button onclick="saveHafalan()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all hover-scale shadow-md shadow-indigo-200 flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Simpan Status Hafalan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- DASHBOARD BENDAHARA -->
@@ -414,6 +449,20 @@
                     <div>
                         <h3 class="font-extrabold text-emerald-900 text-lg mb-1">Informasi Piket Kebersihan</h3>
                         <p class="text-emerald-800 text-sm md:text-base font-medium" id="user-piket-info">Memuat jadwal piket...</p>
+                    </div>
+                </div>
+
+                <!-- User Setoran Hafalan -->
+                <div class="glass-panel rounded-3xl p-6 mb-6 shadow-sm border border-indigo-100 bg-gradient-to-r from-indigo-50 to-white animate-fade-in delay-150">
+                    <h3 class="font-extrabold text-indigo-900 text-lg mb-1 flex items-center">
+                        <span class="p-2 bg-indigo-500 text-white rounded-lg mr-3 shadow-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </span>
+                        Progres Setoran Hafalan Anda
+                    </h3>
+                    <p class="text-indigo-700 text-sm font-medium mb-5 ml-14">Pastikan Anda telah menyetorkan hafalan wajib ini kepada mentor.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto pr-2" id="user-hafalan-list">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
 
@@ -702,16 +751,52 @@
             "DIMAS AULIA": "Sabtu", "RAYYAN HAMDI": "Sabtu", "FERI SETIAWAN": "Sabtu", "MUJIBURRAHMAN": "Sabtu", "JAZZAN NURHAKIM": "Sabtu", "MUHAMMAD KHUSYAIRI": "Sabtu"
         };
 
+        const HAFALAN_TASKS = [
+            // Hafalan Surat Juz 30 (Ad-Dhuha sampai An-Nas)
+            { id: 'surah_93', label: 'QS. Ad-Dhuha (93)' },
+            { id: 'surah_94', label: 'QS. Al-Insyirah (94)' },
+            { id: 'surah_95', label: 'QS. At-Tin (95)' },
+            { id: 'surah_96', label: 'QS. Al-\'Alaq (96)' },
+            { id: 'surah_97', label: 'QS. Al-Qadr (97)' },
+            { id: 'surah_98', label: 'QS. Al-Bayyinah (98)' },
+            { id: 'surah_99', label: 'QS. Az-Zalzalah (99)' },
+            { id: 'surah_100', label: 'QS. Al-\'Adiyat (100)' },
+            { id: 'surah_101', label: 'QS. Al-Qari\'ah (101)' },
+            { id: 'surah_102', label: 'QS. At-Takasur (102)' },
+            { id: 'surah_103', label: 'QS. Al-\'Asr (103)' },
+            { id: 'surah_104', label: 'QS. Al-Humazah (104)' },
+            { id: 'surah_105', label: 'QS. Al-Fil (105)' },
+            { id: 'surah_106', label: 'QS. Quraisy (106)' },
+            { id: 'surah_107', label: 'QS. Al-Ma\'un (107)' },
+            { id: 'surah_108', label: 'QS. Al-Kausar (108)' },
+            { id: 'surah_109', label: 'QS. Al-Kafirun (109)' },
+            { id: 'surah_110', label: 'QS. An-Nasr (110)' },
+            { id: 'surah_111', label: 'QS. Al-Lahab (111)' },
+            { id: 'surah_112', label: 'QS. Al-Ikhlas (112)' },
+            { id: 'surah_113', label: 'QS. Al-Falaq (113)' },
+            { id: 'surah_114', label: 'QS. An-Nas (114)' },
+            
+            // Hafalan Lainnya
+            { id: 'solat_fardu', label: 'Bacaan Solat Fardu' },
+            { id: 'doa_harian', label: '5 Doa Sehari-hari' },
+            { id: 'solat_jenazah', label: 'Bacaan Solat Jenazah' },
+            { id: 'zikir', label: 'Zikir Setelah Solat & Doa' },
+            { id: 'qunut', label: 'Doa Qunut' }
+        ];
+
         let currentUserRole = null; 
         let currentUserName = null;
         let allAttendanceData = [];
         let allIssuesData = {}; 
         let allKasPayments = {}; 
         let allKasTransactions = []; 
+        let allHafalanData = {};
+
         let unsubscribeSnapshot = null;
         let unsubscribeIssues = null;
         let unsubscribeKasPayments = null;
         let unsubscribeKasTransactions = null;
+        let unsubscribeHafalan = null;
 
         const elLoginView = document.getElementById('login-view');
         const elAdminView = document.getElementById('admin-view');
@@ -755,6 +840,7 @@
         async function initializeAppLogic() {
             const issueSelectEl = document.getElementById('issue-user-select');
             const bendaharaKasSelectEl = document.getElementById('bendahara-kas-user');
+            const hafalanUserSelectEl = document.getElementById('hafalan-user-select');
             
             PARTICIPANTS.forEach(name => {
                 const optIssue = document.createElement('option');
@@ -766,6 +852,11 @@
                 optKas.value = name;
                 optKas.textContent = name;
                 bendaharaKasSelectEl.appendChild(optKas);
+
+                const optHafalan = document.createElement('option');
+                optHafalan.value = name;
+                optHafalan.textContent = name;
+                hafalanUserSelectEl.appendChild(optHafalan);
             });
 
             const todayStr = new Date().toISOString().split('T')[0];
@@ -831,6 +922,14 @@
                 }
                 if (currentUserRole === 'bendahara') renderBendaharaDashboard();
                 if (currentUserRole === 'peserta') renderUserKas();
+            });
+
+            const hafalanRef = collection(db, 'artifacts', appId, 'public', 'data', 'hafalan');
+            unsubscribeHafalan = onSnapshot(hafalanRef, (snapshot) => {
+                allHafalanData = {};
+                snapshot.forEach(doc => { allHafalanData[doc.id] = doc.data().records || {}; });
+                if (currentUserRole === 'admin') renderAdminHafalan();
+                else if (currentUserRole === 'peserta') renderUserHafalan();
             });
         }
 
@@ -920,6 +1019,7 @@
                 elNavUserInfo.innerHTML = `<span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-bold mr-2 border border-emerald-200">Mode Admin</span>`;
                 renderAdminTable();
                 renderAdminIssues();
+                renderAdminHafalan();
             } else if (currentUserRole === 'bendahara') {
                 elBendaharaView.classList.remove('hidden');
                 elNavUserInfo.innerHTML = `<span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold mr-2 border border-amber-200">Mode Bendahara</span>`;
@@ -1368,6 +1468,79 @@
             document.getElementById('recap-a').textContent = countA;
         };
 
+        // --- HAFALAN LOGIC ---
+        window.renderAdminHafalan = () => {
+            const userName = document.getElementById('hafalan-user-select').value;
+            const container = document.getElementById('hafalan-checkboxes');
+            
+            if (!userName) {
+                container.innerHTML = '<div class="col-span-1 md:col-span-2 text-sm text-gray-400 italic p-3 text-center">Pilih peserta (santri) terlebih dahulu...</div>';
+                return;
+            }
+
+            const userHafalan = allHafalanData[userName] || {};
+            
+            container.innerHTML = HAFALAN_TASKS.map(task => {
+                const isDone = userHafalan[task.id] === true;
+                return `
+                    <div class="flex items-center p-3 border border-gray-100 rounded-xl bg-gray-50/50 hover:bg-indigo-50/30 transition-colors">
+                        <input type="checkbox" id="hafalan_${task.id}" value="${task.id}" ${isDone ? 'checked' : ''} class="w-5 h-5 text-indigo-600 bg-white border-gray-300 rounded focus:ring-indigo-500 cursor-pointer">
+                        <label for="hafalan_${task.id}" class="ml-3 text-sm font-bold text-gray-700 cursor-pointer flex-grow">${task.label}</label>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.saveHafalan = async () => {
+            if (!auth.currentUser) return;
+            const userName = document.getElementById('hafalan-user-select').value;
+            
+            if (!userName) {
+                showModal("Perhatian", "Silakan pilih peserta (santri) terlebih dahulu.", "error");
+                return;
+            }
+
+            const updatedRecords = {};
+            HAFALAN_TASKS.forEach(task => {
+                const checkbox = document.getElementById(`hafalan_${task.id}`);
+                if (checkbox) {
+                    updatedRecords[task.id] = checkbox.checked;
+                }
+            });
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'hafalan', userName);
+                await setDoc(docRef, { records: updatedRecords }, { merge: true });
+                showModal("Berhasil", `Setoran hafalan atas nama ${userName} berhasil diperbarui.`, "success");
+            } catch (error) {
+                console.error("Gagal simpan hafalan:", error);
+                showModal("Error", "Gagal menyimpan data hafalan ke server.", "error");
+            }
+        };
+
+        window.renderUserHafalan = () => {
+            if (!currentUserName) return;
+            const container = document.getElementById('user-hafalan-list');
+            const userHafalan = allHafalanData[currentUserName] || {};
+
+            container.innerHTML = HAFALAN_TASKS.map(task => {
+                const isDone = userHafalan[task.id] === true;
+                
+                const iconDone = `<div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg></div>`;
+                const iconPending = `<div class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>`;
+                
+                return `
+                    <div class="flex items-center p-4 bg-white rounded-2xl border ${isDone ? 'border-emerald-200 shadow-sm' : 'border-gray-200'} transition-all">
+                        ${isDone ? iconDone : iconPending}
+                        <div class="ml-3">
+                            <p class="text-xs font-extrabold uppercase tracking-wider ${isDone ? 'text-emerald-600' : 'text-gray-400'}">${isDone ? 'SELESAI' : 'BELUM SETOR'}</p>
+                            <p class="text-sm font-bold ${isDone ? 'text-gray-900' : 'text-gray-500'} mt-0.5">${task.label}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
         function renderUserDashboard() {
             if (!currentUserName) return;
             let maghribCount = 0;
@@ -1455,6 +1628,7 @@
             renderUserIssues();
             renderUserMonthlyRecap();
             renderUserKas();
+            renderUserHafalan(); // Menampilkan data hafalan user di dashboardnya
         }
 
         window.addEventListener('DOMContentLoaded', initializeAppLogic);
