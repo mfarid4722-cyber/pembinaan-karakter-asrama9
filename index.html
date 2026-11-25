@@ -299,34 +299,6 @@
       </div>
     </section>
 
-    <!-- SECTION: JADWAL PIKET HARIAN (KAMAR 218-311) -->
-    <section id="piket" class="py-14 sm:py-16 bg-gradient-to-br from-usk-900 via-usk-800 to-emerald-800 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
-          <div>
-            <span class="text-yellow-300 font-bold text-xs uppercase tracking-wider">Kebersihan & Kedisiplinan</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Jadwal Piket Harian Kamar 218–311</h2>
-            <p class="text-emerald-100 text-sm mt-1">Setiap penghuni wajib menjaga kebersihan koridor, mushalla, kamar mandi, dan area umum sesuai jadwal hariannya.</p>
-          </div>
-          <div class="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20">
-            <i class="fa-solid fa-calendar-day text-yellow-300 text-lg"></i>
-            <div>
-              <p class="text-[11px] text-emerald-100">Hari Ini</p>
-              <p id="today-day-name" class="text-sm font-extrabold text-yellow-300">Senin</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="landing-piket-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Diisi dinamis oleh JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: TRANSPARANSI UANG KAS (REAL-TIME BENDAHARA) -->
-    <section id="kas" class="py-14 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div>
     <!-- SECTION: JADWAL PIKET & JADWAL KULTUM (KAMAR 218-311) -->
     <section id="piket" class="py-14 sm:py-16 bg-gradient-to-br from-usk-900 via-usk-800 to-emerald-800 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -568,6 +540,94 @@
           </table>
         </div>
       </div>
+
+      <!-- Tabel Rekap 11 Bulan (Agustus 2026 - Juni 2027) -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-200 bg-slate-50">
+          <h3 class="font-bold text-slate-900 text-sm sm:text-base">Rekapitulasi Akumulasi Bulanan (Agustus 2026 – Juni 2027)</h3>
+          <p class="text-xs text-slate-500">Ringkasan total Hadir (H), Alfa (A), Izin (I), dan Sakit (S) setiap bulan.</p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm tabular-nums">
+            <thead class="bg-slate-100 text-slate-600 text-xs uppercase border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-4">Bulan</th>
+                <th class="py-3 px-4 text-center">Subuh</th>
+                <th class="py-3 px-4 text-center">Maghrib</th>
+                <th class="py-3 px-4 text-center">Isya</th>
+                <th class="py-3 px-4 text-center">Total Alfa</th>
+              </tr>
+            </thead>
+            <tbody id="peserta-absen-tahunan-body" class="divide-y divide-slate-100">
+              <!-- Diisi dinamis oleh JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTEN TAB 2: SETORAN HAFALAN & PRAKTIK IBADAH -->
+    <div id="peserta-panel-hafalan" class="hidden space-y-6 animate-fade-in">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-slate-900">Progres Setoran Hafalan & Praktik Ibadah</h2>
+          <p class="text-xs text-slate-500">Surat Ad-Dhuha s.d. An-Nas berurutan serta materi praktik ibadah wajib asrama.</p>
+        </div>
+        <div class="flex items-center gap-3 bg-emerald-50 px-4 py-2.5 rounded-xl border border-emerald-200">
+          <div>
+            <p class="text-[11px] font-bold text-usk-800 uppercase">Capaian Kelulusan</p>
+            <p id="peserta-hafalan-progress-text" class="text-sm font-extrabold text-slate-900">0 / 27 Materi</p>
+          </div>
+          <span id="peserta-hafalan-percent" class="px-2.5 py-1 rounded-lg bg-usk-800 text-white text-xs font-extrabold">0%</span>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="px-5 py-3.5 bg-gradient-to-r from-usk-900 to-emerald-700 text-white font-bold text-sm">
+            Hafalan Juz 30 (QS. Ad-Dhuha – QS. An-Nas)
+          </div>
+          <div id="peserta-list-surat" class="divide-y divide-slate-100 max-h-[450px] overflow-y-auto">
+            <!-- Diisi dinamis -->
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="px-5 py-3.5 bg-gradient-to-r from-usk-900 to-emerald-700 text-white font-bold text-sm">
+            Praktik Sholat Jenazah, Qunut, Doa & Thaharah
+          </div>
+          <div id="peserta-list-ibadah" class="divide-y divide-slate-100">
+            <!-- Diisi dinamis -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTEN TAB 3: STATUS PEMBAYARAN IURAN KAS & TRANSPARANSI -->
+    <div id="peserta-panel-kas" class="hidden space-y-6 animate-fade-in">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900">Status Pembayaran Iuran Kas Bulanan Anda</h2>
+            <p class="text-xs text-slate-500">Iuran wajib bulanan Rp 20.000 (Periode Agustus 2026 – Juni 2027)</p>
+          </div>
+          <span id="peserta-global-saldo" class="px-3.5 py-1.5 rounded-xl bg-emerald-50 text-usk-900 border border-emerald-200 text-xs font-extrabold">
+            Saldo Kas: Rp 0
+          </span>
+        </div>
+        <div id="peserta-kas-bulanan-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <!-- Diisi dinamis -->
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-900 text-base mb-3">Mutasi Pengeluaran & Pemasukan Kas Terbaru</h3>
+        <div id="peserta-kas-riwayat-mini" class="divide-y divide-slate-100 text-sm">
+          <!-- Diisi dinamis -->
+        </div>
+      </div>
+    </div>
+
     <!-- KONTEN TAB 4: FORMULIR & PENDATAAN DARI ADMIN -->
     <div id="peserta-panel-formulir" class="hidden space-y-6 animate-fade-in">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
@@ -704,25 +764,6 @@
       </button>
     </div>
 
-    <!-- Admin Navigation Pills -->
-    <div class="flex overflow-x-auto gap-2 pb-1">
-      <button onclick="switchAdminTab('peserta')" id="admin-tab-peserta" class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-usk-800 to-emerald-700 text-white whitespace-nowrap shadow-sm">
-        <i class="fa-solid fa-users-gear mr-1.5 text-yellow-300"></i> Data & Profil Peserta (<span id="admin-tab-count">28</span>)
-      </button>
-      <button onclick="switchAdminTab('absensi')" id="admin-tab-absensi" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 whitespace-nowrap">
-        <i class="fa-solid fa-calendar-check mr-1.5"></i> Absensi Sholat Harian
-      </button>
-      <button onclick="switchAdminTab('hafalan')" id="admin-tab-hafalan" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 whitespace-nowrap">
-        <i class="fa-solid fa-book-quran mr-1.5"></i> Setoran Hafalan
-      </button>
-      <button onclick="switchAdminTab('konten')" id="admin-tab-konten" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 whitespace-nowrap">
-        <i class="fa-solid fa-bullhorn mr-1.5"></i> Upload Info, Peringatan & Berkas
-      </button>
-      <button onclick="switchAdminTab('program')" id="admin-tab-program" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 whitespace-nowrap">
-        <i class="fa-solid fa-images mr-1.5"></i> Edit Program, Foto & Piket
-      </button>
-    </div>
-
     <!-- ADMIN PANEL 1: DATA & EDIT PROFIL PESERTA -->
     <div id="admin-panel-peserta" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-fade-in">
       <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -755,24 +796,42 @@
       </div>
     </div>
 
-    <!-- ADMIN PANEL 2: UPDATE ABSENSI SHOLAT HARIAN (PER TANGGAL) -->
+    <!-- ADMIN PANEL 2: UPDATE ABSENSI SHOLAT HARIAN & EXPORT SPREADSHEET -->
     <div id="admin-panel-absensi" class="hidden space-y-5 animate-fade-in">
-      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h2 class="font-bold text-slate-900 text-base sm:text-lg">Input Absensi Sholat Harian (Subuh, Maghrib & Isya)</h2>
-          <p class="text-xs text-slate-500">Pilih tanggal (Agustus 2026 – Juni 2027) untuk mengisi kehadiran masing-masing peserta per hari.</p>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-bold text-slate-900 text-base sm:text-lg">Input Absensi Sholat Harian (Subuh, Maghrib & Isya)</h2>
+            <p class="text-xs text-slate-500">Pilih tanggal (Agustus 2026 – Juni 2027) untuk mengisi kehadiran masing-masing peserta per hari atau unduh rekap bulanan.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="geserTanggalAdmin(-1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Sebelumnya">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <input type="date" id="admin-absen-tanggal" min="2026-08-01" max="2027-06-30" onchange="renderAdminAbsensiTable()" class="px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-bold bg-white text-slate-900" />
+            <button onclick="geserTanggalAdmin(1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Berikutnya">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+            <button onclick="tandaiSemuaHadirTanggal()" class="px-3.5 py-2 rounded-lg bg-usk-800 hover:bg-usk-900 text-white text-xs font-semibold transition">
+              <i class="fa-solid fa-check-double mr-1"></i> Hadirkan Semua
+            </button>
+          </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="geserTanggalAdmin(-1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Sebelumnya">
-            <i class="fa-solid fa-chevron-left"></i>
-          </button>
-          <input type="date" id="admin-absen-tanggal" min="2026-08-01" max="2027-06-30" onchange="renderAdminAbsensiTable()" class="px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-bold bg-white text-slate-900" />
-          <button onclick="geserTanggalAdmin(1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Berikutnya">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
-          <button onclick="tandaiSemuaHadirTanggal()" class="px-3.5 py-2 rounded-lg bg-usk-800 hover:bg-usk-900 text-white text-xs font-semibold transition">
-            <i class="fa-solid fa-check-double mr-1"></i> Hadirkan Semua (Tanggal Ini)
-          </button>
+
+        <!-- Bar Export Spreadsheet Per Bulan -->
+        <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200">
+          <div class="flex items-center gap-2 text-xs text-usk-900">
+            <i class="fa-solid fa-file-excel text-emerald-700 text-base"></i>
+            <span><strong>Unduh Rekap Absensi Bulanan:</strong> Ekspor rekap Subuh, Maghrib & Isya seluruh peserta ke file Spreadsheet (.xls).</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="admin-export-bulan-select" class="px-3 py-1.5 rounded-lg border border-emerald-300 bg-white text-xs font-bold text-slate-800">
+              <!-- Diisi 11 bulan -->
+            </select>
+            <button onclick="downloadAbsensiSpreadsheet()" class="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+              <i class="fa-solid fa-download"></i> Unduh Spreadsheet
+            </button>
+          </div>
         </div>
       </div>
 
@@ -823,92 +882,65 @@
     </div>
 
     <!-- ADMIN PANEL 4: UPLOAD INFORMASI, PERINGATAN & BERKAS -->
-    <div id="admin-panel-konten" class="hidden grid lg:grid-cols-3 gap-6 animate-fade-in">
-      
-      <!-- Form Upload Informasi -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <h3 class="font-extrabold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-newspaper text-usk-700"></i> Upload Informasi Baru
-        </h3>
-        <input type="text" id="input-info-judul" placeholder="Judul Informasi / Pengumuman" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-        <textarea id="input-info-isi" rows="3" placeholder="Isi detail pengumuman..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm"></textarea>
-        <button onclick="submitAdminInfo('informasi')" class="w-full py-2.5 rounded-xl bg-usk-800 hover:bg-usk-700 text-white font-bold text-sm transition">
-          Publikasikan Informasi
-        </button>
-      </div>
-
-      <!-- Form Upload Peringatan -->
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-        <h3 class="font-bold text-rose-700 flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation"></i> Upload Peringatan Asrama
-        </h3>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Tujuan Peringatan (Muncul di Dashboard Peserta)</label>
-          <select id="input-warn-target" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm bg-white">
-            <option value="ALL">Semua Penghuni Asrama (Kamar 218–311)</option>
-          </select>
+    <div id="admin-panel-konten" class="hidden space-y-6 animate-fade-in">
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Form Upload Informasi -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-extrabold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-newspaper text-usk-700"></i> Upload Informasi Baru
+          </h3>
+          <input type="text" id="input-info-judul" placeholder="Judul Informasi / Pengumuman" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <textarea id="input-info-isi" rows="3" placeholder="Isi detail pengumuman..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm"></textarea>
+          <button onclick="submitAdminInfo('informasi')" class="w-full py-2.5 rounded-xl bg-usk-800 hover:bg-usk-700 text-white font-bold text-sm transition">
+            Publikasikan Informasi
+          </button>
         </div>
-        <input type="text" id="input-warn-judul" placeholder="Judul Peringatan (misal: Teguran Piket / Absensi)" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm" />
-        <textarea id="input-warn-isi" rows="3" placeholder="Detail peringatan atau sanksi pembinaan..." class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm"></textarea>
-        <button onclick="submitAdminInfo('peringatan')" class="w-full py-2.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm transition">
-          Terbitkan Peringatan ke Dashboard
-        </button>
-      </div>
 
-      <!-- Form Upload Berkas -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <h3 class="font-extrabold text-gold-600 flex items-center gap-2">
-          <i class="fa-solid fa-file-arrow-up"></i> Upload Berkas / Dokumen
-        </h3>
-        <input type="text" id="input-berkas-nama" placeholder="Nama Berkas (misal: Tata Tertib Asrama 2026)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-        <select id="input-berkas-kategori" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white">
-          <option value="PDF / Panduan">PDF / Panduan</option>
-          <option value="Formulir Izin">Formulir Izin</option>
-          <option value="Jadwal & SK">Jadwal & SK</option>
-        </select>
-        <input type="text" id="input-berkas-link" placeholder="Tautan Google Drive / Deskripsi Isi Berkas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-        <button onclick="submitAdminBerkas()" class="w-full py-2.5 rounded-xl bg-gold-600 hover:bg-gold-500 text-white font-bold text-sm transition">
-          Simpan & Tampilkan Berkas
-        </button>
-      </div>
-    <!-- ADMIN PANEL 2: UPDATE ABSENSI SHOLAT HARIAN & EXPORT SPREADSHEET -->
-    <div id="admin-panel-absensi" class="hidden space-y-5 animate-fade-in">
-      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-4">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <!-- Form Upload Peringatan -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-extrabold text-rose-700 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i> Upload Peringatan Asrama
+          </h3>
           <div>
-            <h2 class="font-bold text-slate-900 text-base sm:text-lg">Input Absensi Sholat Harian (Subuh, Maghrib & Isya)</h2>
-            <p class="text-xs text-slate-500">Pilih tanggal (Agustus 2026 – Juni 2027) untuk mengisi kehadiran masing-masing peserta per hari atau unduh rekap bulanan.</p>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Tujuan Peringatan (Muncul di Dashboard Peserta)</label>
+            <select id="input-warn-target" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+              <option value="ALL">Semua Penghuni Asrama (Kamar 218–311)</option>
+            </select>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="geserTanggalAdmin(-1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Sebelumnya">
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <input type="date" id="admin-absen-tanggal" min="2026-08-01" max="2027-06-30" onchange="renderAdminAbsensiTable()" class="px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-bold bg-white text-slate-900" />
-            <button onclick="geserTanggalAdmin(1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Berikutnya">
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
-            <button onclick="tandaiSemuaHadirTanggal()" class="px-3.5 py-2 rounded-lg bg-usk-800 hover:bg-usk-900 text-white text-xs font-semibold transition">
-              <i class="fa-solid fa-check-double mr-1"></i> Hadirkan Semua
-            </button>
-          </div>
+          <input type="text" id="input-warn-judul" placeholder="Judul Peringatan (misal: Teguran Piket / Absensi)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <textarea id="input-warn-isi" rows="3" placeholder="Detail peringatan atau sanksi pembinaan..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm"></textarea>
+          <button onclick="submitAdminInfo('peringatan')" class="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm transition">
+            Terbitkan Peringatan ke Dashboard
+          </button>
         </div>
 
-        <!-- Bar Export Spreadsheet Per Bulan -->
-        <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200">
-          <div class="flex items-center gap-2 text-xs text-usk-900">
-            <i class="fa-solid fa-file-excel text-emerald-700 text-base"></i>
-            <span><strong>Unduh Rekap Absensi Bulanan:</strong> Ekspor rekap Subuh, Maghrib & Isya seluruh peserta ke file Spreadsheet (.xls).</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <select id="admin-export-bulan-select" class="px-3 py-1.5 rounded-lg border border-emerald-300 bg-white text-xs font-bold text-slate-800">
-              <!-- Diisi 11 bulan -->
-            </select>
-            <button onclick="downloadAbsensiSpreadsheet()" class="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
-              <i class="fa-solid fa-download"></i> Unduh Spreadsheet
-            </button>
-          </div>
+        <!-- Form Upload Berkas -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-extrabold text-gold-600 flex items-center gap-2">
+            <i class="fa-solid fa-file-arrow-up"></i> Upload Berkas / Dokumen
+          </h3>
+          <input type="text" id="input-berkas-nama" placeholder="Nama Berkas (misal: Tata Tertib Asrama 2026)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <select id="input-berkas-kategori" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white">
+            <option value="PDF / Panduan">PDF / Panduan</option>
+            <option value="Formulir Izin">Formulir Izin</option>
+            <option value="Jadwal & SK">Jadwal & SK</option>
+          </select>
+          <input type="text" id="input-berkas-link" placeholder="Tautan Google Drive / Deskripsi Isi Berkas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <button onclick="submitAdminBerkas()" class="w-full py-2.5 rounded-xl bg-usk-800 hover:bg-usk-700 text-white font-bold text-sm transition">
+            Simpan & Tampilkan Berkas
+          </button>
         </div>
       </div>
+
+      <!-- Daftar Informasi, Peringatan & Berkas Terpublikasi -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <h3 class="font-bold text-slate-900 text-base">Daftar Informasi, Peringatan & Berkas Aktif</h3>
+        <div id="admin-konten-manage-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <!-- Diisi dinamis oleh JS -->
+        </div>
+      </div>
+    </div>
+
     <!-- ADMIN PANEL 5: FORMULIR KUSTOM (BUAT FORM & LIHAT JAWABAN PESERTA) -->
     <div id="admin-panel-formulir" class="hidden space-y-6 animate-fade-in">
       <div class="grid lg:grid-cols-12 gap-6">
@@ -1063,29 +1095,6 @@
       <div class="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl px-5 py-3 text-right">
         <p class="text-xs text-emerald-100 font-medium">Saldo Kas Real-Time</p>
         <p id="bendahara-header-saldo" class="text-xl sm:text-2xl font-extrabold text-white tabular-nums">Rp 0</p>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- VIEW 4: DASHBOARD BENDAHARA (DIMAS)                                   -->
-  <!-- ===================================================================== -->
-  <section id="view-dashboard-bendahara" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-    
-    <!-- Bendahara Header -->
-    <div class="bg-gradient-to-r from-usk-900 via-emerald-800 to-amber-600 text-white rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
-      <div class="flex items-center gap-4">
-        <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/064e3b/ffffff?text=USK'" alt="Logo USK" class="w-14 h-14 object-contain rounded-2xl bg-white p-1.5 shadow-md shrink-0" />
-        <div>
-          <span class="px-2.5 py-0.5 rounded-full bg-white text-usk-900 text-[11px] font-extrabold">BENDAHARA ASRAMA</span>
-          <h1 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Dashboard Keuangan — Bendahara Dimas</h1>
-          <p class="text-amber-50 text-xs sm:text-sm">Kelola pembayaran iuran kas bulanan peserta (Agustus 2026 – Juni 2027) serta catatan pengeluaran kas secara real-time.</p>
-        </div>
-      </div>
-      <div class="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl px-5 py-3 text-right">
-        <p class="text-xs text-amber-100 font-medium">Saldo Kas Real-Time</p>
-        <p id="bendahara-header-saldo" class="text-xl sm:text-2xl font-extrabold text-yellow-300 tabular-nums">Rp 0</p>
       </div>
     </div>
 
@@ -3045,6 +3054,108 @@
       saveStateToCloud(`Peserta ${nama} berhasil ditambahkan!`);
     };
 
+    // Modal Tambah & Edit Profil Peserta oleh Admin
+    window.openAddPesertaModal = function() {
+      openModal(`
+        <div class="space-y-4">
+          <h2 class="text-lg font-extrabold text-slate-900 border-b border-slate-100 pb-3">Tambah Peserta Asrama Baru</h2>
+          <form onsubmit="saveNewPeserta(event)" class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap *</label>
+              <input type="text" id="new-p-nama" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">NPM *</label>
+              <input type="text" id="new-p-npm" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Kamar (218–311) *</label>
+              <input type="text" id="new-p-kamar" required placeholder="218" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Program Studi *</label>
+              <input type="text" id="new-p-prodi" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
+              <input type="text" id="new-p-ortu" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">No. HP / WA Orang Tua</label>
+              <input type="text" id="new-p-hp" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold">Batal</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-usk-800 hover:bg-usk-700 text-white font-bold">Simpan Peserta</button>
+            </div>
+          </form>
+        </div>
+      `);
+    };
+
+    window.openEditPesertaModal = function(npm) {
+      const p = appState.peserta.find(item => item.npm === npm);
+      if (!p) return;
+      openModal(`
+        <div class="space-y-4">
+          <div class="border-b border-slate-100 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900">Edit Profil Peserta</h2>
+            <p class="text-xs text-slate-500">NPM: ${p.npm}</p>
+          </div>
+          <form onsubmit="saveEditedPeserta(event, '${p.npm}')" class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap</label>
+              <input type="text" id="edit-p-nama" value="${p.nama || ''}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nomor Kamar</label>
+              <input type="text" id="edit-p-kamar" value="${p.kamar || ''}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Program Studi</label>
+              <input type="text" id="edit-p-prodi" value="${p.prodi || ''}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">No. HP / WA Orang Tua</label>
+              <input type="text" id="edit-p-hp" value="${p.hpOrtu || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
+              <input type="text" id="edit-p-ortu" value="${p.ortu || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Alamat Orang Tua</label>
+              <input type="text" id="edit-p-alamat" value="${p.alamat || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Hobi</label>
+              <input type="text" id="edit-p-hobi" value="${p.hobi || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Minat & Bakat</label>
+              <input type="text" id="edit-p-minat" value="${p.minatBakat || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Skill yang Dimiliki</label>
+              <input type="text" id="edit-p-skill" value="${p.skill || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Pengalaman Organisasi / Kepanitiaan</label>
+              <textarea id="edit-p-org" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300">${p.organisasi || ''}</textarea>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Prestasi (3 Tahun Terakhir)</label>
+              <textarea id="edit-p-prestasi" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300">${p.prestasi || ''}</textarea>
+            </div>
+            <div class="sm:col-span-2 flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold">Batal</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-usk-800 hover:bg-usk-700 text-white font-bold">Simpan Perubahan</button>
+            </div>
+          </form>
+        </div>
+      `);
+    };
+
     // Admin Update Absensi Sholat Harian (Subuh, Maghrib, Isya per Tanggal)
     window.geserTanggalAdmin = function(deltaDays) {
       const inp = document.getElementById("admin-absen-tanggal");
@@ -3308,6 +3419,7 @@
 
     function renderAdminKontenManage() {
       const list = document.getElementById("admin-konten-manage-list");
+      if (!list) return;
       const allItems = [
         ...appState.informasi.map(i => ({ ...i, kind: "info" })),
         ...appState.berkas.map(b => ({ id: b.id, judul: b.nama, tipe: b.kategori, kind: "berkas" }))
@@ -3663,6 +3775,69 @@
         </div>
       `);
     };
+
+    // =========================================================================
+    // RENDER & AKSI DASHBOARD BENDAHARA (DIMAS)
+    // =========================================================================
+    window.setKasFormType = function(type) {
+      document.getElementById("kas-form-type").value = type;
+      const btnKeluar = document.getElementById("btn-type-keluar");
+      const btnMasuk = document.getElementById("btn-type-masuk");
+      if (type === "keluar") {
+        btnKeluar.className = "py-2.5 rounded-xl font-bold text-xs bg-rose-600 text-white shadow-sm";
+        btnMasuk.className = "py-2.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200";
+      } else {
+        btnMasuk.className = "py-2.5 rounded-xl font-bold text-xs bg-emerald-600 text-white shadow-sm";
+        btnKeluar.className = "py-2.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200";
+      }
+    };
+
+    function renderBendaharaDashboard() {
+      if (!currentUser || currentUser.role !== "bendahara") return;
+
+      const totalMasuk = appState.transaksiKas.filter(t => t.jenis === "masuk").reduce((s, t) => s + Number(t.nominal), 0);
+      const totalKeluar = appState.transaksiKas.filter(t => t.jenis === "keluar").reduce((s, t) => s + Number(t.nominal), 0);
+      const saldoEl = document.getElementById("bendahara-header-saldo");
+      if (saldoEl) saldoEl.textContent = formatRupiah(totalMasuk - totalKeluar);
+
+      const selBulan = document.getElementById("bendahara-bulan-select");
+      if (selBulan && selBulan.options.length === 0) {
+        BULAN_LIST.forEach(b => {
+          const opt = document.createElement("option");
+          opt.value = b;
+          opt.textContent = b;
+          selBulan.appendChild(opt);
+        });
+      }
+
+      renderBendaharaIuranTable();
+
+      const trxBody = document.getElementById("bendahara-transaksi-tbody");
+      if (trxBody) {
+        trxBody.innerHTML = appState.transaksiKas.slice().reverse().map(t => {
+          const isMasuk = t.jenis === "masuk";
+          return `
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-6 text-slate-600 whitespace-nowrap">${t.tanggal}</td>
+              <td class="py-3 px-6 font-semibold text-slate-800">${t.keterangan}</td>
+              <td class="py-3 px-6">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isMasuk ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                  ${isMasuk ? 'Pemasukan' : 'Pengeluaran'}
+                </span>
+              </td>
+              <td class="py-3 px-6 text-right font-extrabold ${isMasuk ? 'text-emerald-700' : 'text-rose-600'} whitespace-nowrap">
+                ${isMasuk ? '+' : '-'} ${formatRupiah(t.nominal)}
+              </td>
+              <td class="py-3 px-6 text-center">
+                <button onclick="deleteTransaksiKas('${t.id}')" class="text-rose-600 hover:text-rose-800 p-1.5" title="Hapus Transaksi">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+    }
 
     window.submitTransaksiKas = function() {
       const jenis = document.getElementById("kas-form-type").value;
