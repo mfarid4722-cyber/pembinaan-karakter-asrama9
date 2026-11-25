@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SI Asrama | Sistem Informasi Asrama KIP-K Kamar 218-311</title>
+  <title>SIMKIP USK | Sistem Informasi Asrama KIP-K Kamar 218-311</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -173,7 +173,7 @@
             <div class="flex flex-wrap gap-3 pt-1">
               <button onclick="openLoginModal()" class="px-5 py-3 rounded-xl bg-white hover:bg-emerald-50 text-usk-900 font-extrabold text-sm shadow-lg shadow-usk-900/20 transition flex items-center gap-2">
                 <i class="fa-solid fa-user-check text-usk-700"></i>
-                <span>Masuk ke Portal </span>
+                <span>Masuk ke Portal Peserta / Pengurus</span>
               </button>
               <a href="#kas" class="px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur-md text-white font-semibold text-sm border border-white/25 transition flex items-center gap-2">
                 <i class="fa-solid fa-file-invoice-dollar text-emerald-200"></i>
@@ -347,7 +347,7 @@
         <div>
           <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-usk-800 font-bold text-xs uppercase tracking-wider mb-1">Akuntabilitas Keuangan</span>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Transparansi Iuran & Pengeluaran Kas</h2>
-          <p class="text-slate-600 text-sm sm:text-base mt-1">Diperbarui secara real-time oleh Bendahara Asrama (Dimas). Periode Agustus 2026 – Juni 2027.</p>
+          <p class="text-slate-600 text-sm sm:text-base mt-1">Diperbarui secara real-time oleh Bendahara Asrama (Dimas). Periode Agustus 2026 – Juni 2027 (Iuran Rp 5.000/bln).</p>
         </div>
         <div class="flex items-center gap-2">
           <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
@@ -364,7 +364,7 @@
             <span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up"></i></span>
           </div>
           <p id="public-kas-masuk" class="text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-3">Rp 0</p>
-          <p class="text-xs text-slate-500 mt-1">Iuran bulanan peserta & pemasukan lain</p>
+          <p class="text-xs text-slate-500 mt-1">Iuran bulanan peserta (Rp 5.000/bln) & pemasukan lain</p>
         </div>
 
         <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
@@ -609,7 +609,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 class="text-lg font-extrabold text-slate-900">Status Pembayaran Iuran Kas Bulanan Anda</h2>
-            <p class="text-xs text-slate-500">Iuran wajib bulanan Rp 20.000 (Periode Agustus 2026 – Juni 2027)</p>
+            <p class="text-xs text-slate-500">Iuran wajib bulanan Rp 5.000 (Periode Agustus 2026 – Juni 2027)</p>
           </div>
           <span id="peserta-global-saldo" class="px-3.5 py-1.5 rounded-xl bg-emerald-50 text-usk-900 border border-emerald-200 text-xs font-extrabold">
             Saldo Kas: Rp 0
@@ -734,7 +734,7 @@
         <div>
           <span class="px-2.5 py-0.5 rounded-full bg-white text-usk-900 text-[11px] font-extrabold">ADMINISTRATOR ASRAMA</span>
           <h1 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Dashboard Pengelola — Admin Farid</h1>
-          <p class="text-emerald-100 text-xs sm:text-sm">Kelola biodata <span id="admin-header-count">28</span> penghuni kamar 218–311, absensi sholat & export spreadsheet, setoran hafalan, jadwal piket & kultum, serta formulir kustom.</p>
+          <p class="text-emerald-100 text-xs sm:text-sm">Kelola biodata <span id="admin-header-count">28</span> penghuni kamar 218–311 (urut kamar), absensi sholat & export spreadsheet, setoran hafalan, jadwal piket & kultum, serta formulir kustom.</p>
         </div>
       </div>
       <button onclick="switchMainView('landing')" class="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold border border-white/25 self-start sm:self-center">
@@ -768,7 +768,7 @@
     <div id="admin-panel-peserta" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-fade-in">
       <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 class="font-extrabold text-slate-900 text-lg">Database Terpadu Peserta Kamar 218–311</h2>
+          <h2 class="font-extrabold text-slate-900 text-lg">Database Terpadu Peserta Kamar 218–311 (Urut Kamar)</h2>
           <p class="text-xs text-slate-500">Klik tombol Edit untuk memperbarui biodata, kamar, nomor HP orang tua, atau portofolio peserta.</p>
         </div>
         <div class="flex items-center gap-2">
@@ -802,7 +802,7 @@
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <h2 class="font-bold text-slate-900 text-base sm:text-lg">Input Absensi Sholat Harian (Subuh, Maghrib & Isya)</h2>
-            <p class="text-xs text-slate-500">Pilih tanggal (Agustus 2026 – Juni 2027) untuk mengisi kehadiran masing-masing peserta per hari atau unduh rekap bulanan.</p>
+            <p class="text-xs text-slate-500">Pilih tanggal (Agustus 2026 – Juni 2027) untuk mengisi kehadiran masing-masing peserta per hari (urut kamar 218–311).</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button onclick="geserTanggalAdmin(-1)" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold" title="Hari Sebelumnya">
@@ -869,7 +869,7 @@
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 class="font-extrabold text-slate-900 text-lg">Verifikasi Setoran Hafalan & Praktik Ibadah</h2>
-          <p class="text-xs text-slate-500">Pilih peserta untuk mencentang kelulusan surat Ad-Dhuha s.d. An-Nas, Sholat Jenazah, Qunut, Doa & Thaharah.</p>
+          <p class="text-xs text-slate-500">Pilih peserta (urut kamar 218–311) untuk mencentang kelulusan surat Ad-Dhuha s.d. An-Nas, Sholat Jenazah, Qunut, Doa & Thaharah.</p>
         </div>
         <select id="admin-hafalan-peserta-select" onchange="renderAdminHafalanChecklist()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-slate-50 max-w-xs w-full">
           <!-- Diisi daftar peserta -->
@@ -1089,7 +1089,7 @@
         <div>
           <span class="px-2.5 py-0.5 rounded-full bg-white text-usk-900 text-[11px] font-extrabold">BENDAHARA ASRAMA</span>
           <h1 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Dashboard Keuangan — Bendahara Dimas</h1>
-          <p class="text-emerald-100 text-xs sm:text-sm">Kelola pembayaran iuran kas bulanan peserta (Agustus 2026 – Juni 2027) serta catatan pengeluaran kas secara real-time.</p>
+          <p class="text-emerald-100 text-xs sm:text-sm">Kelola pembayaran iuran kas bulanan peserta Rp 5.000/bln (Agustus 2026 – Juni 2027) serta catatan pengeluaran kas secara real-time.</p>
         </div>
       </div>
       <div class="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl px-5 py-3 text-right">
@@ -1133,11 +1133,11 @@
         </button>
       </div>
 
-      <!-- Status Pembayaran Iuran Bulanan 26 Peserta (7 Kolom) -->
+      <!-- Status Pembayaran Iuran Bulanan 28 Peserta (7 Kolom) -->
       <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
         <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50">
           <div>
-            <h2 class="font-extrabold text-slate-900 text-base">Checklist Iuran Kas Peserta (Rp 20.000/bln)</h2>
+            <h2 class="font-extrabold text-slate-900 text-base">Checklist Iuran Kas Peserta (Rp 5.000/bln • Urut Kamar)</h2>
             <p class="text-xs text-slate-500">Klik tombol status untuk menandai Lunas / Belum Lunas secara real-time.</p>
           </div>
           <select id="bendahara-bulan-select" onchange="renderBendaharaIuranTable()" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-white">
@@ -1224,6 +1224,9 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Konstanta Nominal Iuran Kas per Bulan (Rp 5.000)
+    const NOMINAL_IURAN_BULANAN = 5000;
+
     // Konstanta Periode & Materi Pembinaan
     const BULAN_LIST = [
       "Agustus 2026", "September 2026", "Oktober 2026", "November 2026",
@@ -1262,77 +1265,8 @@
       "Tata Cara Thaharah (Wudhu & Tayammum)"
     ];
 
+    // Daftar 28 Peserta Terurut dari Kamar 218 hingga 311 (Aglin di Kamar 310, Fahri di Kamar 301)
     const INITIAL_PESERTA = [
-      {
-        nama: "Zibran al fais",
-        npm: "260510401100009",
-        prodi: "Peternakan",
-        kamar: "220",
-        ortu: "Sumarni",
-        alamat: "Lamtamot",
-        hpOrtu: "083829613991",
-        hobi: "Main voly",
-        minatBakat: "Di bidang peternakan",
-        skill: "Di bidang peternakan",
-        organisasi: "Osis",
-        prestasi: "Tidak ada"
-      },
-      {
-        nama: "Muhammad Khusyairi",
-        npm: "260510601100015",
-        prodi: "Teknik Pertanian",
-        kamar: "310",
-        ortu: "Ismail dan Anidar",
-        alamat: "Babah krueng",
-        hpOrtu: "+62 852-6246-4291",
-        hobi: "Lari",
-        minatBakat: "Olahraga, publik speaking",
-        skill: "Atletik, publik speaking",
-        organisasi: "KETUA OSIS, KORLAP APPJ, BENDAHARA MEULIGOE FEST, KETUA PRAMUKA, DUTA SISWA PIDIE JAYA, PASKIBRAKA, ANGGOTA PELAJAR ISLAM INDONESIA (PII)",
-        prestasi: "KAMTIBMAS 2023, OSN KIMIA PROV. 2025, OSN KIMIA KAB.2025, O2SN KAB. 2024"
-      },
-      {
-        nama: "Wahyu firman syah",
-        npm: "260510401100065",
-        prodi: "Peternakan",
-        kamar: "304",
-        ortu: "Syarbini",
-        alamat: "Sinyeu",
-        hpOrtu: "+62 813-7715-1778",
-        hobi: "Main bola / mancing",
-        minatBakat: "Olahraga / kerja di bagian lapangan",
-        skill: "Bisa merakit sesuatu",
-        organisasi: "Ketua divisi pengembangan organisasi dan pengawasan internal",
-        prestasi: "Lomba hafalan dan paskibraka"
-      },
-      {
-        nama: "Jonies",
-        npm: "260510401100002",
-        prodi: "Peternakan",
-        kamar: "219",
-        ortu: "JUMADIL AWAL",
-        alamat: "ACEH SINGKIL",
-        hpOrtu: "081269117081",
-        hobi: "Olahraga Teater, main bola",
-        minatBakat: "-",
-        skill: "Manajemen Waktu (mampu mengatur jadwal dan menyelesaikan tugas tepat waktu)",
-        organisasi: "OSIS, Rohis, PRAMUKA, Kopas Komunitas Perhati Alam Singkil",
-        prestasi: "Lomba PRAMUKA tingkat kecamatan"
-      },
-      {
-        nama: "Taufik ramadan",
-        npm: "260510401100019",
-        prodi: "Peternakan",
-        kamar: "302",
-        ortu: "Bapak Muhammad Joni, Ibu Ummi Kalsum Lubis",
-        alamat: "Desa Alus-alus",
-        hpOrtu: "081239047754",
-        hobi: "Main bola",
-        minatBakat: "Main bola",
-        skill: "Skill di sepak bola",
-        organisasi: "-",
-        prestasi: "Pernah mengikuti Popda Aceh Timur dan Pra PORA Aceh Selatan"
-      },
       {
         nama: "Akbar wahyu Saputra",
         npm: "260510201100019",
@@ -1346,48 +1280,6 @@
         skill: "Kewirausahaan, Komunikasi baik, Adaptasi hal baru, Multitasking, Keuangan",
         organisasi: "INTI OSIS bidang Bendahara Umum",
         prestasi: "PASKIBRAKA Kabupaten (Penggerek bendera pasukan 8), OSIS (Bendahara umum)"
-      },
-      {
-        nama: "Rayyan Hamdi",
-        npm: "260510401100074",
-        prodi: "Peternakan",
-        kamar: "305",
-        ortu: "Rudi Candra",
-        alamat: "JLN. PASIR PUTIH",
-        hpOrtu: "081360495536",
-        hobi: "Ngegame",
-        minatBakat: "Mancing",
-        skill: "Tidak ada",
-        organisasi: "Anggota OSIS SMA",
-        prestasi: "Tidak ada"
-      },
-      {
-        nama: "Reihan fitrah firdaus",
-        npm: "26051040100015",
-        prodi: "Peternakan",
-        kamar: "301",
-        ortu: "Jon Junaidi",
-        alamat: "Dusun Blang Asan",
-        hpOrtu: "085225023649",
-        hobi: "Memancing",
-        minatBakat: "Tidak ada",
-        skill: "Tidak ada",
-        organisasi: "Panitia sepak bola, anggota OSIS",
-        prestasi: "Tidak ada"
-      },
-      {
-        nama: "Pahrul asri Pohan",
-        npm: "260510401100086",
-        prodi: "Peternakan",
-        kamar: "307",
-        ortu: "Rianto Pohan",
-        alamat: "Tanjung Rejo",
-        hpOrtu: "081265995720",
-        hobi: "Badminton",
-        minatBakat: "-",
-        skill: "Badminton agak mahir",
-        organisasi: "OSNH (Organisasi Santri Nurul Hakim)",
-        prestasi: "-"
       },
       {
         nama: "Dimas Aulia",
@@ -1418,18 +1310,102 @@
         prestasi: "Peraih nilai tertinggi TKA di sekolah dalam bidang PPKn dengan skor 90,95"
       },
       {
-        nama: "MUHAMMAD AULIA",
-        npm: "260510401100064",
+        nama: "Jonies",
+        npm: "260510401100002",
         prodi: "Peternakan",
-        kamar: "304",
-        ortu: "Mustafa M Nur",
-        alamat: "Jl T Munira, Desa Lam Ara Kec. Banda Raya, Kota Banda Aceh",
-        hpOrtu: "085275469563",
-        hobi: "Berenang",
+        kamar: "219",
+        ortu: "JUMADIL AWAL",
+        alamat: "ACEH SINGKIL",
+        hpOrtu: "081269117081",
+        hobi: "Olahraga Teater, main bola",
+        minatBakat: "-",
+        skill: "Manajemen Waktu (mampu mengatur jadwal dan menyelesaikan tugas tepat waktu)",
+        organisasi: "OSIS, Rohis, PRAMUKA, Kopas Komunitas Perhati Alam Singkil",
+        prestasi: "Lomba PRAMUKA tingkat kecamatan"
+      },
+      {
+        nama: "Muhammad Hambali",
+        npm: "260510401100008",
+        prodi: "Peternakan",
+        kamar: "220",
+        ortu: "Sutrisno",
+        alamat: "Desa Pandan Sari, Kec. Simpang Kanan, Kab. Aceh Singkil",
+        hpOrtu: "+62 813-9671-7562",
+        hobi: "Futsal dan badminton",
+        minatBakat: "Badminton",
+        skill: "Bermain badminton",
+        organisasi: "IPM",
+        prestasi: "Juara 3 O2SN cabor badminton"
+      },
+      {
+        nama: "Zibran al fais",
+        npm: "260510401100009",
+        prodi: "Peternakan",
+        kamar: "220",
+        ortu: "Sumarni",
+        alamat: "Lamtamot",
+        hpOrtu: "083829613991",
+        hobi: "Main voly",
+        minatBakat: "Di bidang peternakan",
+        skill: "Di bidang peternakan",
+        organisasi: "Osis",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "FAHRI ABDIYA",
+        npm: "260400501100003",
+        prodi: "Teknik",
+        kamar: "301",
+        ortu: "-",
+        alamat: "-",
+        hpOrtu: "-",
+        hobi: "-",
         minatBakat: "-",
         skill: "-",
-        organisasi: "Ekskul Tahfidz di sekolah",
-        prestasi: "Tahfidz 1 juz"
+        organisasi: "-",
+        prestasi: "-"
+      },
+      {
+        nama: "Reihan fitrah firdaus",
+        npm: "26051040100015",
+        prodi: "Peternakan",
+        kamar: "301",
+        ortu: "Jon Junaidi",
+        alamat: "Dusun Blang Asan",
+        hpOrtu: "085225023649",
+        hobi: "Memancing",
+        minatBakat: "Tidak ada",
+        skill: "Tidak ada",
+        organisasi: "Panitia sepak bola, anggota OSIS",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "Ruhul jadid",
+        npm: "260510401100059",
+        prodi: "Peternakan",
+        kamar: "302",
+        ortu: "Hamdani",
+        alamat: "Desa Durung Aceh Besar",
+        hpOrtu: "085381982998",
+        hobi: "Main raket, voli, lari dan nonton film",
+        minatBakat: "Olahraga (mudah memahami gerakan olahraga)",
+        skill: "-",
+        organisasi: "Tidak ada",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "Taufik ramadan",
+        npm: "260510401100019",
+        prodi: "Peternakan",
+        kamar: "302",
+        ortu: "Bapak Muhammad Joni, Ibu Ummi Kalsum Lubis",
+        alamat: "Desa Alus-alus",
+        hpOrtu: "081239047754",
+        hobi: "Main bola",
+        minatBakat: "Main bola",
+        skill: "Skill di sepak bola",
+        organisasi: "-",
+        prestasi: "Pernah mengikuti Popda Aceh Timur dan Pra PORA Aceh Selatan"
       },
       {
         nama: "Muhammad Zulfaizi",
@@ -1446,6 +1422,132 @@
         prestasi: "Tidak ada"
       },
       {
+        nama: "ZULFIKAR",
+        npm: "260510401100061",
+        prodi: "Peternakan",
+        kamar: "303",
+        ortu: "Ramli",
+        alamat: "Desa Gunong Pulo, Kab. Aceh Selatan Kec. Kluet Utara, Aceh",
+        hpOrtu: "085191732727",
+        hobi: "Main game, mancing",
+        minatBakat: "-",
+        skill: "-",
+        organisasi: "Tidak ada",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "MUHAMMAD AULIA",
+        npm: "260510401100064",
+        prodi: "Peternakan",
+        kamar: "304",
+        ortu: "Mustafa M Nur",
+        alamat: "Jl T Munira, Desa Lam Ara Kec. Banda Raya, Kota Banda Aceh",
+        hpOrtu: "085275469563",
+        hobi: "Berenang",
+        minatBakat: "-",
+        skill: "-",
+        organisasi: "Ekskul Tahfidz di sekolah",
+        prestasi: "Tahfidz 1 juz"
+      },
+      {
+        nama: "Wahyu firman syah",
+        npm: "260510401100065",
+        prodi: "Peternakan",
+        kamar: "304",
+        ortu: "Syarbini",
+        alamat: "Sinyeu",
+        hpOrtu: "+62 813-7715-1778",
+        hobi: "Main bola / mancing",
+        minatBakat: "Olahraga / kerja di bagian lapangan",
+        skill: "Bisa merakit sesuatu",
+        organisasi: "Ketua divisi pengembangan organisasi dan pengawasan internal",
+        prestasi: "Lomba hafalan dan paskibraka"
+      },
+      {
+        nama: "Feri Setiawan",
+        npm: "260510401100076",
+        prodi: "Peternakan",
+        kamar: "305",
+        ortu: "Zotli Fendi",
+        alamat: "Samadua, Aceh Selatan",
+        hpOrtu: "085358146477",
+        hobi: "Badminton",
+        minatBakat: "Teknologi dan mencoba hal baru",
+        skill: "-",
+        organisasi: "-",
+        prestasi: "-"
+      },
+      {
+        nama: "Rayyan Hamdi",
+        npm: "260510401100074",
+        prodi: "Peternakan",
+        kamar: "305",
+        ortu: "Rudi Candra",
+        alamat: "JLN. PASIR PUTIH",
+        hpOrtu: "081360495536",
+        hobi: "Ngegame",
+        minatBakat: "Mancing",
+        skill: "Tidak ada",
+        organisasi: "Anggota OSIS SMA",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "Hikmahtul Fadila Harahap",
+        npm: "260510401100085",
+        prodi: "Peternakan",
+        kamar: "306",
+        ortu: "Sulaiman Harahap",
+        alamat: "Gampong Lae Bersih, Kec. Penanggalan, Kota Subulussalam",
+        hpOrtu: "082225330101",
+        hobi: "Mancing ikan, Sepak bola, Futsal, Traveling",
+        minatBakat: "Olahraga, sepak bola, futsal, tenis meja, hafal Al-Qur'an",
+        skill: "B. Inggris pasif, sepak bola, futsal, tenis meja",
+        organisasi: "IKATAN PELAJAR MUHAMMADIYAH, SEKOLAH POLITIK BANDA ACEH",
+        prestasi: "Tidak ada"
+      },
+      {
+        nama: "RAID RABBANI",
+        npm: "260510401100084",
+        prodi: "Peternakan",
+        kamar: "306",
+        ortu: "Taufik",
+        alamat: "Lamrueng, Krueng Barona Jaya, Aceh Besar",
+        hpOrtu: "+62 852-7046-4419",
+        hobi: "Futsal dan catur",
+        minatBakat: "Catur",
+        skill: "-",
+        organisasi: "-",
+        prestasi: "-"
+      },
+      {
+        nama: "Muhammad Rizky",
+        npm: "260510501100019",
+        prodi: "Teknologi Pangan dan Hasil Pertanian",
+        kamar: "307",
+        ortu: "Mukhlis",
+        alamat: "Desa Peulalu, Kec. Simpang Ulim, Kab. Aceh Timur, Aceh",
+        hpOrtu: "081269898649",
+        hobi: "Olahraga",
+        minatBakat: "Olahraga",
+        skill: "Bola kaki, bola voli, bulu tangkis",
+        organisasi: "OSIM, Bendahara",
+        prestasi: "Juara 1 Voli Putra tahun 2023"
+      },
+      {
+        nama: "Pahrul asri Pohan",
+        npm: "260510401100086",
+        prodi: "Peternakan",
+        kamar: "307",
+        ortu: "Rianto Pohan",
+        alamat: "Tanjung Rejo",
+        hpOrtu: "081265995720",
+        hobi: "Badminton",
+        minatBakat: "-",
+        skill: "Badminton agak mahir",
+        organisasi: "OSNH (Organisasi Santri Nurul Hakim)",
+        prestasi: "-"
+      },
+      {
         nama: "Amsal Linus Marbun",
         npm: "260510501100021",
         prodi: "Teknologi Pangan dan Hasil Pertanian",
@@ -1458,6 +1560,20 @@
         skill: "-",
         organisasi: "Tidak ada",
         prestasi: "Paskibra"
+      },
+      {
+        nama: "ZULFAHRI",
+        npm: "260510501100022",
+        prodi: "Teknologi Pangan dan Hasil Pertanian",
+        kamar: "308",
+        ortu: "UMAR / KARTINA",
+        alamat: "Kab. Pidie Jaya Kec. Trienggadeng Desa Tuengkluet",
+        hpOrtu: "081380194283",
+        hobi: "Futsal",
+        minatBakat: "Futsal (posisi keeper)",
+        skill: "Teknik futsal",
+        organisasi: "Turnamen Casablanca",
+        prestasi: "-"
       },
       {
         nama: "M.ikram syahputra",
@@ -1488,6 +1604,20 @@
         prestasi: "Harapan 3 Tahfiz 10 Juz Kabupaten Pidie Jaya"
       },
       {
+        nama: "AGLIN MELBERN",
+        npm: "260510105100051",
+        prodi: "Agroteknologi",
+        kamar: "310",
+        ortu: "-",
+        alamat: "-",
+        hpOrtu: "-",
+        hobi: "-",
+        minatBakat: "-",
+        skill: "-",
+        organisasi: "-",
+        prestasi: "-"
+      },
+      {
         nama: "JAZZAN Nurhakim",
         npm: "260510601100018",
         prodi: "Teknik Pertanian",
@@ -1502,18 +1632,18 @@
         prestasi: "Olimpiade Kebumian"
       },
       {
-        nama: "Hikmahtul Fadila Harahap",
-        npm: "260510401100085",
-        prodi: "Peternakan",
-        kamar: "306",
-        ortu: "Sulaiman Harahap",
-        alamat: "Gampong Lae Bersih, Kec. Penanggalan, Kota Subulussalam",
-        hpOrtu: "082225330101",
-        hobi: "Mancing ikan, Sepak bola, Futsal, Traveling",
-        minatBakat: "Olahraga, sepak bola, futsal, tenis meja, hafal Al-Qur'an",
-        skill: "B. Inggris pasif, sepak bola, futsal, tenis meja",
-        organisasi: "IKATAN PELAJAR MUHAMMADIYAH, SEKOLAH POLITIK BANDA ACEH",
-        prestasi: "Tidak ada"
+        nama: "Muhammad Khusyairi",
+        npm: "260510601100015",
+        prodi: "Teknik Pertanian",
+        kamar: "310",
+        ortu: "Ismail dan Anidar",
+        alamat: "Babah krueng",
+        hpOrtu: "+62 852-6246-4291",
+        hobi: "Lari",
+        minatBakat: "Olahraga, publik speaking",
+        skill: "Atletik, publik speaking",
+        organisasi: "KETUA OSIS, KORLAP APPJ, BENDAHARA MEULIGOE FEST, KETUA PRAMUKA, DUTA SISWA PIDIE JAYA, PASKIBRAKA, ANGGOTA PELAJAR ISLAM INDONESIA (PII)",
+        prestasi: "KAMTIBMAS 2023, OSN KIMIA PROV. 2025, OSN KIMIA KAB.2025, O2SN KAB. 2024"
       },
       {
         nama: "Muhammad wahyu",
@@ -1528,141 +1658,27 @@
         skill: "-",
         organisasi: "Ketua Kelas",
         prestasi: "-"
-      },
-      {
-        nama: "Ruhul jadid",
-        npm: "260510401100059",
-        prodi: "Peternakan",
-        kamar: "302",
-        ortu: "Hamdani",
-        alamat: "Desa Durung Aceh Besar",
-        hpOrtu: "085381982998",
-        hobi: "Main raket, voli, lari dan nonton film",
-        minatBakat: "Olahraga (mudah memahami gerakan olahraga)",
-        skill: "-",
-        organisasi: "Tidak ada",
-        prestasi: "Tidak ada"
-      },
-      {
-        nama: "Muhammad Rizky",
-        npm: "260510501100019",
-        prodi: "Teknologi Pangan dan Hasil Pertanian",
-        kamar: "307",
-        ortu: "Mukhlis",
-        alamat: "Desa Peulalu, Kec. Simpang Ulim, Kab. Aceh Timur, Aceh",
-        hpOrtu: "081269898649",
-        hobi: "Olahraga",
-        minatBakat: "Olahraga",
-        skill: "Bola kaki, bola voli, bulu tangkis",
-        organisasi: "OSIM, Bendahara",
-        prestasi: "Juara 1 Voli Putra tahun 2023"
-      },
-      {
-        nama: "ZULFAHRI",
-        npm: "260510501100022",
-        prodi: "Teknologi Pangan dan Hasil Pertanian",
-        kamar: "308",
-        ortu: "UMAR / KARTINA",
-        alamat: "Kab. Pidie Jaya Kec. Trienggadeng Desa Tuengkluet",
-        hpOrtu: "081380194283",
-        hobi: "Futsal",
-        minatBakat: "Futsal (posisi keeper)",
-        skill: "Teknik futsal",
-        organisasi: "Turnamen Casablanca",
-        prestasi: "-"
-      },
-      {
-        nama: "RAID RABBANI",
-        npm: "260510401100084",
-        prodi: "Peternakan",
-        kamar: "306",
-        ortu: "Taufik",
-        alamat: "Lamrueng, Krueng Barona Jaya, Aceh Besar",
-        hpOrtu: "+62 852-7046-4419",
-        hobi: "Futsal dan catur",
-        minatBakat: "Catur",
-        skill: "-",
-        organisasi: "-",
-        prestasi: "-"
-      },
-      {
-        nama: "Muhammad Hambali",
-        npm: "260510401100008",
-        prodi: "Peternakan",
-        kamar: "220",
-        ortu: "Sutrisno",
-        alamat: "Desa Pandan Sari, Kec. Simpang Kanan, Kab. Aceh Singkil",
-        hpOrtu: "+62 813-9671-7562",
-        hobi: "Futsal dan badminton",
-        minatBakat: "Badminton",
-        skill: "Bermain badminton",
-        organisasi: "IPM",
-        prestasi: "Juara 3 O2SN cabor badminton"
-      },
-      {
-        nama: "Feri Setiawan",
-        npm: "260510401100076",
-        prodi: "Peternakan",
-        kamar: "305",
-        ortu: "Zotli Fendi",
-        alamat: "Samadua, Aceh Selatan",
-        hpOrtu: "085358146477",
-        hobi: "Badminton",
-        minatBakat: "Teknologi dan mencoba hal baru",
-        skill: "-",
-        organisasi: "-",
-        prestasi: "-"
-      },
-      {
-        nama: "ZULFIKAR",
-        npm: "260510401100061",
-        prodi: "Peternakan",
-        kamar: "303",
-        ortu: "Ramli",
-        alamat: "Desa Gunong Pulo, Kab. Aceh Selatan Kec. Kluet Utara, Aceh",
-        hpOrtu: "085191732727",
-        hobi: "Main game, mancing",
-        minatBakat: "-",
-        skill: "-",
-        organisasi: "Tidak ada",
-        prestasi: "Tidak ada"
-      },
-      {
-        nama: "AGLIN MELBERN",
-        npm: "260510105100051",
-        prodi: "Agroteknologi",
-        kamar: "219",
-        ortu: "-",
-        alamat: "-",
-        hpOrtu: "-",
-        hobi: "-",
-        minatBakat: "-",
-        skill: "-",
-        organisasi: "-",
-        prestasi: "-"
-      },
-      {
-        nama: "FAHRI ABDIYA",
-        npm: "260400501100003",
-        prodi: "Teknik",
-        kamar: "311",
-        ortu: "-",
-        alamat: "-",
-        hpOrtu: "-",
-        hobi: "-",
-        minatBakat: "-",
-        skill: "-",
-        organisasi: "-",
-        prestasi: "-"
       }
     ];
-    // Data Default Aplikasi (Program, Dokumentasi, Info, Berkas, Piket, Kas, Absensi Harian, Hafalan)
+
+    // Helper Pengurutan Peserta Berdasarkan Nomor Kamar (218 -> 311) lalu Nama
+    function sortPesertaByKamar(list) {
+      return [...list].sort((a, b) => {
+        const kA = parseInt(a.kamar, 10) || 9999;
+        const kB = parseInt(b.kamar, 10) || 9999;
+        if (kA !== kB) return kA - kB;
+        return (a.nama || "").localeCompare(b.nama || "", "id");
+      });
+    }
+
+    // Data Default Aplikasi (Program, Dokumentasi, Info, Berkas, Piket, Kas Rp 5.000/bln, Absensi Harian, Hafalan)
     function createDefaultState() {
       const absensiHarian = {};
       const hafalan = {};
       const iuranKas = {};
+      const sortedInitial = sortPesertaByKamar(INITIAL_PESERTA);
 
-      INITIAL_PESERTA.forEach((p, idx) => {
+      sortedInitial.forEach((p, idx) => {
         absensiHarian[p.npm] = {};
         // Simulasi data absensi harian realistis pada Agustus 2026 (Tanggal 1 - 14 Agustus 2026)
         for (let day = 1; day <= 14; day++) {
@@ -1690,7 +1706,7 @@
       });
 
       return {
-        peserta: INITIAL_PESERTA,
+        peserta: sortedInitial,
         programs: [
           {
             id: "prog-1",
@@ -1780,12 +1796,12 @@
         ],
         piket: [
           { hari: "Senin", kamar: "Kamar 218 & 219", koordinator: "Akbar wahyu Saputra & Jonies", area: "Koridor Lt. 2 & Tangga Utama" },
-          { hari: "Selasa", kamar: "Kamar 220 & 301", koordinator: "Zibran al fais & Reihan fitrah", area: "Mushalla & Tempat Wudhu" },
+          { hari: "Selasa", kamar: "Kamar 220 & 301", koordinator: "Zibran al fais & Fahri Abdiya", area: "Mushalla & Tempat Wudhu" },
           { hari: "Rabu", kamar: "Kamar 302 & 303", koordinator: "Taufik ramadan & M. Zulfaizi", area: "Koridor Lt. 3 Bagian Barat" },
           { hari: "Kamis", kamar: "Kamar 304 & 305", koordinator: "Wahyu firman & Rayyan Hamdi", area: "Koridor Lt. 3 Bagian Timur" },
           { hari: "Jumat", kamar: "Kamar 306 & 307", koordinator: "Hikmahtul Fadila & Pahrul asri", area: "Halaman Depan & Parkiran" },
           { hari: "Sabtu", kamar: "Kamar 308 & 309", koordinator: "Amsal Linus & M.ikram syahputra", area: "Ruang Diskusi & Dapur Bersama" },
-          { hari: "Minggu", kamar: "Kamar 310 & 311", koordinator: "Muhammad Khusyairi & M. wahyu", area: "General Cleaning Seluruh Area" }
+          { hari: "Minggu", kamar: "Kamar 310 & 311", koordinator: "Aglin Melbern & M. wahyu", area: "General Cleaning Seluruh Area" }
         ],
         kultum: [
           { id: "klt-1", hari: "Senin", waktu: "Ba'da Subuh", pemateri: "Muhammad Khusyairi (Kamar 310)", moderator: "Zibran al fais", tema: "Keutamaan Menjaga Sholat Subuh Berjamaah" },
@@ -1802,15 +1818,15 @@
             fields: [
               { id: "fld-1", label: "Ukuran Baju / Jaket", type: "select", options: ["S", "M", "L", "XL", "XXL"], required: true },
               { id: "fld-2", label: "Nomor WhatsApp Aktif Pribadi", type: "text", options: [], required: true },
-              { id: "fld-3", label: "Catatan / Masukan untuk Admin", type: "textarea", options: [], required: false }
+              { id: "fld-3", label: "Catatan / Masukan untuk Pengurus Asrama", type: "textarea", options: [], required: false }
             ]
           }
         ],
         formResponses: {},
         transaksiKas: [
-          { id: "trx-1", tanggal: "2026-08-05", keterangan: "Iuran Kas Bulan Agustus 2026 (26 Penghuni x Rp 20.000)", jenis: "masuk", nominal: 520000 },
-          { id: "trx-2", tanggal: "2026-08-10", keterangan: "Pembelian Sapu, Pel, Pewangi Lantai & Sabun Kebersihan", jenis: "keluar", nominal: 135000 },
-          { id: "trx-3", tanggal: "2026-08-18", keterangan: "Konsumsi Rapat Perdana & Malam Keakraban Kamar 218-311", jenis: "keluar", nominal: 150000 }
+          { id: "trx-1", tanggal: "2026-08-05", keterangan: "Iuran Kas Bulan Agustus 2026 (28 Penghuni x Rp 5.000)", jenis: "masuk", nominal: 140000 },
+          { id: "trx-2", tanggal: "2026-08-10", keterangan: "Pembelian Sapu, Pel & Sabun Kebersihan Koridor", jenis: "keluar", nominal: 45000 },
+          { id: "trx-3", tanggal: "2026-08-18", keterangan: "Air Mineral & Konsumsi Rapat Koordinasi Kamar 218-311", jenis: "keluar", nominal: 35000 }
         ],
         absensiHarian,
         hafalan,
@@ -1875,22 +1891,37 @@
             const defaults = createDefaultState();
             appState = { ...defaults, ...remoteData };
 
-            // Pastikan peserta baru di INITIAL_PESERTA ikut tersinkron jika database cloud belum memuatnya
-            const existingNpms = new Set((appState.peserta || []).map(p => p.npm));
-            let addedNew = false;
+            // Sinkronisasi daftar peserta, pastikan Aglin (310) dan Fahri (301) terpasang & terurut kamar
+            const existingMap = new Map((appState.peserta || []).map(p => [p.npm, p]));
+            let needsCloudUpdate = false;
+
             INITIAL_PESERTA.forEach(initP => {
-              if (!existingNpms.has(initP.npm)) {
+              const existing = existingMap.get(initP.npm);
+              if (!existing) {
                 appState.peserta.push(initP);
                 appState.absensiHarian[initP.npm] = defaults.absensiHarian[initP.npm] || {};
                 appState.hafalan[initP.npm] = defaults.hafalan[initP.npm] || {};
                 appState.iuranKas[initP.npm] = defaults.iuranKas[initP.npm] || {};
-                addedNew = true;
+                needsCloudUpdate = true;
+              } else {
+                // Pastikan kamar Aglin = 310 dan Fahri = 301 sesuai permintaan terbaru
+                if (initP.npm === "260510105100051" && existing.kamar !== "310") {
+                  existing.kamar = "310";
+                  needsCloudUpdate = true;
+                }
+                if (initP.npm === "260400501100003" && existing.kamar !== "301") {
+                  existing.kamar = "301";
+                  needsCloudUpdate = true;
+                }
               }
             });
 
+            // Selalu urutkan peserta dari kamar 218 ke 311
+            appState.peserta = sortPesertaByKamar(appState.peserta);
+
             isFirebaseConnected = true;
             refreshAllUI();
-            if (addedNew) {
+            if (needsCloudUpdate) {
               setDoc(STATE_DOC_REF, appState, { merge: true }).catch(() => {});
             }
           }
@@ -1906,6 +1937,7 @@
 
     // Simpan perubahan ke Firestore (Real-Time)
     async function saveStateToCloud(successMsg = "Perubahan berhasil disimpan!") {
+      appState.peserta = sortPesertaByKamar(appState.peserta);
       refreshAllUI();
       if (successMsg) showToast(successMsg, "success");
       try {
@@ -1981,7 +2013,7 @@
               <input type="text" id="login-username" required placeholder="Contoh: Zibran al fais" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-usk-600 outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Kredensial (NPM Peserta)</label>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kredensial (NPM Peserta / Password Pengurus)</label>
               <input type="password" id="login-password" required placeholder="Masukkan NPM atau Password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-usk-600 outline-none" />
             </div>
             <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-usk-900 via-usk-800 to-emerald-700 hover:from-usk-900 hover:to-emerald-800 text-white font-extrabold text-sm shadow-md transition">
@@ -1992,7 +2024,7 @@
           <div class="bg-emerald-50 rounded-xl p-3.5 border border-emerald-200 text-xs text-slate-700 space-y-1">
             <p class="font-bold text-usk-900"><i class="fa-solid fa-key text-usk-700 mr-1"></i> Panduan Akses:</p>
             <p>• <strong>Peserta:</strong> Username = Nama sesuai data, Kredensial = NPM</p>
-            <p>• <strong>Admin & Bendahara:</strong> Gunakan username & kredensial masing-masing</p>
+            <p>• <strong>Admin & Bendahara:</strong> Gunakan username & kredensial resmi pengurus</p>
           </div>
         </div>
       `);
@@ -2168,6 +2200,7 @@
           </div>
         </div>
       `).join("");
+
       // Render Informasi & Peringatan (Hanya tampilkan informasi publik / peringatan umum di landing page)
       const infoList = document.getElementById("landing-informasi-list");
       const publicInfos = appState.informasi.filter(i => !i.targetNpm || i.targetNpm === "ALL");
@@ -2588,7 +2621,7 @@
           <div class="p-3.5 rounded-2xl border ${isLunas ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50/60 border-rose-200'} text-center space-y-1">
             <p class="text-xs font-bold text-slate-800">${bln}</p>
             <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${isLunas ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">
-              ${isLunas ? 'LUNAS' : 'BELUM'}
+              ${isLunas ? 'LUNAS (5rb)' : 'BELUM'}
             </span>
           </div>
         `;
@@ -2877,6 +2910,9 @@
     function renderAdminDashboard() {
       if (!currentUser || currentUser.role !== "admin") return;
 
+      // Pastikan peserta terurut dari kamar 218-311
+      const sortedPeserta = sortPesertaByKamar(appState.peserta);
+
       // Set Default Tanggal Absensi Harian Admin
       const dateInputAdmin = document.getElementById("admin-absen-tanggal");
       if (dateInputAdmin && !dateInputAdmin.value) {
@@ -2894,25 +2930,20 @@
         });
       }
 
-      // Populate Select Peserta Hafalan & Target Peringatan Admin
+      // Populate Select Peserta Hafalan & Target Peringatan Admin (Terurut Kamar)
       const selHafAdmin = document.getElementById("admin-hafalan-peserta-select");
-      if (selHafAdmin && selHafAdmin.options.length === 0) {
-        appState.peserta.forEach(p => {
-          const opt = document.createElement("option");
-          opt.value = p.npm;
-          opt.textContent = `Kamar ${p.kamar} - ${p.nama}`;
-          selHafAdmin.appendChild(opt);
-        });
+      if (selHafAdmin) {
+        const prevVal = selHafAdmin.value;
+        selHafAdmin.innerHTML = sortedPeserta.map(p => `<option value="${p.npm}">Kamar ${p.kamar} - ${p.nama}</option>`).join("");
+        if (prevVal && sortedPeserta.some(p => p.npm === prevVal)) selHafAdmin.value = prevVal;
       }
 
       const selWarnTarget = document.getElementById("input-warn-target");
-      if (selWarnTarget && selWarnTarget.options.length <= 1) {
-        appState.peserta.forEach(p => {
-          const opt = document.createElement("option");
-          opt.value = p.npm;
-          opt.textContent = `Khusus: ${p.nama} (Kamar ${p.kamar})`;
-          selWarnTarget.appendChild(opt);
-        });
+      if (selWarnTarget) {
+        const prevWarn = selWarnTarget.value;
+        selWarnTarget.innerHTML = `<option value="ALL">Semua Penghuni Asrama (Kamar 218–311)</option>` +
+          sortedPeserta.map(p => `<option value="${p.npm}">Kamar ${p.kamar} - ${p.nama}</option>`).join("");
+        if (prevWarn) selWarnTarget.value = prevWarn;
       }
 
       renderAdminPesertaTable();
@@ -2925,7 +2956,8 @@
 
     window.renderAdminPesertaTable = function() {
       const keyword = (document.getElementById("admin-search-peserta")?.value || "").toLowerCase().trim();
-      const filtered = appState.peserta.filter(p =>
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      const filtered = sortedList.filter(p =>
         p.nama.toLowerCase().includes(keyword) ||
         p.npm.toLowerCase().includes(keyword) ||
         p.kamar.toLowerCase().includes(keyword) ||
@@ -3156,7 +3188,7 @@
       `);
     };
 
-    // Admin Update Absensi Sholat Harian (Subuh, Maghrib, Isya per Tanggal)
+    // Admin Update Absensi Sholat Harian (Subuh, Maghrib, Isya per Tanggal - Urut Kamar 218-311)
     window.geserTanggalAdmin = function(deltaDays) {
       const inp = document.getElementById("admin-absen-tanggal");
       if (!inp) return;
@@ -3194,13 +3226,14 @@
         </div>`;
       };
 
-      document.getElementById("admin-absen-tbody").innerHTML = appState.peserta.map(p => {
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      document.getElementById("admin-absen-tbody").innerHTML = sortedList.map(p => {
         if (!appState.absensiHarian[p.npm]) appState.absensiHarian[p.npm] = {};
         const rec = appState.absensiHarian[p.npm][dateStr] || { subuh: "-", maghrib: "-", isya: "-" };
 
         return `
           <tr class="hover:bg-slate-50">
-            <td class="py-2.5 px-4 font-bold text-slate-600">${p.kamar}</td>
+            <td class="py-2.5 px-4 font-bold text-usk-800">${p.kamar}</td>
             <td class="py-2.5 px-4 font-semibold text-slate-900">${p.nama}</td>
             <td class="py-2.5 px-4 text-center">${renderBtnGroup(p.npm, "subuh", rec.subuh)}</td>
             <td class="py-2.5 px-4 text-center">${renderBtnGroup(p.npm, "maghrib", rec.maghrib)}</td>
@@ -3229,10 +3262,11 @@
       saveStateToCloud(`Seluruh peserta ditandai HADIR pada tanggal ${dateStr}!`);
     };
 
-    // Unduh Rekap Absensi Per Bulan dalam Bentuk Spreadsheet (.xls)
+    // Unduh Rekap Absensi Per Bulan dalam Bentuk Spreadsheet (.xls - Urut Kamar 218-311)
     window.downloadAbsensiSpreadsheet = function() {
       const bulan = document.getElementById("admin-export-bulan-select")?.value || BULAN_LIST[0];
-      const rowsHtml = appState.peserta.map((p, idx) => {
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      const rowsHtml = sortedList.map((p, idx) => {
         const sum = getMonthlyAbsenSummary(p.npm, bulan);
         const totalH = sum.subuh.hadir + sum.maghrib.hadir + sum.isya.hadir;
         const totalA = sum.subuh.alfa + sum.maghrib.alfa + sum.isya.alfa;
@@ -3337,7 +3371,8 @@
 
     // Admin Update Setoran Hafalan
     window.renderAdminHafalanChecklist = function() {
-      const npm = document.getElementById("admin-hafalan-peserta-select")?.value || appState.peserta[0].npm;
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      const npm = document.getElementById("admin-hafalan-peserta-select")?.value || sortedList[0].npm;
       if (!appState.hafalan[npm]) appState.hafalan[npm] = {};
 
       const renderGroup = (title, items) => `
@@ -3777,7 +3812,7 @@
     };
 
     // =========================================================================
-    // RENDER & AKSI DASHBOARD BENDAHARA (DIMAS)
+    // RENDER & AKSI DASHBOARD BENDAHARA (DIMAS - KAS RP 5.000/BULAN)
     // =========================================================================
     window.setKasFormType = function(type) {
       document.getElementById("kas-form-type").value = type;
@@ -3825,7 +3860,7 @@
                   ${isMasuk ? 'Pemasukan' : 'Pengeluaran'}
                 </span>
               </td>
-              <td class="py-3 px-6 text-right font-extrabold ${isMasuk ? 'text-emerald-700' : 'text-rose-600'} whitespace-nowrap">
+              <td class="py-3 px-6 text-right font-bold ${isMasuk ? 'text-emerald-700' : 'text-rose-600'}">
                 ${isMasuk ? '+' : '-'} ${formatRupiah(t.nominal)}
               </td>
               <td class="py-3 px-6 text-center">
@@ -3839,14 +3874,61 @@
       }
     }
 
+    window.renderBendaharaIuranTable = function() {
+      const bulan = document.getElementById("bendahara-bulan-select")?.value || BULAN_LIST[0];
+      const tbody = document.getElementById("bendahara-iuran-tbody");
+      if (!tbody) return;
+
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      tbody.innerHTML = sortedList.map(p => {
+        if (!appState.iuranKas[p.npm]) appState.iuranKas[p.npm] = {};
+        const isLunas = !!appState.iuranKas[p.npm][bulan];
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-4 font-bold text-usk-800">${p.kamar}</td>
+            <td class="py-2.5 px-4 font-semibold text-slate-900">${p.nama}</td>
+            <td class="py-2.5 px-4 text-center">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold ${isLunas ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                ${isLunas ? 'Lunas (Rp 5.000)' : 'Belum Lunas'}
+              </span>
+            </td>
+            <td class="py-2.5 px-4 text-right">
+              <button onclick="toggleIuranPeserta('${p.npm}', '${bulan}')" class="px-3 py-1 rounded-xl text-xs font-bold transition ${isLunas ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}">
+                ${isLunas ? 'Batalkan' : 'Tandai Lunas'}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    };
+
+    window.toggleIuranPeserta = function(npm, bulan) {
+      if (!appState.iuranKas[npm]) appState.iuranKas[npm] = {};
+      const nextStatus = !appState.iuranKas[npm][bulan];
+      appState.iuranKas[npm][bulan] = nextStatus;
+
+      const pesertaObj = appState.peserta.find(p => p.npm === npm);
+      if (nextStatus && pesertaObj) {
+        appState.transaksiKas.push({
+          id: "trx-" + Date.now(),
+          tanggal: new Date().toISOString().split("T")[0],
+          keterangan: `Iuran Kas ${bulan} — ${pesertaObj.nama} (Kamar ${pesertaObj.kamar})`,
+          jenis: "masuk",
+          nominal: NOMINAL_IURAN_BULANAN
+        });
+      }
+
+      saveStateToCloud(`Status iuran ${pesertaObj?.nama || ''} (${bulan}) diperbarui!`);
+    };
+
     window.submitTransaksiKas = function() {
       const jenis = document.getElementById("kas-form-type").value;
       const tanggal = document.getElementById("kas-form-tanggal").value || new Date().toISOString().split("T")[0];
       const keterangan = document.getElementById("kas-form-ket").value.trim();
       const nominal = Number(document.getElementById("kas-form-nominal").value);
 
-      if (!keterangan || nominal <= 0) {
-        return showToast("Masukkan keterangan dan nominal transaksi yang valid.", "error");
+      if (!keterangan || !nominal || nominal <= 0) {
+        return showToast("Isi keterangan dan nominal transaksi yang valid.", "error");
       }
 
       appState.transaksiKas.push({
@@ -3859,61 +3941,15 @@
 
       document.getElementById("kas-form-ket").value = "";
       document.getElementById("kas-form-nominal").value = "";
-      saveStateToCloud("Transaksi kas berhasil dicatat secara real-time!");
+      saveStateToCloud("Mutasi kas berhasil dicatat & disinkronkan!");
     };
 
     window.deleteTransaksiKas = function(id) {
       appState.transaksiKas = appState.transaksiKas.filter(t => t.id !== id);
-      saveStateToCloud("Transaksi kas dihapus.");
+      saveStateToCloud("Catatan transaksi kas dihapus.");
     };
 
-    window.renderBendaharaIuranTable = function() {
-      const bulan = document.getElementById("bendahara-bulan-select")?.value || BULAN_LIST[0];
-
-      document.getElementById("bendahara-iuran-tbody").innerHTML = appState.peserta.map(p => {
-        if (!appState.iuranKas[p.npm]) appState.iuranKas[p.npm] = {};
-        const isLunas = !!appState.iuranKas[p.npm][bulan];
-
-        return `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2.5 px-4 font-bold text-slate-600">${p.kamar}</td>
-            <td class="py-2.5 px-4 font-semibold text-slate-900">${p.nama}</td>
-            <td class="py-2.5 px-4 text-center">
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${isLunas ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}">
-                ${isLunas ? 'LUNAS' : 'BELUM'}
-              </span>
-            </td>
-            <td class="py-2.5 px-4 text-right">
-              <button onclick="toggleIuranPeserta('${p.npm}', '${bulan}')" class="px-3 py-1 rounded-lg text-xs font-bold border transition ${isLunas ? 'bg-white border-slate-300 text-slate-600 hover:bg-rose-50 hover:text-rose-700' : 'bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700'}">
-                ${isLunas ? 'Batalkan' : 'Tandai Lunas (+5rb)'}
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    };
-
-    window.toggleIuranPeserta = function(npm, bulan) {
-      if (!appState.iuranKas[npm]) appState.iuranKas[npm] = {};
-      const prev = !!appState.iuranKas[npm][bulan];
-      appState.iuranKas[npm][bulan] = !prev;
-
-      const pesertaObj = appState.peserta.find(p => p.npm === npm);
-      if (!prev && pesertaObj) {
-        // Otomatis tambahkan ke riwayat pemasukan kas
-        appState.transaksiKas.push({
-          id: "iuran-" + npm + "-" + Date.now(),
-          tanggal: new Date().toISOString().split("T")[0],
-          keterangan: `Iuran Kas ${bulan} — ${pesertaObj.nama} (Kamar ${pesertaObj.kamar})`,
-          jenis: "masuk",
-          nominal: 20000
-        });
-      }
-
-      saveStateToCloud(`Status iuran ${pesertaObj?.nama || ''} (${bulan}) diperbarui!`);
-    };
-
-    // Refresh Seluruh Tampilan UI
+    // Refresh Semua Tampilan Aktif
     function refreshAllUI() {
       renderLandingPage();
       if (currentUser?.role === "peserta") renderPesertaDashboard();
@@ -3921,8 +3957,10 @@
       if (currentUser?.role === "bendahara") renderBendaharaDashboard();
     }
 
-    // Jalankan Aplikasi saat Halaman Dimuat
-    window.addEventListener("DOMContentLoaded", () => {
+    // Boot Aplikasi
+    document.addEventListener("DOMContentLoaded", () => {
+      const dateInput = document.getElementById("kas-form-tanggal");
+      if (dateInput) dateInput.value = new Date().toISOString().split("T")[0];
       refreshAllUI();
       initFirebaseSync();
     });
