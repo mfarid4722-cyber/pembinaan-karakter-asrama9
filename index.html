@@ -150,7 +150,60 @@
     }
     @media (max-width: 640px) {
       body {
-        padding-bottom: 4.75rem;
+        padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+      }
+      /* Cegah auto-zoom pada iOS Safari & Android saat mengetik di input/select */
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+      /* Kartu tabel responsif khusus smartphone agar mudah dibaca tanpa geser menyamping */
+      .mobile-stack-table thead {
+        display: none;
+      }
+      .mobile-stack-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background-color: #f8fafc;
+      }
+      .mobile-stack-table tr {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 1.25rem;
+        padding: 0.95rem 1rem;
+        gap: 0.55rem;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      }
+      .mobile-stack-table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 !important;
+        text-align: right;
+        border: none !important;
+        gap: 0.75rem;
+      }
+      .mobile-stack-table td::before {
+        content: attr(data-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #64748b;
+        text-align: left;
+        flex-shrink: 0;
+      }
+      .mobile-stack-table td.mobile-card-header {
+        justify-content: flex-start;
+        text-align: left;
+        padding-bottom: 0.55rem !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+      }
+      .mobile-stack-table td.mobile-card-header::before {
+        display: none;
       }
     }
   </style>
@@ -162,7 +215,8 @@
 
   <!-- CUSTOM MODAL CONTAINER -->
   <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[90] hidden items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
-    <div id="modal-box" class="bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200/80 shadow-2xl max-w-2xl w-full p-5 sm:p-7 relative animate-modal max-h-[92vh] overflow-y-auto">
+    <div id="modal-box" class="bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200/80 shadow-2xl max-w-2xl w-full p-5 pb-8 sm:p-7 relative animate-modal max-h-[90vh] overflow-y-auto">
+      <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-3 sm:hidden"></div>
       <button onclick="closeModal()" aria-label="Tutup Modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-600 flex items-center justify-center transition">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
@@ -959,7 +1013,7 @@
         </div>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-sm">
+        <table class="w-full text-left border-collapse text-sm mobile-stack-table">
           <thead>
             <tr class="bg-slate-50 text-slate-500 text-[11px] uppercase border-b border-slate-200/80">
               <th class="py-3.5 px-4 font-bold">Kamar</th>
@@ -1022,7 +1076,7 @@
           </div>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-sm">
+          <table class="w-full text-left border-collapse text-sm mobile-stack-table">
             <thead>
               <tr class="bg-slate-50 text-slate-500 text-[11px] uppercase border-b border-slate-200/80">
                 <th class="py-3.5 px-4 font-bold">Kamar</th>
@@ -1261,7 +1315,7 @@
 
       <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-sm">
+          <table class="w-full text-left border-collapse text-sm mobile-stack-table">
             <thead>
               <tr class="bg-slate-50 text-slate-500 text-[11px] uppercase border-b border-slate-200/80">
                 <th class="py-3.5 px-4 font-bold">Kamar</th>
@@ -1347,8 +1401,8 @@
           </div>
           <select id="bendahara-bulan-select" onchange="renderBendaharaIuranTable()" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-white text-slate-800"></select>
         </div>
-        <div class="overflow-x-auto max-h-[380px]">
-          <table class="w-full text-left border-collapse text-sm">
+        <div class="overflow-x-auto max-h-[380px] sm:max-h-[420px]">
+          <table class="w-full text-left border-collapse text-sm mobile-stack-table">
             <thead class="sticky top-0 bg-slate-100 text-slate-600 text-[11px] uppercase border-b border-slate-200">
               <tr>
                 <th class="py-3 px-4 font-bold">Kamar</th>
@@ -1399,24 +1453,24 @@
   </footer>
 
   <!-- MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 640px) -->
-  <nav id="mobile-bottom-nav" aria-label="Navigasi Bawah Mobile" class="sm:hidden fixed bottom-0 inset-x-0 z-40 glass-card border-t border-slate-200/90 shadow-lg px-2 py-1.5 flex items-center justify-around">
-    <a href="#program" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50">
+  <nav id="mobile-bottom-nav" aria-label="Navigasi Bawah Mobile" style="padding-bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));" class="sm:hidden fixed bottom-0 inset-x-0 z-40 glass-card border-t border-slate-200/90 shadow-lg px-2 pt-1.5 flex items-center justify-around">
+    <a href="#program" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
       <i class="fa-solid fa-house text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Beranda</span>
     </a>
-    <a href="#informasi" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50">
+    <a href="#informasi" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
       <i class="fa-solid fa-bullhorn text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Info</span>
     </a>
-    <a href="#piket" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50">
+    <a href="#piket" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
       <i class="fa-solid fa-broom text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Piket</span>
     </a>
-    <a href="#kas" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50">
+    <a href="#kas" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
       <i class="fa-solid fa-wallet text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Kas</span>
     </a>
-    <button onclick="openUserDashboard()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-xl bg-emerald-600 text-white font-bold shadow-xs">
+    <button onclick="openUserDashboard()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-xl bg-emerald-600 text-white font-bold shadow-xs min-w-[58px]">
       <i class="fa-solid fa-user-check text-sm"></i>
       <span class="text-[10px] mt-0.5">Portal</span>
     </button>
@@ -3418,12 +3472,14 @@
 
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td class="py-3.5 px-4 font-bold text-emerald-700">${p.kamar}</td>
-            <td class="py-3.5 px-4">
-              <p class="font-bold text-slate-900">${p.nama}</p>
-              <p class="text-[11px] text-slate-500">${loc?.device || 'Perangkat belum terhubung'}</p>
+            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700">Kamar ${p.kamar}</td>
+            <td class="py-3.5 px-4 mobile-card-header">
+              <div>
+                <p class="font-bold text-slate-900">${p.nama} <span class="sm:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span></p>
+                <p class="text-[11px] text-slate-500">${loc?.device || 'Perangkat belum terhubung'}</p>
+              </div>
             </td>
-            <td class="py-3.5 px-4">
+            <td data-label="Status Area" class="py-3.5 px-4">
               ${hasLoc
                 ? (loc.isInsideAsrama
                     ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold"><i class="fa-solid fa-circle text-[7px] text-emerald-500"></i> Area Asrama USK</span>`
@@ -3431,13 +3487,13 @@
                 : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-semibold">Belum Aktif</span>`
               }
             </td>
-            <td class="py-3.5 px-4 text-xs font-mono text-slate-700">
+            <td data-label="Koordinat" class="py-3.5 px-4 text-xs font-mono text-slate-700">
               ${hasLoc ? `${loc.lat}, ${loc.lng} <span class="text-slate-400">(±${loc.accuracy}m)</span>` : '-'}
             </td>
-            <td class="py-3.5 px-4 text-xs text-slate-600">
+            <td data-label="Update" class="py-3.5 px-4 text-xs text-slate-600">
               ${hasLoc ? loc.updatedAtText : 'Menunggu peserta membuka web'}
             </td>
-            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <td data-label="Peta" class="py-3.5 px-4 text-right whitespace-nowrap">
               ${hasLoc
                 ? `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold inline-flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-map-location-dot"></i> Buka Peta
@@ -3465,26 +3521,28 @@
         const avatarUrl = p.fotoProfil || `https://placehold.co/80x80/059669/ffffff?text=${encodeURIComponent(initials)}`;
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td class="py-3.5 px-4 font-bold text-emerald-700">${p.kamar}</td>
-            <td class="py-3.5 px-4">
+            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
+            <td class="py-3.5 px-4 mobile-card-header">
               <div class="flex items-center gap-3">
-                <img src="${avatarUrl}" onerror="this.src='https://placehold.co/80x80/059669/ffffff?text=USK'" class="w-9 h-9 rounded-xl object-cover border border-slate-200 shrink-0" />
+                <img src="${avatarUrl}" onerror="this.src='https://placehold.co/80x80/059669/ffffff?text=USK'" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
                 <div>
-                  <p class="font-bold text-slate-900">${p.nama}</p>
+                  <p class="font-bold text-slate-900">${p.nama} <span class="sm:hidden inline-block ml-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></p>
                   <p class="text-xs font-mono text-slate-500">${p.npm}</p>
                 </div>
               </div>
             </td>
-            <td class="py-3.5 px-4 text-xs sm:text-sm text-slate-700">${p.prodi}</td>
-            <td class="py-3.5 px-4 text-xs text-slate-600">
-              <p class="font-semibold text-slate-800">${p.ortu || '-'}</p>
-              <p>${p.hpOrtu || '-'}</p>
+            <td data-label="Program Studi" class="py-3.5 px-4 text-xs sm:text-sm text-slate-700 font-medium">${p.prodi}</td>
+            <td data-label="Kontak Ortu" class="py-3.5 px-4 text-xs text-slate-600">
+              <div>
+                <p class="font-semibold text-slate-800">${p.ortu || '-'}</p>
+                <p>${p.hpOrtu || '-'}</p>
+              </div>
             </td>
-            <td class="py-3.5 px-4 text-right whitespace-nowrap space-x-1.5">
-              <button onclick="openViewBiodataModal('${p.npm}')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition">
+            <td data-label="Aksi" class="py-3.5 px-4 text-right whitespace-nowrap space-x-1.5">
+              <button onclick="openViewBiodataModal('${p.npm}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition">
                 <i class="fa-solid fa-id-card mr-1"></i> Biodata
               </button>
-              <button onclick="openEditPesertaModal('${p.npm}')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-900 text-slate-800 hover:text-white border border-slate-200 text-xs font-bold transition">
+              <button onclick="openEditPesertaModal('${p.npm}')" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-900 text-slate-800 hover:text-white border border-slate-200 text-xs font-bold transition">
                 <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
               </button>
             </td>
@@ -3764,13 +3822,15 @@
 
         return `
           <tr class="hover:bg-slate-50">
-            <td class="py-3 px-4 font-bold text-emerald-700">${p.kamar}</td>
-            <td class="py-3 px-4 font-bold text-slate-900">${p.nama}</td>
-            <td class="py-3 px-4 text-center">${makeSelect("subuh", rec.subuh)}</td>
-            <td class="py-3 px-4 text-center">${makeSelect("maghrib", rec.maghrib)}</td>
-            <td class="py-3 px-4 text-center">${makeSelect("isya", rec.isya)}</td>
-            <td class="py-3 px-4 text-right">
-              <button type="button" onclick="setPesertaHadirSemuaWaktu('${p.npm}', '${dateStr}')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 text-xs font-bold transition" title="Tandai Hadir 3 Waktu">
+            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
+            <td class="py-3 px-4 font-bold text-slate-900 mobile-card-header">
+              <span>${p.nama} <span class="sm:hidden inline-block ml-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></span>
+            </td>
+            <td data-label="Sholat Subuh" class="py-3 px-4 text-center">${makeSelect("subuh", rec.subuh)}</td>
+            <td data-label="Sholat Maghrib" class="py-3 px-4 text-center">${makeSelect("maghrib", rec.maghrib)}</td>
+            <td data-label="Sholat Isya" class="py-3 px-4 text-center">${makeSelect("isya", rec.isya)}</td>
+            <td data-label="Aksi Cepat" class="py-3 px-4 text-right">
+              <button type="button" onclick="setPesertaHadirSemuaWaktu('${p.npm}', '${dateStr}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 text-xs font-bold transition" title="Tandai Hadir 3 Waktu">
                 <i class="fa-solid fa-check-double mr-1"></i> Hadir 3x
               </button>
             </td>
@@ -4449,15 +4509,17 @@
         const isLunas = !!(appState.iuranKas[p.npm] && appState.iuranKas[p.npm][bln]);
         return `
           <tr class="hover:bg-slate-50">
-            <td class="py-3 px-4 font-bold text-emerald-700">${p.kamar}</td>
-            <td class="py-3 px-4 font-bold text-slate-900">${p.nama}</td>
-            <td class="py-3 px-4 text-center">
+            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
+            <td class="py-3 px-4 font-bold text-slate-900 mobile-card-header">
+              <span>${p.nama} <span class="sm:hidden inline-block ml-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></span>
+            </td>
+            <td data-label="Status" class="py-3 px-4 text-center">
               <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold ${isLunas ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
                 ${isLunas ? 'Lunas (Rp 5.000)' : 'Belum Bayar'}
               </span>
             </td>
-            <td class="py-3 px-4 text-right">
-              <button onclick="toggleIuranPeserta('${p.npm}', '${bln}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${isLunas ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+            <td data-label="Aksi" class="py-3 px-4 text-right">
+              <button onclick="toggleIuranPeserta('${p.npm}', '${bln}')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition ${isLunas ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
                 ${isLunas ? 'Batalkan' : 'Tandai Lunas'}
               </button>
             </td>
