@@ -2,7 +2,11 @@
 <html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Mengunci skala tampilan mobile agar tidak nge-zoom seperti aplikasi native -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#059669" />
   <title>SIMKIP USK | Sistem Informasi Asrama KIP-K Kamar 218–311</title>
   
   <!-- Tailwind CSS -->
@@ -52,7 +56,7 @@
     :root {
       --surface-bg: #f8fafc;
       --surface-card: #ffffff;
-      --surface-glass: rgba(255, 255, 255, 0.88);
+      --surface-glass: rgba(255, 255, 255, 0.92);
       --brand-primary: #059669;
       --brand-primary-dark: #064e3b;
       --brand-accent: #d97706;
@@ -61,10 +65,19 @@
       --border-subtle: rgba(226, 232, 240, 0.9);
       --shadow-elevated: 0 18px 38px -12px rgba(15, 23, 42, 0.08);
     }
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      touch-action: manipulation; /* Mencegah double-tap zoom di browser mobile */
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior-y: none;
+    }
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--surface-bg);
       color: var(--text-primary);
+      -webkit-tap-highlight-color: transparent;
     }
     h1, h2, h3, h4, .font-display {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -74,8 +87,8 @@
     }
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
     }
     ::-webkit-scrollbar-track {
       background: #f1f5f9;
@@ -99,6 +112,21 @@
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-4px); }
     }
+    @keyframes splashPulseRing {
+      0% { transform: scale(0.92); opacity: 0.75; }
+      70% { transform: scale(1.25); opacity: 0; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+    @keyframes splashLogoPop {
+      0% { opacity: 0; transform: scale(0.75) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes loadingBarFill {
+      0% { width: 0%; }
+      45% { width: 65%; }
+      85% { width: 92%; }
+      100% { width: 100%; }
+    }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -115,6 +143,15 @@
     }
     .animate-float {
       animation: floatGentle 3.5s ease-in-out infinite;
+    }
+    .animate-splash-logo {
+      animation: splashLogoPop 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-splash-ring {
+      animation: splashPulseRing 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    .animate-splash-progress {
+      animation: loadingBarFill 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .glass-card {
       background: var(--surface-glass);
@@ -148,11 +185,11 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    @media (max-width: 640px) {
+    /* Cegah auto-zoom pada semua perangkat sentuh saat fokus input/select */
+    @media (max-width: 768px) {
       body {
-        padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
       }
-      /* Cegah auto-zoom pada iOS Safari & Android saat mengetik di input/select */
       input, select, textarea {
         font-size: 16px !important;
       }
@@ -210,6 +247,57 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white overflow-x-hidden">
 
+  <!-- ===================================================================== -->
+  <!-- MOBILE APP SPLASH SCREEN (LOGO LOADING SEBELUM MENU UTAMA)            -->
+  <!-- ===================================================================== -->
+  <div id="app-splash-screen" class="fixed inset-0 z-[200] bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 flex flex-col items-center justify-between py-12 px-6 text-white transition-all duration-500 ease-out">
+    <!-- Top Status Spacer -->
+    <div class="text-center opacity-75">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-semibold tracking-wide text-emerald-200">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+        SISTEM INFORMASI ASRAMA KIP-K
+      </span>
+    </div>
+
+    <!-- Center Animated App Icon & Branding -->
+    <div class="flex flex-col items-center text-center space-y-5 animate-splash-logo">
+      <div class="relative flex items-center justify-center">
+        <div class="absolute w-28 h-28 rounded-3xl bg-emerald-400/25 animate-splash-ring"></div>
+        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white p-3 shadow-2xl border-2 border-emerald-300/40 flex items-center justify-center relative z-10">
+          <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/140x140/059669/ffffff?text=USK'" alt="Logo Universitas Syiah Kuala" class="w-full h-full object-contain" />
+        </div>
+        <span class="absolute -bottom-2 -right-2 z-20 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-extrabold shadow-md border-2 border-emerald-950">
+          218–311
+        </span>
+      </div>
+
+      <div class="space-y-1">
+        <h1 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-white">
+          SIMKIP <span class="text-amber-400">USK</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-emerald-100/80 font-medium">
+          Universitas Syiah Kuala • Darussalam
+        </p>
+      </div>
+
+      <!-- Smooth Mobile Progress Bar -->
+      <div class="w-48 sm:w-56 space-y-2 pt-2">
+        <div class="w-full h-1.5 bg-white/15 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-300 rounded-full animate-splash-progress"></div>
+        </div>
+        <p id="splash-status-text" class="text-[11px] font-medium text-emerald-200/80 tracking-wide">
+          Memuat data pembinaan & kas...
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom App Version Footer -->
+    <div class="text-center space-y-1">
+      <p class="text-[11px] font-semibold text-emerald-200/70">Periode Okt 2026 – Jun 2027</p>
+      <p class="text-[10px] text-emerald-300/40">Mobile Web App v2.4</p>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed top-4 right-4 left-4 sm:left-auto z-[100] flex flex-col gap-2.5 max-w-sm sm:w-full pointer-events-none"></div>
 
@@ -241,7 +329,7 @@
     </div>
 
     <div class="p-4 flex-1 overflow-y-auto space-y-1.5">
-      <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Navigasi Halaman</p>
+      <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Menu Aplikasi</p>
       <a href="#program" onclick="closeMobileDrawer(); switchMainView('landing')" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
         <i class="fa-solid fa-layer-group w-5 text-emerald-600"></i> Program Pembinaan
       </a>
@@ -263,28 +351,28 @@
     </div>
 
     <div class="p-4 border-t border-slate-100 bg-slate-50/80 space-y-2">
-      <button onclick="closeMobileDrawer(); openUserDashboard()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 transition">
-        <i class="fa-solid fa-right-to-bracket"></i> Masuk / Buka Dashboard
+      <button onclick="closeMobileDrawer(); openUserDashboard()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 transition">
+        <i class="fa-solid fa-right-to-bracket"></i> Masuk / Buka Portal Saya
       </button>
     </div>
   </aside>
 
-  <!-- NAVBAR (MODERN GLASSMORPHIC TOP BAR) -->
+  <!-- NAVBAR (MOBILE APP TOP BAR) -->
   <header class="sticky top-0 z-50 glass-card border-b border-slate-200/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16 gap-3">
+      <div class="flex justify-between items-center h-14 sm:h-16 gap-3">
         <!-- Brand Logo -->
-        <div class="flex items-center gap-3 cursor-pointer group min-w-0" onclick="switchMainView('landing')">
+        <div class="flex items-center gap-2.5 cursor-pointer group min-w-0" onclick="switchMainView('landing')">
           <div class="relative shrink-0">
-            <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/059669/ffffff?text=USK'" alt="Logo USK" class="w-10 h-10 object-contain rounded-xl bg-white p-1 border border-slate-200 shadow-xs group-hover:scale-105 transition" />
-            <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-white"></span>
+            <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/059669/ffffff?text=USK'" alt="Logo USK" class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-xl bg-white p-1 border border-slate-200 shadow-xs group-hover:scale-105 transition" />
+            <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></span>
           </div>
           <div class="min-w-0">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5">
               <span class="font-display font-extrabold text-base sm:text-lg text-slate-900 tracking-tight truncate">SIMKIP <span class="text-emerald-600">USK</span></span>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200/80 shrink-0">218–311</span>
+              <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200/80 shrink-0">218–311</span>
             </div>
-            <p class="text-[11px] text-slate-500 truncate hidden sm:block">Asrama Putra KIP-Kuliah Universitas Syiah Kuala</p>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 truncate">Asrama Putra KIP-K USK</p>
           </div>
         </div>
 
@@ -341,24 +429,24 @@
             <span id="cloud-sync-text">Cloud Terhubung</span>
           </div>
 
-          <button id="btn-nav-dashboard" onclick="openUserDashboard()" class="hidden px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 font-bold text-xs sm:text-sm border border-emerald-200 transition items-center gap-2">
+          <button id="btn-nav-dashboard" onclick="openUserDashboard()" class="hidden px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 font-bold text-xs sm:text-sm border border-emerald-200 transition items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span id="nav-user-label" class="max-w-[95px] sm:max-w-none truncate">Dashboard</span>
+            <span id="nav-user-label" class="max-w-[85px] sm:max-w-none truncate">Dashboard</span>
           </button>
 
-          <button id="btn-nav-login" onclick="openLoginModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xs transition flex items-center gap-2">
+          <button id="btn-nav-login" onclick="openLoginModal()" class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5">
             <i class="fa-solid fa-right-to-bracket text-xs"></i>
-            <span>Masuk Portal</span>
+            <span>Masuk</span>
           </button>
 
-          <button id="btn-nav-logout" onclick="logoutUser()" class="hidden px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 active:scale-95 text-rose-700 font-bold text-xs sm:text-sm border border-rose-200 transition items-center gap-1.5" title="Keluar Akun">
+          <button id="btn-nav-logout" onclick="logoutUser()" class="hidden px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-rose-50 hover:bg-rose-100 active:scale-95 text-rose-700 font-bold text-xs sm:text-sm border border-rose-200 transition items-center gap-1.5" title="Keluar Akun">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             <span class="hidden sm:inline">Keluar</span>
           </button>
 
           <!-- Hamburger Button for Mobile/Tablet -->
-          <button onclick="openMobileDrawer()" aria-label="Buka Menu Navigasi" class="lg:hidden w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 flex items-center justify-center transition">
-            <i class="fa-solid fa-bars text-base"></i>
+          <button onclick="openMobileDrawer()" aria-label="Buka Menu Navigasi" class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 flex items-center justify-center transition">
+            <i class="fa-solid fa-bars text-sm sm:text-base"></i>
           </button>
         </div>
       </div>
@@ -366,31 +454,51 @@
   </header>
 
   <!-- ===================================================================== -->
-  <!-- VIEW 1: LANDING PAGE (MODERN SAAS / ACADEMIC SPIRITUAL HUB)           -->
+  <!-- VIEW 1: MENU UTAMA / LANDING PAGE (APP-STYLE COMPACT CARDS)           -->
   <!-- ===================================================================== -->
   <main id="view-landing" class="flex-1">
     
     <!-- HERO SECTION -->
     <section class="hero-mesh relative overflow-hidden border-b border-slate-200/80">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
-        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-14 lg:py-16">
+        <div class="grid lg:grid-cols-12 gap-6 lg:gap-12 items-center">
           
           <!-- Left Editorial Column -->
-          <div class="lg:col-span-7 space-y-6">
-            <div class="inline-flex items-center gap-2.5 bg-white px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-xs">
+          <div class="lg:col-span-7 space-y-4 sm:space-y-6">
+            <div class="inline-flex items-center gap-2 bg-white px-3 py-1 rounded-full border border-slate-200/90 shadow-xs">
               <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              <span class="text-xs font-bold text-slate-700">Universitas Syiah Kuala • Periode Okt 2026 – Jun 2027</span>
+              <span class="text-[11px] sm:text-xs font-bold text-slate-700">USK • Periode Okt 2026 – Jun 2027</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-              Pusat Pembinaan & Administrasi <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Asrama KIP-K USK</span>
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
+              Aplikasi Pembinaan & Kas <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Asrama KIP-K USK</span>
             </h1>
 
-            <p class="text-slate-600 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl">
-              Platform digital terpadu penghuni <strong>Kamar 218 – 311</strong> untuk memantau presensi sholat berjamaah, progres hafalan Juz 30, jadwal piket & kultum, hingga transparansi kas secara real-time.
+            <p class="text-slate-600 text-xs sm:text-base lg:text-lg leading-relaxed max-w-2xl">
+              Portal terpadu penghuni <strong>Kamar 218 – 311</strong> untuk memantau absensi sholat berjamaah, setoran hafalan Juz 30, jadwal piket & kultum, serta transparansi kas asrama.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-3 pt-1">
+            <!-- Quick App Action Shortcuts (Mobile App Grid Style) -->
+            <div class="grid grid-cols-4 gap-2 sm:hidden pt-1">
+              <button onclick="openUserDashboard()" class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-emerald-600 text-white shadow-sm active:scale-95 transition">
+                <div class="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-user-check text-sm"></i></div>
+                <span class="text-[10px] font-bold">Portal Saya</span>
+              </button>
+              <a href="#piket" class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-white border border-slate-200/90 text-slate-800 shadow-2xs active:scale-95 transition">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-broom text-sm"></i></div>
+                <span class="text-[10px] font-bold">Piket</span>
+              </a>
+              <a href="#kultum" class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-white border border-slate-200/90 text-slate-800 shadow-2xs active:scale-95 transition">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-mosque text-sm"></i></div>
+                <span class="text-[10px] font-bold">Kultum</span>
+              </a>
+              <a href="#kas" class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-white border border-slate-200/90 text-slate-800 shadow-2xs active:scale-95 transition">
+                <div class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center"><i class="fa-solid fa-wallet text-sm"></i></div>
+                <span class="text-[10px] font-bold">Kas</span>
+              </a>
+            </div>
+
+            <div class="hidden sm:flex flex-row gap-3 pt-1">
               <button onclick="openLoginModal()" class="px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-bold text-sm shadow-md shadow-emerald-600/15 transition flex items-center justify-center gap-2.5">
                 <i class="fa-solid fa-grid-2"></i>
                 <span>Akses Portal Peserta & Pengurus</span>
@@ -402,9 +510,9 @@
             </div>
 
             <!-- Live Announcement Ticker -->
-            <div class="bg-amber-50/80 border border-amber-200/90 rounded-2xl p-3.5 flex items-center gap-3">
-              <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-white text-[10px] font-extrabold uppercase tracking-wider shrink-0">
-                Terbaru
+            <div class="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-3 flex items-center gap-2.5">
+              <span class="px-2 py-0.5 rounded-lg bg-amber-500 text-white text-[10px] font-extrabold uppercase tracking-wider shrink-0">
+                Info
               </span>
               <p id="hero-latest-info" class="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                 Sholat Subuh, Maghrib, dan Isya berjamaah wajib diikuti seluruh penghuni kamar 218-311.
@@ -413,39 +521,39 @@
           </div>
 
           <!-- Right Bento Metrics Panel -->
-          <div class="lg:col-span-5 grid grid-cols-2 gap-3.5 sm:gap-4">
-            <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between space-y-4">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-                <i class="fa-solid fa-users text-base"></i>
+          <div class="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between space-y-3">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+                <i class="fa-solid fa-users text-sm sm:text-base"></i>
               </div>
               <div>
-                <p class="text-xs font-semibold text-slate-500">Total Penghuni</p>
-                <p id="stat-total-peserta" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tabular-nums">28 <span class="text-xs font-semibold text-slate-400">Mhs</span></p>
+                <p class="text-[11px] sm:text-xs font-semibold text-slate-500">Total Penghuni</p>
+                <p id="stat-total-peserta" class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 tabular-nums">28 <span class="text-xs font-semibold text-slate-400">Mhs</span></p>
               </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between space-y-4">
-              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
-                <i class="fa-solid fa-door-open text-base"></i>
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between space-y-3">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                <i class="fa-solid fa-door-open text-sm sm:text-base"></i>
               </div>
               <div>
-                <p class="text-xs font-semibold text-slate-500">Unit Hunian</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tabular-nums">218–311</p>
+                <p class="text-[11px] sm:text-xs font-semibold text-slate-500">Unit Hunian</p>
+                <p class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 tabular-nums">218–311</p>
               </div>
             </div>
 
-            <div class="col-span-2 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+            <div class="col-span-2 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden">
               <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-emerald-400/15 blur-2xl pointer-events-none"></div>
-              <div class="flex items-start justify-between gap-4 relative z-10">
+              <div class="flex items-center justify-between gap-4 relative z-10">
                 <div>
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 text-[11px] font-semibold">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 text-[10px] sm:text-[11px] font-semibold">
                     <i class="fa-solid fa-shield-check text-amber-300"></i> Terverifikasi Bendahara
                   </span>
-                  <p class="text-xs text-emerald-100/80 font-medium mt-3">Saldo Kas Asrama Aktif</p>
-                  <p id="hero-saldo-kas" class="text-2xl sm:text-3xl font-extrabold text-white mt-1 tabular-nums">Rp 0</p>
+                  <p class="text-xs text-emerald-100/80 font-medium mt-2.5">Saldo Kas Asrama Aktif</p>
+                  <p id="hero-saldo-kas" class="text-2xl sm:text-3xl font-extrabold text-white mt-0.5 tabular-nums">Rp 0</p>
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-amber-300 animate-float shrink-0">
-                  <i class="fa-solid fa-wallet text-xl"></i>
+                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-amber-300 animate-float shrink-0">
+                  <i class="fa-solid fa-wallet text-lg sm:text-xl"></i>
                 </div>
               </div>
             </div>
@@ -456,28 +564,28 @@
     </section>
 
     <!-- SECTION: PROGRAM PEMBINAAN ASRAMA -->
-    <section id="program" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <section id="program" class="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider">Kurikulum & Karakter</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Program Pembinaan Asrama</h2>
-          <p class="text-slate-600 text-xs sm:text-sm mt-1.5 max-w-2xl">Pilar utama pembinaan mahasiswa KIP-Kuliah USK untuk membentuk intelektual muslim yang disiplin, berakhlak, dan berprestasi.</p>
+          <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-1">Program Pembinaan Asrama</h2>
+          <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl">Pilar utama pembinaan mahasiswa KIP-Kuliah USK untuk membentuk intelektual muslim yang disiplin, berakhlak, dan berprestasi.</p>
         </div>
         <button id="btn-edit-program-landing" onclick="openAdminTab('program')" class="hidden px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs items-center gap-2 self-start">
           <i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Program (Admin)
         </button>
       </div>
 
-      <div id="landing-program-list" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+      <div id="landing-program-list" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"></div>
     </section>
 
     <!-- SECTION: INFORMASI, PERINGATAN & BERKAS -->
-    <section id="informasi" class="py-12 sm:py-16 bg-white border-y border-slate-200/80">
+    <section id="informasi" class="py-10 sm:py-16 bg-white border-y border-slate-200/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-12 gap-8 lg:gap-10">
           
           <!-- Kolom Informasi & Peringatan -->
-          <div class="lg:col-span-7 space-y-5">
+          <div class="lg:col-span-7 space-y-4 sm:space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <span class="text-amber-600 font-bold text-xs uppercase tracking-wider">Papan Pengumuman</span>
@@ -489,11 +597,11 @@
               </div>
             </div>
 
-            <div id="landing-informasi-list" class="space-y-3.5"></div>
+            <div id="landing-informasi-list" class="space-y-3"></div>
           </div>
 
           <!-- Kolom Berkas & Dokumen Penting -->
-          <div id="berkas" class="lg:col-span-5 space-y-5">
+          <div id="berkas" class="lg:col-span-5 space-y-4 sm:space-y-5">
             <div>
               <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider">Arsip Digital</span>
               <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Berkas & Panduan</h2>
@@ -507,12 +615,12 @@
     </section>
 
     <!-- SECTION: JADWAL PIKET & JADWAL KULTUM -->
-    <section id="piket" class="py-12 sm:py-16 bg-slate-900 text-white">
+    <section id="piket" class="py-10 sm:py-16 bg-slate-900 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8 pb-5 border-b border-slate-800">
           <div>
             <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider">Operasional Harian</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold mt-1 text-white">Jadwal Piket & Kultum Mushalla</h2>
+            <h2 class="text-xl sm:text-3xl font-extrabold mt-1 text-white">Jadwal Piket & Kultum Mushalla</h2>
             <p class="text-slate-400 text-xs sm:text-sm mt-1">Pembagian tugas kebersihan harian serta jadwal kultum ba'da sholat berjamaah.</p>
           </div>
           <div class="flex items-center gap-3 bg-slate-800/90 px-4 py-2.5 rounded-2xl border border-slate-700/80 self-start sm:self-auto">
@@ -545,11 +653,11 @@
     </section>
 
     <!-- SECTION: DOKUMENTASI & BENTUK KEGIATAN -->
-    <section id="dokumentasi" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <section id="dokumentasi" class="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider">Galeri & Aktivitas</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Dokumentasi Kegiatan</h2>
+          <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-1">Dokumentasi Kegiatan</h2>
           <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl">Rekam jejak kegiatan keagamaan, gotong royong, dan pengembangan bakat penghuni kamar 218–311.</p>
         </div>
         <button id="btn-edit-dok-landing" onclick="openAdminTab('program')" class="hidden px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs items-center gap-2 self-start">
@@ -557,16 +665,16 @@
         </button>
       </div>
 
-      <div id="landing-dokumentasi-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="landing-dokumentasi-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
     </section>
 
     <!-- SECTION: TRANSPARANSI UANG KAS -->
-    <section id="kas" class="py-12 sm:py-16 bg-white border-t border-slate-200/80">
+    <section id="kas" class="py-10 sm:py-16 bg-white border-t border-slate-200/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider">Akuntabilitas Keuangan</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Transparansi Iuran & Kas</h2>
+            <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-1">Transparansi Iuran & Kas</h2>
             <p class="text-slate-600 text-xs sm:text-sm mt-1">Diperbarui real-time oleh Bendahara Dimas (Iuran Rp 5.000/bulan).</p>
           </div>
           <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200 self-start">
@@ -576,30 +684,32 @@
 
         <div class="grid lg:grid-cols-12 gap-6 items-start">
           <!-- Ringkasan Saldo -->
-          <div class="lg:col-span-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
-            <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-md">
+          <div class="lg:col-span-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3.5 sm:gap-4">
+            <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-5 sm:p-6 text-white shadow-md">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold uppercase tracking-wider text-emerald-100">Saldo Akhir Kas</span>
                 <span class="w-9 h-9 rounded-xl bg-white/15 text-white flex items-center justify-center"><i class="fa-solid fa-wallet"></i></span>
               </div>
-              <p id="public-kas-saldo" class="text-2xl sm:text-3xl font-extrabold text-white mt-2.5 tabular-nums">Rp 0</p>
+              <p id="public-kas-saldo" class="text-2xl sm:text-3xl font-extrabold text-white mt-2 tabular-nums">Rp 0</p>
               <p class="text-[11px] text-emerald-100/90 mt-1">Dana tersedia saat ini</p>
             </div>
 
-            <div class="bg-slate-50 rounded-3xl p-5 border border-slate-200/90">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Pemasukan</span>
-                <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up text-xs"></i></span>
+            <div class="grid grid-cols-2 sm:contents gap-3.5">
+              <div class="bg-slate-50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200/90">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Pemasukan</span>
+                  <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up text-xs"></i></span>
+                </div>
+                <p id="public-kas-masuk" class="text-base sm:text-2xl font-extrabold text-emerald-700 mt-2 tabular-nums">Rp 0</p>
               </div>
-              <p id="public-kas-masuk" class="text-xl sm:text-2xl font-extrabold text-emerald-700 mt-2 tabular-nums">Rp 0</p>
-            </div>
 
-            <div class="bg-slate-50 rounded-3xl p-5 border border-slate-200/90">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Pengeluaran</span>
-                <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-down text-xs"></i></span>
+              <div class="bg-slate-50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200/90">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Pengeluaran</span>
+                  <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-down text-xs"></i></span>
+                </div>
+                <p id="public-kas-keluar" class="text-base sm:text-2xl font-extrabold text-rose-600 mt-2 tabular-nums">Rp 0</p>
               </div>
-              <p id="public-kas-keluar" class="text-xl sm:text-2xl font-extrabold text-rose-600 mt-2 tabular-nums">Rp 0</p>
             </div>
           </div>
 
@@ -636,12 +746,12 @@
   <!-- ===================================================================== -->
   <!-- VIEW 2: DASHBOARD PESERTA (MODERN CLEAN WORKSPACE)                    -->
   <!-- ===================================================================== -->
-  <section id="view-dashboard-peserta" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+  <section id="view-dashboard-peserta" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6">
     
     <!-- Breadcrumb Navigasi Cepat -->
     <nav aria-label="Breadcrumb" class="flex items-center justify-between text-xs text-slate-500 px-1">
       <ol class="flex items-center gap-2">
-        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda Publik</button></li>
+        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda</button></li>
         <li><i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i></li>
         <li class="font-bold text-slate-800">Portal Peserta</li>
         <li><i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i></li>
@@ -654,7 +764,7 @@
     <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/90 relative overflow-hidden">
       <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-400"></div>
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pt-1">
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3.5 sm:gap-4">
           <div class="relative shrink-0 group">
             <img id="peserta-profile-img" src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/120x120/059669/ffffff?text=USK'" alt="Foto Profil Peserta" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-2xl bg-slate-100 p-0.5 shadow-sm border-2 border-emerald-500/40" />
             <button type="button" onclick="switchPesertaTab('profil')" title="Ganti Foto Profil" class="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-slate-900 text-white hover:bg-emerald-600 shadow-md flex items-center justify-center text-xs border-2 border-white transition">
@@ -665,9 +775,9 @@
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">Kamar <span id="peserta-kamar-badge">220</span></span>
-              <span id="peserta-prodi-badge" class="px-2.5 py-0.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold truncate max-w-[160px] sm:max-w-none">Peternakan</span>
+              <span id="peserta-prodi-badge" class="px-2.5 py-0.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold truncate max-w-[150px] sm:max-w-none">Peternakan</span>
             </div>
-            <h1 id="peserta-nama-header" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1.5 truncate">Nama Peserta</h1>
+            <h1 id="peserta-nama-header" class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-1.5 truncate">Nama Peserta</h1>
             <p class="text-slate-500 text-xs sm:text-sm font-medium">NPM: <span id="peserta-npm-header" class="font-mono font-bold text-slate-700">260510401100009</span></p>
           </div>
         </div>
@@ -703,8 +813,8 @@
     <div id="peserta-peringatan-direct-box" class="space-y-2.5"></div>
 
     <!-- Layout Tab Horizontal di Mobile + Sidebar di Desktop -->
-    <div class="grid lg:grid-cols-12 gap-6 items-start">
-      <aside class="lg:col-span-3 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-2 shadow-xs flex lg:flex-col overflow-x-auto no-scrollbar gap-1.5 sticky top-[72px] z-30">
+    <div class="grid lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+      <aside class="lg:col-span-3 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-2 shadow-xs flex lg:flex-col overflow-x-auto no-scrollbar gap-1.5 sticky top-[62px] sm:top-[72px] z-30">
         <button onclick="switchPesertaTab('absensi')" id="tab-peserta-absensi" class="px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm bg-emerald-600 text-white whitespace-nowrap flex items-center gap-2.5 text-left shrink-0 shadow-xs">
           <i class="fa-solid fa-calendar-days w-4"></i> Absensi Sholat
         </button>
@@ -725,17 +835,17 @@
 
       <div class="lg:col-span-9 space-y-6">
         
-        <!-- KONTEN TAB 1: ABSENSI SHOLAT (DIPERBAIKI & USER FRIENDLY) -->
+        <!-- KONTEN TAB 1: ABSENSI SHOLAT -->
         <div id="peserta-panel-absensi" class="space-y-6 animate-fade-in">
           <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 class="text-lg font-extrabold text-slate-900">Rekap Kehadiran Sholat Berjamaah</h2>
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Rekap Kehadiran Sholat Berjamaah</h2>
                 <p class="text-xs text-slate-500 mt-0.5">Pilih bulan pembinaan (Oktober 2026 – Juni 2027) untuk melihat ringkasan & log harian.</p>
               </div>
               <div class="flex items-center gap-2">
                 <label for="peserta-bulan-absen" class="text-xs font-bold text-slate-600 hidden sm:inline">Periode:</label>
-                <select id="peserta-bulan-absen" onchange="renderPesertaAbsensi()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-800 bg-slate-50 hover:bg-white focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"></select>
+                <select id="peserta-bulan-absen" onchange="renderPesertaAbsensi()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-800 bg-slate-50 hover:bg-white focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"></select>
               </div>
             </div>
             <!-- Ringkasan Cepat Total Kehadiran Bulan Terpilih -->
@@ -751,7 +861,7 @@
                 <p class="text-xs text-slate-500">Rincian kehadiran harian untuk masing-masing waktu sholat wajib asrama.</p>
               </div>
               <div class="flex items-center gap-2">
-                <select id="peserta-daily-filter" onchange="renderPesertaAbsensi()" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500">
+                <select id="peserta-daily-filter" onchange="renderPesertaAbsensi()" class="w-full sm:w-auto px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500">
                   <option value="all">Semua Tanggal</option>
                   <option value="filled">Hanya Tanggal Terisi</option>
                   <option value="non_hadir">Hanya Alfa / Izin / Sakit</option>
@@ -762,11 +872,11 @@
               <table class="w-full text-left border-collapse text-sm tabular-nums">
                 <thead class="sticky top-0 bg-slate-100 text-slate-600 text-[11px] uppercase border-b border-slate-200 z-10">
                   <tr>
-                    <th class="py-3.5 px-5 font-bold">Tanggal</th>
-                    <th class="py-3.5 px-5 font-bold">Hari</th>
-                    <th class="py-3.5 px-5 text-center font-bold">Sholat Subuh</th>
-                    <th class="py-3.5 px-5 text-center font-bold">Sholat Maghrib</th>
-                    <th class="py-3.5 px-5 text-center font-bold">Sholat Isya</th>
+                    <th class="py-3.5 px-4 sm:px-5 font-bold">Tanggal</th>
+                    <th class="py-3.5 px-3 sm:px-5 font-bold">Hari</th>
+                    <th class="py-3.5 px-3 sm:px-5 text-center font-bold">Subuh</th>
+                    <th class="py-3.5 px-3 sm:px-5 text-center font-bold">Maghrib</th>
+                    <th class="py-3.5 px-3 sm:px-5 text-center font-bold">Isya</th>
                   </tr>
                 </thead>
                 <tbody id="peserta-absen-harian-body" class="divide-y divide-slate-100"></tbody>
@@ -783,11 +893,11 @@
               <table class="w-full text-left border-collapse text-sm tabular-nums">
                 <thead class="bg-slate-100 text-slate-600 text-[11px] uppercase border-b border-slate-200">
                   <tr>
-                    <th class="py-3.5 px-5 font-bold">Bulan</th>
-                    <th class="py-3.5 px-4 text-center font-bold">Subuh</th>
-                    <th class="py-3.5 px-4 text-center font-bold">Maghrib</th>
-                    <th class="py-3.5 px-4 text-center font-bold">Isya</th>
-                    <th class="py-3.5 px-4 text-center font-bold">Total Alfa</th>
+                    <th class="py-3.5 px-4 sm:px-5 font-bold">Bulan</th>
+                    <th class="py-3.5 px-3 sm:px-4 text-center font-bold">Subuh</th>
+                    <th class="py-3.5 px-3 sm:px-4 text-center font-bold">Maghrib</th>
+                    <th class="py-3.5 px-3 sm:px-4 text-center font-bold">Isya</th>
+                    <th class="py-3.5 px-3 sm:px-4 text-center font-bold">Total Alfa</th>
                   </tr>
                 </thead>
                 <tbody id="peserta-absen-tahunan-body" class="divide-y divide-slate-100"></tbody>
@@ -800,10 +910,10 @@
         <div id="peserta-panel-hafalan" class="hidden space-y-6 animate-fade-in">
           <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-lg font-extrabold text-slate-900">Progres Setoran Hafalan & Praktik Ibadah</h2>
+              <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Progres Setoran Hafalan & Praktik Ibadah</h2>
               <p class="text-xs text-slate-500 mt-0.5">Surat Ad-Dhuha s.d. An-Nas berurutan serta materi praktik ibadah wajib asrama.</p>
             </div>
-            <div class="flex items-center gap-3 bg-emerald-50 px-4 py-2.5 rounded-2xl border border-emerald-200">
+            <div class="flex items-center justify-between sm:justify-start gap-3 bg-emerald-50 px-4 py-2.5 rounded-2xl border border-emerald-200">
               <div>
                 <p class="text-[10px] font-bold text-emerald-700 uppercase">Capaian Kelulusan</p>
                 <p id="peserta-hafalan-progress-text" class="text-sm font-extrabold text-slate-900">0 / 27 Materi</p>
@@ -831,20 +941,20 @@
 
         <!-- KONTEN TAB 3: STATUS PEMBAYARAN IURAN KAS & TRANSPARANSI -->
         <div id="peserta-panel-kas" class="hidden space-y-6 animate-fade-in">
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
+          <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h2 class="text-lg font-extrabold text-slate-900">Status Pembayaran Iuran Kas Bulanan Anda</h2>
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Status Pembayaran Iuran Kas Bulanan Anda</h2>
                 <p class="text-xs text-slate-500 mt-0.5">Iuran wajib bulanan Rp 5.000 (Periode Oktober 2026 – Juni 2027)</p>
               </div>
               <span id="peserta-global-saldo" class="px-4 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold self-start sm:self-auto">
                 Saldo Kas: Rp 0
               </span>
             </div>
-            <div id="peserta-kas-bulanan-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3.5"></div>
+            <div id="peserta-kas-bulanan-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3"></div>
           </div>
 
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs">
+          <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs">
             <h3 class="font-extrabold text-slate-900 text-base mb-3">Mutasi Pengeluaran & Pemasukan Kas Terbaru</h3>
             <div id="peserta-kas-riwayat-mini" class="divide-y divide-slate-100 text-sm"></div>
           </div>
@@ -852,8 +962,8 @@
 
         <!-- KONTEN TAB 4: FORMULIR & PENDATAAN DARI ADMIN -->
         <div id="peserta-panel-formulir" class="hidden space-y-6 animate-fade-in">
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs">
-            <h2 class="text-lg font-extrabold text-slate-900">Formulir & Pendataan Asrama</h2>
+          <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs">
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Formulir & Pendataan Asrama</h2>
             <p class="text-xs text-slate-500 mt-0.5">Silakan lengkapi formulir yang diterbitkan oleh Admin Asrama KIP-K USK di bawah ini.</p>
           </div>
           <div id="peserta-formulir-list" class="grid md:grid-cols-2 gap-6"></div>
@@ -861,12 +971,12 @@
 
         <!-- KONTEN TAB 5: BIODATA TERPADU & EDIT PROFIL PESERTA -->
         <div id="peserta-panel-profil" class="hidden animate-fade-in">
-          <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-6 sm:p-8 space-y-6">
+          <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-8 space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
               <div class="flex items-center gap-4">
                 <img id="peserta-profil-preview" src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/120x120/059669/ffffff?text=USK'" alt="Foto Profil" class="w-20 h-20 rounded-2xl object-cover border-2 border-emerald-500/40 bg-slate-50 shrink-0" />
                 <div>
-                  <h2 class="text-lg font-extrabold text-slate-900">Data Diri & Foto Profil Mahasiswa</h2>
+                  <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Data Diri & Foto Profil Mahasiswa</h2>
                   <p class="text-xs text-slate-500 mt-0.5">Anda dapat mengunggah foto profil dan memperbarui data biodata Anda secara mandiri.</p>
                   <div class="mt-3 flex flex-wrap items-center gap-2">
                     <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition inline-flex items-center gap-1.5">
@@ -943,14 +1053,14 @@
   <!-- ===================================================================== -->
   <!-- VIEW 3: DASHBOARD ADMIN (FARID - EXECUTIVE CLEAN PANEL)               -->
   <!-- ===================================================================== -->
-  <section id="view-dashboard-admin" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+  <section id="view-dashboard-admin" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6">
     
     <!-- Breadcrumb Admin -->
     <nav aria-label="Breadcrumb" class="flex items-center justify-between text-xs text-slate-500 px-1">
       <ol class="flex items-center gap-2">
-        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda Publik</button></li>
+        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda</button></li>
         <li><i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i></li>
-        <li class="font-bold text-slate-800">Dashboard Admin</li>
+        <li class="font-bold text-slate-800">Admin</li>
         <li><i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i></li>
         <li id="admin-breadcrumb-tab" class="font-bold text-emerald-700">Database Peserta</li>
       </ol>
@@ -964,7 +1074,7 @@
         <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/059669/ffffff?text=USK'" alt="Logo USK" class="w-14 h-14 object-contain rounded-2xl bg-slate-50 p-1.5 border border-slate-200 shrink-0" />
         <div>
           <span class="px-2.5 py-0.5 rounded-lg bg-slate-900 text-amber-400 text-[10px] font-extrabold tracking-wider">ADMINISTRATOR ASRAMA</span>
-          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Dashboard Pengelola — Admin Farid</h1>
+          <h1 class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-1">Dashboard Pengelola — Admin Farid</h1>
           <p class="text-slate-500 text-xs sm:text-sm">Kelola biodata <span id="admin-header-count" class="font-bold text-slate-700">28</span> penghuni kamar 218–311, absensi sholat (Okt 2026 – Jun 2027), hafalan, jadwal, dan GPS.</p>
         </div>
       </div>
@@ -974,7 +1084,7 @@
     </div>
 
     <!-- Admin Navigation Pills -->
-    <div class="flex overflow-x-auto no-scrollbar gap-2 pb-1 sticky top-[68px] z-30 bg-slate-50/95 backdrop-blur-xs py-1.5">
+    <div class="flex overflow-x-auto no-scrollbar gap-2 pb-1 sticky top-[58px] sm:top-[68px] z-30 bg-slate-50/95 backdrop-blur-xs py-1.5">
       <button onclick="switchAdminTab('peserta')" id="admin-tab-peserta" class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-emerald-600 text-white whitespace-nowrap shadow-xs flex items-center gap-2 shrink-0">
         <i class="fa-solid fa-users-gear"></i> Peserta (<span id="admin-tab-count">28</span>)
       </button>
@@ -1002,12 +1112,12 @@
     <div id="admin-panel-peserta" class="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden animate-fade-in">
       <div class="p-5 sm:p-6 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/60">
         <div>
-          <h2 class="font-extrabold text-slate-900 text-lg">Database Terpadu Peserta Kamar 218–311</h2>
+          <h2 class="font-extrabold text-slate-900 text-base sm:text-lg">Database Terpadu Peserta Kamar 218–311</h2>
           <p class="text-xs text-slate-500">Klik tombol Biodata atau Edit untuk melihat dan memperbarui data lengkap masing-masing peserta.</p>
         </div>
         <div class="flex items-center gap-2">
           <input type="text" id="admin-search-peserta" oninput="renderAdminPesertaTable()" placeholder="Cari nama, NPM, kamar..." class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-full sm:w-64 bg-white" />
-          <button onclick="openAddPesertaModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold whitespace-nowrap flex items-center gap-1.5 shadow-xs">
+          <button onclick="openAddPesertaModal()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold whitespace-nowrap flex items-center gap-1.5 shadow-xs">
             <i class="fa-solid fa-user-plus"></i> Tambah
           </button>
         </div>
@@ -1044,7 +1154,7 @@
             <button onclick="geserTanggalAdmin(1)" class="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700" title="Hari Berikutnya">
               <i class="fa-solid fa-chevron-right"></i>
             </button>
-            <button onclick="tandaiSemuaHadirTanggal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs">
+            <button onclick="tandaiSemuaHadirTanggal()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs">
               <i class="fa-solid fa-check-double mr-1"></i> Hadirkan Semua
             </button>
           </div>
@@ -1058,7 +1168,7 @@
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <select id="admin-export-bulan-select" class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800"></select>
-            <button onclick="downloadAbsensiSpreadsheet()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+            <button onclick="downloadAbsensiSpreadsheet()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
               <i class="fa-solid fa-file-excel text-emerald-400"></i> Unduh Rekap (.xls)
             </button>
           </div>
@@ -1097,7 +1207,7 @@
     <div id="admin-panel-hafalan" class="hidden space-y-5 animate-fade-in">
       <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 class="font-extrabold text-slate-900 text-lg">Verifikasi Setoran Hafalan & Praktik Ibadah</h2>
+          <h2 class="font-extrabold text-slate-900 text-base sm:text-lg">Verifikasi Setoran Hafalan & Praktik Ibadah</h2>
           <p class="text-xs text-slate-500">Pilih peserta (urut kamar 218–311) untuk mencentang kelulusan surat Ad-Dhuha s.d. An-Nas & praktik ibadah.</p>
         </div>
         <select id="admin-hafalan-peserta-select" onchange="renderAdminHafalanChecklist()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-slate-50 text-slate-800 max-w-xs w-full outline-none focus:ring-2 focus:ring-emerald-500"></select>
@@ -1274,7 +1384,7 @@
     <div id="admin-panel-lokasi" class="hidden space-y-5 animate-fade-in">
       <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h2 class="font-extrabold text-slate-900 text-lg flex items-center gap-2">
+          <h2 class="font-extrabold text-slate-900 text-base sm:text-lg flex items-center gap-2">
             <i class="fa-solid fa-satellite-dish text-emerald-600"></i> Pemantauan Lokasi Perangkat Peserta (Real-Time GPS)
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">Lokasi otomatis tersinkronisasi saat peserta membuka aplikasi atau mengaktifkan izin lokasi di perangkatnya (Acuan: Asrama USK Darussalam).</p>
@@ -1337,11 +1447,11 @@
   <!-- ===================================================================== -->
   <!-- VIEW 4: DASHBOARD BENDAHARA (DIMAS - FINANCIAL TREASURY UI)           -->
   <!-- ===================================================================== -->
-  <section id="view-dashboard-bendahara" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+  <section id="view-dashboard-bendahara" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6">
     <!-- Breadcrumb Bendahara -->
     <nav aria-label="Breadcrumb" class="flex items-center justify-between text-xs text-slate-500 px-1">
       <ol class="flex items-center gap-2">
-        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda Publik</button></li>
+        <li><button type="button" onclick="switchMainView('landing')" class="hover:text-emerald-700 font-semibold transition inline-flex items-center gap-1.5"><i class="fa-solid fa-house text-[11px]"></i> Beranda</button></li>
         <li><i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i></li>
         <li class="font-bold text-emerald-700">Panel Bendahara Asrama</li>
       </ol>
@@ -1356,7 +1466,7 @@
         <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/059669/ffffff?text=USK'" alt="Logo USK" class="w-14 h-14 object-contain rounded-2xl bg-slate-50 p-1.5 border border-slate-200 shrink-0" />
         <div>
           <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-extrabold">BENDAHARA ASRAMA</span>
-          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Panel Keuangan Kas — Bendahara Dimas</h1>
+          <h1 class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-1">Panel Keuangan Kas — Bendahara Dimas</h1>
           <p class="text-slate-500 text-xs sm:text-sm">Kelola pembayaran iuran kas bulanan (Rp 5.000/bulan) & mutasi pengeluaran secara real-time.</p>
         </div>
       </div>
@@ -1439,7 +1549,7 @@
   </section>
 
   <!-- FOOTER (CLEAN SLATE FOOTER) -->
-  <footer class="bg-slate-900 text-slate-300 py-10 mt-16 border-t border-slate-800">
+  <footer class="bg-slate-900 text-slate-300 py-10 mt-12 sm:mt-16 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-center sm:text-left">
       <div class="flex flex-col sm:flex-row items-center gap-3.5">
         <img src="logo-usk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/059669/ffffff?text=USK'" alt="Logo USK" class="w-10 h-10 object-contain rounded-xl bg-white p-1 shrink-0" />
@@ -1452,37 +1562,60 @@
     </div>
   </footer>
 
-  <!-- MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 640px) -->
-  <nav id="mobile-bottom-nav" aria-label="Navigasi Bawah Mobile" style="padding-bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));" class="sm:hidden fixed bottom-0 inset-x-0 z-40 glass-card border-t border-slate-200/90 shadow-lg px-2 pt-1.5 flex items-center justify-around">
-    <a href="#program" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
+  <!-- MOBILE BOTTOM NAVIGATION BAR (NATIVE APP TAB BAR) -->
+  <nav id="mobile-bottom-nav" aria-label="Navigasi Bawah Mobile" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));" class="md:hidden fixed bottom-0 inset-x-0 z-40 glass-card border-t border-slate-200/90 shadow-xl px-2 pt-1.5 flex items-center justify-around">
+    <a href="#program" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:scale-95 transition min-w-[54px]">
       <i class="fa-solid fa-house text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Beranda</span>
     </a>
-    <a href="#informasi" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
+    <a href="#informasi" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:scale-95 transition min-w-[54px]">
       <i class="fa-solid fa-bullhorn text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Info</span>
     </a>
-    <a href="#piket" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
+    <a href="#piket" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:scale-95 transition min-w-[54px]">
       <i class="fa-solid fa-broom text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Piket</span>
     </a>
-    <a href="#kas" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:bg-emerald-50 min-w-[54px]">
+    <a href="#kas" onclick="switchMainView('landing')" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-600 hover:text-emerald-600 active:scale-95 transition min-w-[54px]">
       <i class="fa-solid fa-wallet text-sm"></i>
       <span class="text-[10px] font-bold mt-0.5">Kas</span>
     </a>
-    <button onclick="openUserDashboard()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-xl bg-emerald-600 text-white font-bold shadow-xs min-w-[58px]">
+    <button onclick="openUserDashboard()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl bg-emerald-600 text-white font-bold shadow-sm active:scale-95 transition min-w-[60px]">
       <i class="fa-solid fa-user-check text-sm"></i>
       <span class="text-[10px] mt-0.5">Portal</span>
     </button>
   </nav>
 
   <!-- ===================================================================== -->
-  <!-- JAVASCRIPT & FIREBASE REAL-TIME INTEGRATION (PRESERVED 100%)          -->
+  <!-- JAVASCRIPT & FIREBASE REAL-TIME INTEGRATION                           -->
   <!-- ===================================================================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // =========================================================================
+    // KONTROL SPLASH SCREEN & PENCEGAH ZOOM MOBILE
+    // =========================================================================
+    function dismissSplashScreen() {
+      const splash = document.getElementById("app-splash-screen");
+      if (!splash || splash.dataset.dismissed === "true") return;
+      splash.dataset.dismissed = "true";
+      splash.style.opacity = "0";
+      splash.style.transform = "scale(1.03)";
+      splash.style.pointerEvents = "none";
+      setTimeout(() => {
+        splash.remove();
+      }, 480);
+    }
+
+    // Tutup splash screen otomatis setelah 1.6 detik agar mulus seperti aplikasi mobile
+    setTimeout(dismissSplashScreen, 1600);
+
+    // Cegah pinch-zoom & gesture zoom di Safari iOS / Android WebView
+    document.addEventListener("gesturestart", (e) => e.preventDefault(), { passive: false });
+    document.addEventListener("gesturechange", (e) => e.preventDefault(), { passive: false });
+    document.addEventListener("gestureend", (e) => e.preventDefault(), { passive: false });
 
     const firebaseConfig = {
       apiKey: "AIzaSyChgFUt1F9B1Xqflaz23-h5DCGCnqUWvj8",
@@ -2603,12 +2736,12 @@
       // Render Program Pembinaan
       const progContainer = document.getElementById("landing-program-list");
       progContainer.innerHTML = appState.programs.map(prog => `
-        <div class="cool-card bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs group flex flex-col justify-between space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 group-hover:bg-emerald-600 text-emerald-600 group-hover:text-white border border-emerald-100 flex items-center justify-center text-lg transition">
+        <div class="cool-card bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs group flex flex-col justify-between space-y-3.5">
+          <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 group-hover:bg-emerald-600 text-emerald-600 group-hover:text-white border border-emerald-100 flex items-center justify-center text-base sm:text-lg transition">
             <i class="fa-solid ${prog.icon || 'fa-star'}"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-slate-900 text-base mb-1.5">${prog.judul}</h3>
+            <h3 class="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">${prog.judul}</h3>
             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${prog.deskripsi}</p>
           </div>
         </div>
@@ -2618,7 +2751,7 @@
       const dokContainer = document.getElementById("landing-dokumentasi-grid");
       dokContainer.innerHTML = appState.dokumentasi.map(dok => `
         <div class="cool-card bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden flex flex-col">
-          <div class="h-48 bg-slate-100 relative overflow-hidden">
+          <div class="h-44 sm:h-48 bg-slate-100 relative overflow-hidden">
             <img src="${dok.foto || 'https://placehold.co/600x400/059669/ffffff?text=Kegiatan+Asrama+USK'}" 
                  onerror="this.src='https://placehold.co/600x400/059669/ffffff?text=Kegiatan+Asrama+USK'"
                  alt="${dok.judul}" class="w-full h-full object-cover hover:scale-105 transition duration-500" />
@@ -2628,7 +2761,7 @@
           </div>
           <div class="p-5 flex-1 flex flex-col justify-between">
             <div>
-              <h3 class="font-extrabold text-slate-900 text-base mb-1.5">${dok.judul}</h3>
+              <h3 class="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">${dok.judul}</h3>
               <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${dok.deskripsi}</p>
             </div>
           </div>
@@ -2645,8 +2778,8 @@
       infoList.innerHTML = filteredInfo.length ? filteredInfo.map(item => {
         const isWarn = item.tipe === "peringatan";
         return `
-          <div class="cool-card p-5 rounded-3xl border ${isWarn ? 'bg-rose-50/60 border-rose-200/90' : 'bg-slate-50/80 border-slate-200/90'} flex items-start gap-4">
-            <div class="w-10 h-10 rounded-2xl ${isWarn ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-700'} flex items-center justify-center shrink-0 mt-0.5">
+          <div class="cool-card p-4 sm:p-5 rounded-3xl border ${isWarn ? 'bg-rose-50/60 border-rose-200/90' : 'bg-slate-50/80 border-slate-200/90'} flex items-start gap-3.5">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl ${isWarn ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-700'} flex items-center justify-center shrink-0 mt-0.5">
               <i class="fa-solid ${isWarn ? 'fa-triangle-exclamation' : 'fa-bullhorn'}"></i>
             </div>
             <div class="flex-1 min-w-0">
@@ -2668,15 +2801,15 @@
       berkasList.innerHTML = appState.berkas.map(b => `
         <div class="p-4 hover:bg-white transition flex items-center justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-file-pdf text-base"></i>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-file-pdf text-sm sm:text-base"></i>
             </div>
             <div class="truncate">
-              <p class="font-bold text-slate-900 text-sm truncate">${b.nama}</p>
+              <p class="font-bold text-slate-900 text-xs sm:text-sm truncate">${b.nama}</p>
               <span class="text-[11px] font-semibold text-slate-500">${b.kategori}</span>
             </div>
           </div>
-          <a href="${b.link}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold transition shrink-0">
+          <a href="${b.link}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold transition shrink-0">
             Buka <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
           </a>
         </div>
@@ -2911,10 +3044,10 @@
     };
 
     function formatStatusBadge(code) {
-      if (code === "H") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-check text-[10px]"></i> Hadir</span>`;
-      if (code === "A") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200"><i class="fa-solid fa-xmark text-[10px]"></i> Alfa</span>`;
-      if (code === "I") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-envelope-open-text text-[10px]"></i> Izin</span>`;
-      if (code === "S") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200"><i class="fa-solid fa-notes-medical text-[10px]"></i> Sakit</span>`;
+      if (code === "H") return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-check text-[9px]"></i> Hadir</span>`;
+      if (code === "A") return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200"><i class="fa-solid fa-xmark text-[9px]"></i> Alfa</span>`;
+      if (code === "I") return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-envelope-open-text text-[9px]"></i> Izin</span>`;
+      if (code === "S") return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-200"><i class="fa-solid fa-notes-medical text-[9px]"></i> Sakit</span>`;
       return `<span class="text-xs text-slate-300">—</span>`;
     }
 
@@ -2924,7 +3057,6 @@
       const selectedBulan = document.getElementById("peserta-bulan-absen").value || BULAN_LIST[0];
       const userAbsen = getMonthlyAbsenSummary(npm, selectedBulan);
 
-      // Hitung total persentase kehadiran keseluruhan bulan terpilih
       const totH = userAbsen.subuh.hadir + userAbsen.maghrib.hadir + userAbsen.isya.hadir;
       const totA = userAbsen.subuh.alfa + userAbsen.maghrib.alfa + userAbsen.isya.alfa;
       const totI = userAbsen.subuh.izin + userAbsen.maghrib.izin + userAbsen.isya.izin;
@@ -2937,8 +3069,8 @@
         overallBar.innerHTML = `
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 space-y-2">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-slate-700">Tingkat Kedisiplinan Jamaah (${selectedBulan})</span>
-              <span class="font-extrabold ${pctHadir >= 80 ? 'text-emerald-700' : 'text-amber-700'}">${pctHadir}% Hadir (${totH}/${totAll} sesi terdata)</span>
+              <span class="font-bold text-slate-700">Kedisiplinan Jamaah (${selectedBulan})</span>
+              <span class="font-extrabold ${pctHadir >= 80 ? 'text-emerald-700' : 'text-amber-700'}">${pctHadir}% Hadir (${totH}/${totAll})</span>
             </div>
             <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
               <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500" style="width: ${pctHadir}%"></div>
@@ -2996,7 +3128,7 @@
       const filterMode = document.getElementById("peserta-daily-filter")?.value || "all";
       const meta = BULAN_PREFIX_MAP[selectedBulan];
       const userDaily = appState.absensiHarian?.[npm] || {};
-      const daysIndo = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const daysIndo = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
       let dailyRowsHtml = "";
 
       if (meta) {
@@ -3013,11 +3145,11 @@
           const dayName = daysIndo[new Date(dateStr + "T00:00:00").getDay()];
           dailyRowsHtml += `
             <tr class="hover:bg-slate-50 ${hasNonHadir ? 'bg-rose-50/25' : ''}">
-              <td class="py-3 px-5 font-semibold text-slate-800">${dd} ${selectedBulan}</td>
-              <td class="py-3 px-5 text-xs text-slate-500">${dayName}</td>
-              <td class="py-3 px-5 text-center">${formatStatusBadge(rec.subuh)}</td>
-              <td class="py-3 px-5 text-center">${formatStatusBadge(rec.maghrib)}</td>
-              <td class="py-3 px-5 text-center">${formatStatusBadge(rec.isya)}</td>
+              <td class="py-3 px-4 sm:px-5 font-semibold text-slate-800 text-xs sm:text-sm whitespace-nowrap">${dd} ${selectedBulan.split(" ")[0]}</td>
+              <td class="py-3 px-3 sm:px-5 text-xs text-slate-500">${dayName}</td>
+              <td class="py-3 px-2 sm:px-5 text-center">${formatStatusBadge(rec.subuh)}</td>
+              <td class="py-3 px-2 sm:px-5 text-center">${formatStatusBadge(rec.maghrib)}</td>
+              <td class="py-3 px-2 sm:px-5 text-center">${formatStatusBadge(rec.isya)}</td>
             </tr>
           `;
         }
@@ -3032,11 +3164,11 @@
         const totalAlfa = (bData.subuh.alfa || 0) + (bData.maghrib.alfa || 0) + (bData.isya.alfa || 0);
         return `
           <tr class="hover:bg-slate-50">
-            <td class="py-3.5 px-5 font-bold text-slate-800">${bln}</td>
-            <td class="py-3.5 px-4 text-center text-xs">${bData.subuh.hadir}H / <span class="text-rose-600 font-bold">${bData.subuh.alfa}A</span> / ${bData.subuh.izin}I / ${bData.subuh.sakit}S</td>
-            <td class="py-3.5 px-4 text-center text-xs">${bData.maghrib.hadir}H / <span class="text-rose-600 font-bold">${bData.maghrib.alfa}A</span> / ${bData.maghrib.izin}I / ${bData.maghrib.sakit}S</td>
-            <td class="py-3.5 px-4 text-center text-xs">${bData.isya.hadir}H / <span class="text-rose-600 font-bold">${bData.isya.alfa}A</span> / ${bData.isya.izin}I / ${bData.isya.sakit}S</td>
-            <td class="py-3.5 px-4 text-center font-extrabold ${totalAlfa > 0 ? 'text-rose-600' : 'text-emerald-600'}">${totalAlfa}</td>
+            <td class="py-3.5 px-4 sm:px-5 font-bold text-slate-800 text-xs sm:text-sm whitespace-nowrap">${bln}</td>
+            <td class="py-3.5 px-3 sm:px-4 text-center text-xs">${bData.subuh.hadir}H / <span class="text-rose-600 font-bold">${bData.subuh.alfa}A</span> / ${bData.subuh.izin}I / ${bData.subuh.sakit}S</td>
+            <td class="py-3.5 px-3 sm:px-4 text-center text-xs">${bData.maghrib.hadir}H / <span class="text-rose-600 font-bold">${bData.maghrib.alfa}A</span> / ${bData.maghrib.izin}I / ${bData.maghrib.sakit}S</td>
+            <td class="py-3.5 px-3 sm:px-4 text-center text-xs">${bData.isya.hadir}H / <span class="text-rose-600 font-bold">${bData.isya.alfa}A</span> / ${bData.isya.izin}I / ${bData.isya.sakit}S</td>
+            <td class="py-3.5 px-3 sm:px-4 text-center font-extrabold ${totalAlfa > 0 ? 'text-rose-600' : 'text-emerald-600'}">${totalAlfa}</td>
           </tr>
         `;
       }).join("");
@@ -3094,7 +3226,7 @@
       document.getElementById("peserta-kas-bulanan-grid").innerHTML = BULAN_LIST.map(bln => {
         const isLunas = !!userKas[bln];
         return `
-          <div class="p-4 rounded-2xl border ${isLunas ? 'bg-emerald-50/70 border-emerald-200' : 'bg-slate-50 border-slate-200/80'} text-center space-y-1.5">
+          <div class="p-3.5 sm:p-4 rounded-2xl border ${isLunas ? 'bg-emerald-50/70 border-emerald-200' : 'bg-slate-50 border-slate-200/80'} text-center space-y-1.5">
             <p class="text-xs font-bold text-slate-800">${bln}</p>
             <span class="inline-block px-3 py-1 rounded-lg text-[11px] font-extrabold ${isLunas ? 'bg-emerald-600 text-white' : 'bg-rose-100 text-rose-700'}">
               ${isLunas ? 'LUNAS (5rb)' : 'BELUM'}
@@ -3110,10 +3242,10 @@
       document.getElementById("peserta-kas-riwayat-mini").innerHTML = appState.transaksiKas.slice().reverse().slice(0, 6).map(t => `
         <div class="py-3 flex items-center justify-between gap-2">
           <div>
-            <p class="font-semibold text-slate-800">${t.keterangan}</p>
+            <p class="font-semibold text-slate-800 text-xs sm:text-sm">${t.keterangan}</p>
             <p class="text-xs text-slate-400">${t.tanggal}</p>
           </div>
-          <span class="font-bold tabular-nums ${t.jenis === 'masuk' ? 'text-emerald-600' : 'text-rose-600'}">
+          <span class="font-bold tabular-nums text-xs sm:text-sm ${t.jenis === 'masuk' ? 'text-emerald-600' : 'text-rose-600'}">
             ${t.jenis === 'masuk' ? '+' : '-'} ${formatRupiah(t.nominal)}
           </span>
         </div>
@@ -3472,79 +3604,76 @@
 
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700">Kamar ${p.kamar}</td>
+            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700 hidden md:table-cell">Kamar ${p.kamar}</td>
             <td class="py-3.5 px-4 mobile-card-header">
               <div>
-                <p class="font-bold text-slate-900">${p.nama} <span class="sm:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span></p>
+                <p class="font-bold text-slate-900">${p.nama} <span class="md:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span></p>
                 <p class="text-[11px] text-slate-500">${loc?.device || 'Perangkat belum terhubung'}</p>
               </div>
             </td>
             <td data-label="Status Area" class="py-3.5 px-4">
               ${hasLoc
                 ? (loc.isInsideAsrama
-                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold"><i class="fa-solid fa-circle text-[7px] text-emerald-500"></i> Area Asrama USK</span>`
+                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold"><i class="fa-solid fa-circle text-[7px] animate-pulse"></i> Area Asrama (${loc.jarakMeter}m)</span>`
                     : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold"><i class="fa-solid fa-location-arrow text-[10px]"></i> Luar Asrama (${loc.jarakMeter}m)</span>`)
-                : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-semibold">Belum Aktif</span>`
+                : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-semibold">GPS Belum Aktif</span>`
               }
             </td>
             <td data-label="Koordinat" class="py-3.5 px-4 text-xs font-mono text-slate-700">
-              ${hasLoc ? `${loc.lat}, ${loc.lng} <span class="text-slate-400">(±${loc.accuracy}m)</span>` : '-'}
+              ${hasLoc ? `${loc.lat}, ${loc.lng} <span class="text-[10px] text-slate-400">(±${loc.accuracy}m)</span>` : '-'}
             </td>
-            <td data-label="Update" class="py-3.5 px-4 text-xs text-slate-600">
-              ${hasLoc ? loc.updatedAtText : 'Menunggu peserta membuka web'}
+            <td data-label="Terakhir Aktif" class="py-3.5 px-4 text-xs text-slate-600">
+              ${hasLoc ? loc.updatedAtText : 'Belum ada riwayat'}
             </td>
-            <td data-label="Peta" class="py-3.5 px-4 text-right whitespace-nowrap">
+            <td data-label="Peta" class="py-3.5 px-4 text-right">
               ${hasLoc
-                ? `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold inline-flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-map-location-dot"></i> Buka Peta
-                  </a>`
+                ? `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold transition">
+                    <i class="fa-solid fa-map-location-dot text-emerald-400"></i> Buka Maps
+                   </a>`
                 : `<span class="text-xs text-slate-400">—</span>`
               }
             </td>
           </tr>
         `;
-      }).join("");
+      }).join("") || `<tr><td colspan="6" class="py-8 text-center text-xs text-slate-500">Tidak ada peserta pada kategori filter ini.</td></tr>`;
     };
 
     window.renderAdminPesertaTable = function() {
-      const keyword = (document.getElementById("admin-search-peserta")?.value || "").toLowerCase().trim();
+      const q = (document.getElementById("admin-search-peserta")?.value || "").toLowerCase();
       const sortedList = sortPesertaByKamar(appState.peserta);
       const filtered = sortedList.filter(p =>
-        p.nama.toLowerCase().includes(keyword) ||
-        p.npm.toLowerCase().includes(keyword) ||
-        p.kamar.toLowerCase().includes(keyword) ||
-        p.prodi.toLowerCase().includes(keyword)
+        p.nama.toLowerCase().includes(q) || p.npm.includes(q) || p.kamar.includes(q) || p.prodi.toLowerCase().includes(q)
       );
 
       document.getElementById("admin-peserta-tbody").innerHTML = filtered.map(p => {
         const initials = p.nama.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
-        const avatarUrl = p.fotoProfil || `https://placehold.co/80x80/059669/ffffff?text=${encodeURIComponent(initials)}`;
+        const photoSrc = p.fotoProfil || `https://placehold.co/80x80/059669/ffffff?text=${encodeURIComponent(initials)}`;
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
+            <td data-label="Kamar" class="py-3.5 px-4 font-bold text-emerald-700 hidden md:table-cell">Kamar ${p.kamar}</td>
             <td class="py-3.5 px-4 mobile-card-header">
               <div class="flex items-center gap-3">
-                <img src="${avatarUrl}" onerror="this.src='https://placehold.co/80x80/059669/ffffff?text=USK'" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
+                <img src="${photoSrc}" alt="${p.nama}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
                 <div>
-                  <p class="font-bold text-slate-900">${p.nama} <span class="sm:hidden inline-block ml-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></p>
+                  <p class="font-bold text-slate-900">${p.nama} <span class="md:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span></p>
                   <p class="text-xs font-mono text-slate-500">${p.npm}</p>
                 </div>
               </div>
             </td>
-            <td data-label="Program Studi" class="py-3.5 px-4 text-xs sm:text-sm text-slate-700 font-medium">${p.prodi}</td>
+            <td data-label="Prodi" class="py-3.5 px-4 text-xs font-semibold text-slate-700">${p.prodi}</td>
             <td data-label="Kontak Ortu" class="py-3.5 px-4 text-xs text-slate-600">
-              <div>
-                <p class="font-semibold text-slate-800">${p.ortu || '-'}</p>
-                <p>${p.hpOrtu || '-'}</p>
-              </div>
+              <p class="font-semibold text-slate-800">${p.ortu}</p>
+              <p>${p.hpOrtu}</p>
             </td>
-            <td data-label="Aksi" class="py-3.5 px-4 text-right whitespace-nowrap space-x-1.5">
-              <button onclick="openViewBiodataModal('${p.npm}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition">
-                <i class="fa-solid fa-id-card mr-1"></i> Biodata
-              </button>
-              <button onclick="openEditPesertaModal('${p.npm}')" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-900 text-slate-800 hover:text-white border border-slate-200 text-xs font-bold transition">
-                <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
-              </button>
+            <td data-label="Aksi" class="py-3.5 px-4 text-right whitespace-nowrap">
+              <div class="inline-flex items-center gap-1.5">
+                <button onclick="openViewBiodataModal('${p.npm}')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition">
+                  <i class="fa-solid fa-id-card mr-1"></i> Biodata
+                </button>
+                <button onclick="openEditPesertaModal('${p.npm}')" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-700 text-white text-xs font-bold transition">
+                  <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3554,125 +3683,51 @@
     window.openViewBiodataModal = function(npm) {
       const p = appState.peserta.find(item => item.npm === npm);
       if (!p) return;
+
       const initials = p.nama.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
-      const avatarUrl = p.fotoProfil || `https://placehold.co/120x120/059669/ffffff?text=${encodeURIComponent(initials)}`;
+      const photoSrc = p.fotoProfil || `https://placehold.co/120x120/059669/ffffff?text=${encodeURIComponent(initials)}`;
 
-      openModal(`
-        <div class="space-y-5">
-          <div class="flex items-center gap-4 bg-slate-900 text-white p-4 rounded-2xl">
-            <img src="${avatarUrl}" onerror="this.src='https://placehold.co/120x120/059669/ffffff?text=USK'" class="w-16 h-16 rounded-xl object-cover bg-slate-800 p-0.5 border border-emerald-400 shrink-0" />
-            <div>
-              <span class="px-2.5 py-0.5 rounded-md bg-emerald-600 text-white text-[11px] font-extrabold">Kamar ${p.kamar}</span>
-              <h2 class="text-lg font-extrabold mt-1">${p.nama}</h2>
-              <p class="text-xs text-emerald-300 font-mono">NPM: ${p.npm} • ${p.prodi}</p>
-            </div>
-          </div>
+      const fields = [
+        { label: "Nama Lengkap", val: p.nama },
+        { label: "NPM", val: p.npm },
+        { label: "Program Studi", val: p.prodi },
+        { label: "Nomor Kamar Asrama", val: `Kamar ${p.kamar}` },
+        { label: "Nama Orang Tua", val: p.ortu },
+        { label: "No. HP / WA Orang Tua", val: p.hpOrtu },
+        { label: "Alamat Asal Orang Tua", val: p.alamat },
+        { label: "Hobi", val: p.hobi },
+        { label: "Minat & Bakat", val: p.minatBakat },
+        { label: "Skill yang Dimiliki", val: p.skill },
+        { label: "Pengalaman Organisasi / Kepanitiaan", val: p.organisasi },
+        { label: "Prestasi (3 Tahun Terakhir)", val: p.prestasi }
+      ];
 
-          <div class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Nama Orang Tua</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.ortu || '-'}</p>
-            </div>
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">No. HP / WA Orang Tua</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.hpOrtu || '-'}</p>
-            </div>
-            <div class="sm:col-span-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Alamat Asal</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.alamat || '-'}</p>
-            </div>
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Hobi</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.hobi || '-'}</p>
-            </div>
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Minat & Bakat</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.minatBakat || '-'}</p>
-            </div>
-            <div class="sm:col-span-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Skill yang Dimiliki</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.skill || '-'}</p>
-            </div>
-            <div class="sm:col-span-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Pengalaman Organisasi / Kepanitiaan</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.organisasi || '-'}</p>
-            </div>
-            <div class="sm:col-span-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="text-[11px] font-bold text-slate-400 uppercase">Prestasi (3 Tahun Terakhir)</span>
-              <p class="font-bold text-slate-900 mt-0.5">${p.prestasi || '-'}</p>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-            <button onclick="closeModal(); openEditPesertaModal('${p.npm}')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">
-              <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profil Ini
-            </button>
-            <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">Tutup</button>
-          </div>
-        </div>
-      `);
-    };
-
-    window.saveNewPeserta = function(e) {
-      e.preventDefault();
-      const nama = document.getElementById("new-p-nama").value.trim();
-      const npm = document.getElementById("new-p-npm").value.trim();
-      const kamar = document.getElementById("new-p-kamar").value.trim();
-      const prodi = document.getElementById("new-p-prodi").value.trim();
-      const ortu = document.getElementById("new-p-ortu").value.trim() || "-";
-      const hpOrtu = document.getElementById("new-p-hp").value.trim() || "-";
-
-      if (appState.peserta.some(p => p.npm === npm)) {
-        return showToast("NPM tersebut sudah terdaftar di sistem.", "error");
-      }
-
-      appState.peserta.push({
-        nama, npm, prodi, kamar, ortu,
-        alamat: "-", hpOrtu, hobi: "-",
-        minatBakat: "-", skill: "-", organisasi: "-", prestasi: "-"
-      });
-      appState.absensiHarian[npm] = {};
-      appState.hafalan[npm] = {};
-      appState.iuranKas[npm] = {};
-
-      closeModal();
-      saveStateToCloud(`Peserta ${nama} berhasil ditambahkan!`);
-    };
-
-    window.openAddPesertaModal = function() {
       openModal(`
         <div class="space-y-4">
-          <h2 class="text-lg font-extrabold text-slate-900 border-b border-slate-100 pb-3">Tambah Peserta Asrama Baru</h2>
-          <form onsubmit="saveNewPeserta(event)" class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+          <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
+            <img src="${photoSrc}" alt="${p.nama}" class="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500/40 shrink-0" />
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap *</label>
-              <input type="text" id="new-p-nama" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <span class="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">Kamar ${p.kamar}</span>
+              <h3 class="text-lg font-extrabold text-slate-900 mt-1">${p.nama}</h3>
+              <p class="text-xs font-mono text-slate-500">${p.npm} • ${p.prodi}</p>
             </div>
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">NPM *</label>
-              <input type="text" id="new-p-npm" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Kamar (218–311) *</label>
-              <input type="text" id="new-p-kamar" required placeholder="218" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Program Studi *</label>
-              <input type="text" id="new-p-prodi" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
-              <input type="text" id="new-p-ortu" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">No. HP / WA Orang Tua</label>
-              <input type="text" id="new-p-hp" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div class="sm:col-span-2 flex justify-end gap-2 pt-3 border-t border-slate-100">
-              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold">Batal</button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold">Simpan Peserta</button>
-            </div>
-          </form>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm max-h-[60vh] overflow-y-auto pr-1">
+            ${fields.map(f => `
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/70">
+                <p class="text-[10px] font-bold text-slate-400 uppercase">${f.label}</p>
+                <p class="font-semibold text-slate-900 mt-0.5 leading-relaxed">${f.val || '-'}</p>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Tutup</button>
+            <button type="button" onclick="openEditPesertaModal('${p.npm}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold">
+              <i class="fa-solid fa-pen mr-1"></i> Edit Biodata Ini
+            </button>
+          </div>
         </div>
       `);
     };
@@ -3680,59 +3735,61 @@
     window.openEditPesertaModal = function(npm) {
       const p = appState.peserta.find(item => item.npm === npm);
       if (!p) return;
+
       openModal(`
         <div class="space-y-4">
-          <div class="border-b border-slate-100 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900">Edit Profil Peserta (Admin Farid)</h2>
-            <p class="text-xs text-slate-500">NPM: ${p.npm}</p>
-          </div>
-          <form onsubmit="saveEditedPeserta(event, '${p.npm}')" class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+          <h3 class="text-lg font-extrabold text-slate-900 border-b border-slate-100 pb-3">Edit Biodata Peserta — ${p.nama}</h3>
+          <form onsubmit="saveEditedPeserta(event, '${p.npm}')" class="grid sm:grid-cols-2 gap-3.5 text-xs sm:text-sm max-h-[75vh] overflow-y-auto pr-1">
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap (Username)</label>
-              <input type="text" id="edit-p-nama" value="${p.nama}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap (Username Login)</label>
+              <input type="text" id="edit-p-nama" value="${p.nama}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Kamar (218–311)</label>
-              <input type="text" id="edit-p-kamar" value="${p.kamar}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <label class="font-bold text-slate-700 block mb-1">NPM (Password Login)</label>
+              <input type="text" id="edit-p-npm" value="${p.npm}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nomor Kamar (218–311)</label>
+              <input type="text" id="edit-p-kamar" value="${p.kamar}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Program Studi</label>
-              <input type="text" id="edit-p-prodi" value="${p.prodi}" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <input type="text" id="edit-p-prodi" value="${p.prodi}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
+              <input type="text" id="edit-p-ortu" value="${p.ortu}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">No. HP / WA Orang Tua</label>
-              <input type="text" id="edit-p-hp" value="${p.hpOrtu}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <input type="text" id="edit-p-hp" value="${p.hpOrtu}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div class="sm:col-span-2">
-              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
-              <input type="text" id="edit-p-ortu" value="${p.ortu}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-            </div>
-            <div class="sm:col-span-2">
-              <label class="font-bold text-slate-700 block mb-1">Alamat Asal</label>
-              <input type="text" id="edit-p-alamat" value="${p.alamat}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <label class="font-bold text-slate-700 block mb-1">Alamat Asal Orang Tua</label>
+              <input type="text" id="edit-p-alamat" value="${p.alamat}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Hobi</label>
-              <input type="text" id="edit-p-hobi" value="${p.hobi}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <input type="text" id="edit-p-hobi" value="${p.hobi}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Minat & Bakat</label>
-              <input type="text" id="edit-p-minat" value="${p.minatBakat}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <input type="text" id="edit-p-minat" value="${p.minatBakat}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div class="sm:col-span-2">
               <label class="font-bold text-slate-700 block mb-1">Skill yang Dimiliki</label>
-              <input type="text" id="edit-p-skill" value="${p.skill || '-'}" class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+              <input type="text" id="edit-p-skill" value="${p.skill}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div class="sm:col-span-2">
-              <label class="font-bold text-slate-700 block mb-1">Pengalaman Organisasi / Komunitas</label>
-              <textarea id="edit-p-org" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300">${p.organisasi}</textarea>
+              <label class="font-bold text-slate-700 block mb-1">Pengalaman Organisasi / Kepanitiaan</label>
+              <textarea id="edit-p-org" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300">${p.organisasi}</textarea>
             </div>
             <div class="sm:col-span-2">
-              <label class="font-bold text-slate-700 block mb-1">Prestasi (Maksimal 3 Tahun Terakhir)</label>
-              <textarea id="edit-p-prestasi" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300">${p.prestasi}</textarea>
+              <label class="font-bold text-slate-700 block mb-1">Prestasi (3 Tahun Terakhir)</label>
+              <textarea id="edit-p-prestasi" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300">${p.prestasi}</textarea>
             </div>
-            <div class="sm:col-span-2 flex justify-end gap-2 pt-2">
-              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold">Batal</button>
+            <div class="sm:col-span-2 flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold">Batal</button>
               <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan Perubahan</button>
             </div>
           </form>
@@ -3740,18 +3797,20 @@
       `);
     };
 
-    window.saveEditedPeserta = function(e, npm) {
+    window.saveEditedPeserta = function(e, oldNpm) {
       e.preventDefault();
-      const idx = appState.peserta.findIndex(item => item.npm === npm);
+      const idx = appState.peserta.findIndex(item => item.npm === oldNpm);
       if (idx === -1) return;
 
-      appState.peserta[idx] = {
+      const newNpm = document.getElementById("edit-p-npm").value.trim();
+      const updated = {
         ...appState.peserta[idx],
         nama: document.getElementById("edit-p-nama").value.trim(),
+        npm: newNpm,
         kamar: document.getElementById("edit-p-kamar").value.trim(),
         prodi: document.getElementById("edit-p-prodi").value.trim(),
-        hpOrtu: document.getElementById("edit-p-hp").value.trim(),
         ortu: document.getElementById("edit-p-ortu").value.trim(),
+        hpOrtu: document.getElementById("edit-p-hp").value.trim(),
         alamat: document.getElementById("edit-p-alamat").value.trim(),
         hobi: document.getElementById("edit-p-hobi").value.trim(),
         minatBakat: document.getElementById("edit-p-minat").value.trim(),
@@ -3760,78 +3819,152 @@
         prestasi: document.getElementById("edit-p-prestasi").value.trim()
       };
 
+      if (newNpm !== oldNpm) {
+        appState.absensiHarian[newNpm] = appState.absensiHarian[oldNpm] || {};
+        appState.hafalan[newNpm] = appState.hafalan[oldNpm] || {};
+        appState.iuranKas[newNpm] = appState.iuranKas[oldNpm] || {};
+        delete appState.absensiHarian[oldNpm];
+        delete appState.hafalan[oldNpm];
+        delete appState.iuranKas[oldNpm];
+      }
+
+      appState.peserta[idx] = updated;
       closeModal();
-      saveStateToCloud(`Profil ${appState.peserta[idx].nama} berhasil diperbarui!`);
+      saveStateToCloud(`Biodata ${updated.nama} berhasil diperbarui!`);
     };
 
-    // ADMIN: INPUT ABSENSI HARIAN PER TANGGAL & EXPORT SPREADSHEET
+    window.openAddPesertaModal = function() {
+      openModal(`
+        <div class="space-y-4">
+          <h3 class="text-lg font-extrabold text-slate-900 border-b border-slate-100 pb-3">Tambah Penghuni Asrama Baru</h3>
+          <form onsubmit="saveNewPeserta(event)" class="grid sm:grid-cols-2 gap-3.5 text-xs sm:text-sm">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Lengkap *</label>
+              <input type="text" id="new-p-nama" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">NPM *</label>
+              <input type="text" id="new-p-npm" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nomor Kamar *</label>
+              <input type="text" id="new-p-kamar" placeholder="218 - 311" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Program Studi *</label>
+              <input type="text" id="new-p-prodi" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Orang Tua</label>
+              <input type="text" id="new-p-ortu" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">No. HP Orang Tua</label>
+              <input type="text" id="new-p-hp" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end gap-2 pt-3">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold">Batal</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan Peserta</button>
+            </div>
+          </form>
+        </div>
+      `);
+    };
+
+    window.saveNewPeserta = function(e) {
+      e.preventDefault();
+      const npm = document.getElementById("new-p-npm").value.trim();
+      if (appState.peserta.some(p => p.npm === npm)) {
+        return showToast("NPM sudah terdaftar dalam database!", "error");
+      }
+      const newObj = {
+        nama: document.getElementById("new-p-nama").value.trim(),
+        npm,
+        kamar: document.getElementById("new-p-kamar").value.trim(),
+        prodi: document.getElementById("new-p-prodi").value.trim(),
+        ortu: document.getElementById("new-p-ortu").value.trim() || "-",
+        hpOrtu: document.getElementById("new-p-hp").value.trim() || "-",
+        alamat: "-", hobi: "-", minatBakat: "-", skill: "-", organisasi: "-", prestasi: "-"
+      };
+
+      appState.peserta.push(newObj);
+      appState.absensiHarian[npm] = {};
+      appState.hafalan[npm] = {};
+      appState.iuranKas[npm] = {};
+
+      closeModal();
+      saveStateToCloud(`${newObj.nama} berhasil ditambahkan!`);
+    };
+
+    // PANEL 2 ADMIN: INPUT ABSENSI PER TANGGAL & EXPORT SPREADSHEET
     window.geserTanggalAdmin = function(deltaDays) {
       const inp = document.getElementById("admin-absen-tanggal");
-      if (!inp || !inp.value) return;
-      const d = new Date(inp.value + "T00:00:00");
-      d.setDate(d.getDate() + deltaDays);
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, "0");
-      const dd = String(d.getDate()).padStart(2, "0");
-      const nextStr = `${yyyy}-${mm}-${dd}`;
-      if (nextStr < "2026-10-01" || nextStr > "2027-06-30") {
-        return showToast("Batas periode absensi adalah Oktober 2026 – Juni 2027.", "info");
-      }
-      inp.value = nextStr;
+      if (!inp) return;
+      const cur = new Date((inp.value || "2026-10-15") + "T00:00:00");
+      cur.setDate(cur.getDate() + deltaDays);
+      const minD = new Date("2026-10-01T00:00:00");
+      const maxD = new Date("2027-06-30T00:00:00");
+      if (cur < minD || cur > maxD) return showToast("Tanggal di luar periode Okt 2026 – Jun 2027.", "info");
+      inp.value = cur.toISOString().slice(0, 10);
       renderAdminAbsensiTable();
     };
 
     window.renderAdminAbsensiTable = function() {
-      const dateStr = document.getElementById("admin-absen-tanggal")?.value || "2026-10-15";
-      const searchKw = (document.getElementById("admin-absen-search")?.value || "").toLowerCase().trim();
-      const labelEl = document.getElementById("admin-absen-date-label");
-      if (labelEl) {
+      const dateInput = document.getElementById("admin-absen-tanggal");
+      const dateStr = dateInput?.value || "2026-10-15";
+      const searchQ = (document.getElementById("admin-absen-search")?.value || "").toLowerCase().trim();
+      const dateLabel = document.getElementById("admin-absen-date-label");
+
+      if (dateLabel) {
         const dObj = new Date(dateStr + "T00:00:00");
         const formatted = dObj.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-        labelEl.textContent = `Tanggal: ${formatted}`;
+        dateLabel.textContent = `Tanggal Terpilih: ${formatted}`;
       }
 
       const sortedList = sortPesertaByKamar(appState.peserta).filter(p =>
-        !searchKw || p.nama.toLowerCase().includes(searchKw) || p.kamar.toLowerCase().includes(searchKw)
+        !searchQ || p.nama.toLowerCase().includes(searchQ) || p.kamar.includes(searchQ)
       );
-      const tbody = document.getElementById("admin-absen-tbody");
-      if (!tbody) return;
 
-      tbody.innerHTML = sortedList.map(p => {
+      document.getElementById("admin-absen-tbody").innerHTML = sortedList.map(p => {
         const rec = appState.absensiHarian?.[p.npm]?.[dateStr] || { subuh: "-", maghrib: "-", isya: "-" };
 
-        const makeSelect = (waktu, currentVal) => {
-          const colorCls =
-            currentVal === "H" ? "bg-emerald-50 border-emerald-400 text-emerald-800" :
-            currentVal === "A" ? "bg-rose-50 border-rose-400 text-rose-800" :
-            currentVal === "I" ? "bg-amber-50 border-amber-400 text-amber-800" :
-            currentVal === "S" ? "bg-sky-50 border-sky-400 text-sky-800" :
-            "bg-white border-slate-300 text-slate-600";
-
+        const renderStatusButtons = (waktuKey, labelMobile) => {
+          const curVal = rec[waktuKey] || "-";
+          const codes = [
+            { c: "H", activeCls: "bg-emerald-600 text-white border-emerald-600 shadow-xs" },
+            { c: "A", activeCls: "bg-rose-600 text-white border-rose-600 shadow-xs" },
+            { c: "I", activeCls: "bg-amber-500 text-white border-amber-500 shadow-xs" },
+            { c: "S", activeCls: "bg-sky-600 text-white border-sky-600 shadow-xs" }
+          ];
           return `
-            <select onchange="updateDailyAbsenCell('${p.npm}', '${dateStr}', '${waktu}', this.value)"
-                    class="px-3 py-1.5 rounded-xl border text-xs font-extrabold ${colorCls} cursor-pointer outline-none focus:ring-2 focus:ring-emerald-500">
-              <option value="-" ${currentVal === '-' ? 'selected' : ''}>- (Kosong)</option>
-              <option value="H" ${currentVal === 'H' ? 'selected' : ''}>H (Hadir)</option>
-              <option value="A" ${currentVal === 'A' ? 'selected' : ''}>A (Alfa)</option>
-              <option value="I" ${currentVal === 'I' ? 'selected' : ''}>I (Izin)</option>
-              <option value="S" ${currentVal === 'S' ? 'selected' : ''}>S (Sakit)</option>
-            </select>
+            <td data-label="${labelMobile}" class="py-3 px-2 sm:px-4 text-center">
+              <div class="inline-flex rounded-xl border border-slate-200 overflow-hidden bg-slate-50">
+                ${codes.map(item => `
+                  <button type="button" onclick="setDailyAbsenStatus('${p.npm}', '${dateStr}', '${waktuKey}', '${item.c}')"
+                    class="w-9 h-8 sm:w-8 sm:h-7 text-xs font-extrabold transition border-r last:border-r-0 border-slate-200 ${curVal === item.c ? item.activeCls : 'text-slate-600 hover:bg-slate-200'}">
+                    ${item.c}
+                  </button>
+                `).join("")}
+              </div>
+            </td>
           `;
         };
 
         return `
-          <tr class="hover:bg-slate-50">
-            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
-            <td class="py-3 px-4 font-bold text-slate-900 mobile-card-header">
-              <span>${p.nama} <span class="sm:hidden inline-block ml-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></span>
+          <tr class="hover:bg-slate-50 transition">
+            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden md:table-cell">Kamar ${p.kamar}</td>
+            <td class="py-3 px-4 mobile-card-header">
+              <div>
+                <p class="font-bold text-slate-900 text-sm">${p.nama} <span class="md:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span></p>
+                <p class="text-[11px] font-mono text-slate-400">${p.npm}</p>
+              </div>
             </td>
-            <td data-label="Sholat Subuh" class="py-3 px-4 text-center">${makeSelect("subuh", rec.subuh)}</td>
-            <td data-label="Sholat Maghrib" class="py-3 px-4 text-center">${makeSelect("maghrib", rec.maghrib)}</td>
-            <td data-label="Sholat Isya" class="py-3 px-4 text-center">${makeSelect("isya", rec.isya)}</td>
+            ${renderStatusButtons("subuh", "Sholat Subuh")}
+            ${renderStatusButtons("maghrib", "Sholat Maghrib")}
+            ${renderStatusButtons("isya", "Sholat Isya")}
             <td data-label="Aksi Cepat" class="py-3 px-4 text-right">
-              <button type="button" onclick="setPesertaHadirSemuaWaktu('${p.npm}', '${dateStr}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 text-xs font-bold transition" title="Tandai Hadir 3 Waktu">
-                <i class="fa-solid fa-check-double mr-1"></i> Hadir 3x
+              <button type="button" onclick="setDailyHadirSemuaWaktu('${p.npm}', '${dateStr}')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition whitespace-nowrap">
+                Hadir Semua
               </button>
             </td>
           </tr>
@@ -3839,21 +3972,21 @@
       }).join("");
     };
 
-    window.setPesertaHadirSemuaWaktu = function(npm, dateStr) {
-      if (!appState.absensiHarian) appState.absensiHarian = {};
-      if (!appState.absensiHarian[npm]) appState.absensiHarian[npm] = {};
-      appState.absensiHarian[npm][dateStr] = { subuh: "H", maghrib: "H", isya: "H" };
-      saveStateToCloud("Kehadiran 3 waktu peserta disimpan!");
-    };
-
-    window.updateDailyAbsenCell = function(npm, dateStr, waktu, statusVal) {
+    window.setDailyAbsenStatus = function(npm, dateStr, waktuKey, statusCode) {
       if (!appState.absensiHarian) appState.absensiHarian = {};
       if (!appState.absensiHarian[npm]) appState.absensiHarian[npm] = {};
       if (!appState.absensiHarian[npm][dateStr]) {
         appState.absensiHarian[npm][dateStr] = { subuh: "-", maghrib: "-", isya: "-" };
       }
-      appState.absensiHarian[npm][dateStr][waktu] = statusVal;
-      saveStateToCloud(`Absensi ${waktu.toUpperCase()} (${dateStr}) disimpan!`);
+      appState.absensiHarian[npm][dateStr][waktuKey] = statusCode;
+      saveStateToCloud(null);
+    };
+
+    window.setDailyHadirSemuaWaktu = function(npm, dateStr) {
+      if (!appState.absensiHarian) appState.absensiHarian = {};
+      if (!appState.absensiHarian[npm]) appState.absensiHarian[npm] = {};
+      appState.absensiHarian[npm][dateStr] = { subuh: "H", maghrib: "H", isya: "H" };
+      saveStateToCloud("Kehadiran 3 waktu diperbarui!");
     };
 
     window.tandaiSemuaHadirTanggal = function() {
@@ -3863,124 +3996,127 @@
         if (!appState.absensiHarian[p.npm]) appState.absensiHarian[p.npm] = {};
         appState.absensiHarian[p.npm][dateStr] = { subuh: "H", maghrib: "H", isya: "H" };
       });
-      saveStateToCloud(`Seluruh peserta ditandai Hadir (H) pada tanggal ${dateStr}!`);
+      saveStateToCloud(`Seluruh peserta ditandai Hadir pada ${dateStr}!`);
     };
 
     window.downloadAbsensiSpreadsheet = function() {
-      const bulanLabel = document.getElementById("admin-export-bulan-select")?.value || BULAN_LIST[0];
-      const meta = BULAN_PREFIX_MAP[bulanLabel];
+      const selectedBulan = document.getElementById("admin-export-bulan-select")?.value || BULAN_LIST[0];
+      const meta = BULAN_PREFIX_MAP[selectedBulan];
       if (!meta) return;
 
       const sortedList = sortPesertaByKamar(appState.peserta);
-      let dayHeaders1 = "";
-      let dayHeaders2 = "";
-
+      let dateColsHeader = "";
       for (let d = 1; d <= meta.days; d++) {
-        dayHeaders1 += `<th colspan="3" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;text-align:center;">Tgl ${d}</th>`;
-        dayHeaders2 += `
-          <th style="background:#ecfdf5;border:1px solid #cbd5e1;">Sbh</th>
-          <th style="background:#ecfdf5;border:1px solid #cbd5e1;">Mgr</th>
-          <th style="background:#ecfdf5;border:1px solid #cbd5e1;">Isy</th>
+        dateColsHeader += `<th colspan="3" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Tgl ${String(d).padStart(2, "0")}</th>`;
+      }
+
+      let subColsHeader = "";
+      for (let d = 1; d <= meta.days; d++) {
+        subColsHeader += `
+          <th style="background:#ecfdf5;color:#065f46;border:1px solid #cbd5e1;">Sbh</th>
+          <th style="background:#ecfdf5;color:#065f46;border:1px solid #cbd5e1;">Mgh</th>
+          <th style="background:#ecfdf5;color:#065f46;border:1px solid #cbd5e1;">Isy</th>
         `;
       }
 
-      const bodyRows = sortedList.map((p, idx) => {
-        let dayCells = "";
-        let totH = 0, totA = 0, totI = 0, totS = 0;
+      const rowsHtml = sortedList.map((p, idx) => {
+        const userDaily = appState.absensiHarian?.[p.npm] || {};
+        const summary = getMonthlyAbsenSummary(p.npm, selectedBulan);
+        const totH = summary.subuh.hadir + summary.maghrib.hadir + summary.isya.hadir;
+        const totA = summary.subuh.alfa + summary.maghrib.alfa + summary.isya.alfa;
+        const totI = summary.subuh.izin + summary.maghrib.izin + summary.isya.izin;
+        const totS = summary.subuh.sakit + summary.maghrib.sakit + summary.isya.sakit;
 
+        let dailyCells = "";
         for (let d = 1; d <= meta.days; d++) {
           const dd = String(d).padStart(2, "0");
           const dateStr = `${meta.prefix}-${dd}`;
-          const rec = appState.absensiHarian?.[p.npm]?.[dateStr] || { subuh: "-", maghrib: "-", isya: "-" };
-
-          ["subuh", "maghrib", "isya"].forEach(w => {
-            const v = rec[w] || "-";
-            if (v === "H") totH++;
-            else if (v === "A") totA++;
-            else if (v === "I") totI++;
-            else if (v === "S") totS++;
-
-            const cellBg = v === "A" ? "#fee2e2" : (v === "I" ? "#fef3c7" : (v === "S" ? "#e0f2fe" : "#ffffff"));
-            dayCells += `<td style="border:1px solid #cbd5e1;text-align:center;background:${cellBg};">${v}</td>`;
-          });
+          const rec = userDaily[dateStr] || { subuh: "-", maghrib: "-", isya: "-" };
+          const cellColor = (c) => c === "A" ? "color:#dc2626;font-weight:bold;" : (c === "H" ? "color:#059669;" : "color:#d97706;");
+          dailyCells += `
+            <td style="text-align:center;border:1px solid #cbd5e1;${cellColor(rec.subuh)}">${rec.subuh}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;${cellColor(rec.maghrib)}">${rec.maghrib}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;${cellColor(rec.isya)}">${rec.isya}</td>
+          `;
         }
 
         return `
           <tr>
-            <td style="border:1px solid #cbd5e1;text-align:center;">${idx + 1}</td>
-            <td style="border:1px solid #cbd5e1;text-align:center;font-weight:bold;">${p.kamar}</td>
-            <td style="border:1px solid #cbd5e1;font-weight:bold;">${p.nama}</td>
-            <td style="border:1px solid #cbd5e1;">'${p.npm}</td>
-            ${dayCells}
-            <td style="border:1px solid #cbd5e1;text-align:center;font-weight:bold;color:#047857;">${totH}</td>
-            <td style="border:1px solid #cbd5e1;text-align:center;font-weight:bold;color:#b91c1c;">${totA}</td>
-            <td style="border:1px solid #cbd5e1;text-align:center;font-weight:bold;color:#b45309;">${totI}</td>
-            <td style="border:1px solid #cbd5e1;text-align:center;font-weight:bold;color:#0369a1;">${totS}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;">${idx + 1}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;font-weight:bold;">${p.kamar}</td>
+            <td style="border:1px solid #cbd5e1;">${p.nama}</td>
+            <td style="border:1px solid #cbd5e1;mso-number-format:'\\@';">${p.npm}</td>
+            <td style="border:1px solid #cbd5e1;">${p.prodi}</td>
+            ${dailyCells}
+            <td style="text-align:center;border:1px solid #cbd5e1;font-weight:bold;color:#059669;">${totH}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;font-weight:bold;color:#dc2626;">${totA}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;font-weight:bold;color:#d97706;">${totI}</td>
+            <td style="text-align:center;border:1px solid #cbd5e1;font-weight:bold;color:#0284c7;">${totS}</td>
           </tr>
         `;
       }).join("");
 
-      const excelHtml = `
+      const excelTemplate = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head><meta charset="UTF-8"></head>
+        <head><meta charset="utf-8" /></head>
         <body>
-          <h3>REKAP ABSENSI SHOLAT BERJAMAAH ASRAMA KIP-K USK (KAMAR 218–311)</h3>
-          <p><strong>Periode Bulan:</strong> ${bulanLabel} | <strong>Keterangan:</strong> H = Hadir, A = Alfa, I = Izin, S = Sakit</p>
-          <table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;">
-            <thead>
-              <tr>
-                <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">No</th>
-                <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Kamar</th>
-                <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Nama Lengkap</th>
-                <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">NPM</th>
-                ${dayHeaders1}
-                <th colspan="4" style="background:#0f172a;color:#fbbf24;border:1px solid #cbd5e1;">Rekap Total</th>
-              </tr>
-              <tr>
-                ${dayHeaders2}
-                <th style="background:#d1fae5;border:1px solid #cbd5e1;">Hadir</th>
-                <th style="background:#fee2e2;border:1px solid #cbd5e1;">Alfa</th>
-                <th style="background:#fef3c7;border:1px solid #cbd5e1;">Izin</th>
-                <th style="background:#e0f2fe;border:1px solid #cbd5e1;">Sakit</th>
-              </tr>
-            </thead>
-            <tbody>${bodyRows}</tbody>
+          <table>
+            <tr>
+              <td colspan="${5 + meta.days * 3 + 4}" style="font-size:14pt;font-weight:bold;">
+                REKAPITULASI ABSENSI SHOLAT BERJAMAAH ASRAMA KIP-K USK (KAMAR 218–311) — BULAN ${selectedBulan.toUpperCase()}
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">No</th>
+              <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Kamar</th>
+              <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Nama Lengkap</th>
+              <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">NPM</th>
+              <th rowspan="2" style="background:#064e3b;color:#ffffff;border:1px solid #cbd5e1;">Program Studi</th>
+              ${dateColsHeader}
+              <th rowspan="2" style="background:#065f46;color:#ffffff;border:1px solid #cbd5e1;">Total Hadir (H)</th>
+              <th rowspan="2" style="background:#991b1b;color:#ffffff;border:1px solid #cbd5e1;">Total Alfa (A)</th>
+              <th rowspan="2" style="background:#92400e;color:#ffffff;border:1px solid #cbd5e1;">Total Izin (I)</th>
+              <th rowspan="2" style="background:#075985;color:#ffffff;border:1px solid #cbd5e1;">Total Sakit (S)</th>
+            </tr>
+            <tr>${subColsHeader}</tr>
+            ${rowsHtml}
           </table>
         </body>
         </html>
       `;
 
-      const blob = new Blob([excelHtml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+      const blob = new Blob([excelTemplate], { type: "application/vnd.ms-excel;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Rekap_Absensi_SIMKIP_USK_${bulanLabel.replace(/\s+/g, "_")}.xls`;
+      a.download = `Rekap_Absensi_Sholat_SIMKIP_USK_${selectedBulan.replace(/\s+/g, "_")}.xls`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast(`File Excel Rekap Absensi ${bulanLabel} berhasil diunduh!`, "success");
+      showToast(`Spreadsheet absensi bulan ${selectedBulan} berhasil diunduh!`, "success");
     };
 
-    // ADMIN: CHECKLIST SETORAN HAFALAN
+    // PANEL 3 ADMIN: CHECKLIST SETORAN HAFALAN
     window.renderAdminHafalanChecklist = function() {
-      const npm = document.getElementById("admin-hafalan-peserta-select").value;
-      if (!npm) return;
+      const sel = document.getElementById("admin-hafalan-peserta-select");
+      if (!sel || !sel.value) return;
+      const npm = sel.value;
       const userHaf = appState.hafalan[npm] || {};
 
-      const renderGroup = (title, items) => `
+      const renderList = (items, title, bgClass) => `
         <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
-          <div class="px-5 py-4 bg-slate-900 text-white font-bold text-sm">${title}</div>
-          <div class="divide-y divide-slate-100 max-h-[420px] overflow-y-auto">
-            ${items.map(item => {
+          <div class="px-5 py-4 ${bgClass} text-white font-bold text-sm">${title}</div>
+          <div class="divide-y divide-slate-100 max-h-[450px] overflow-y-auto">
+            ${items.map((item, idx) => {
               const st = userHaf[item] || { lulus: false, bulan: "" };
               return `
                 <label class="px-5 py-3 flex items-center justify-between hover:bg-slate-50 cursor-pointer">
-                  <span class="text-sm font-semibold text-slate-800">${item}</span>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold ${st.lulus ? 'text-emerald-600' : 'text-slate-400'}">${st.lulus ? 'LULUS' : 'Belum'}</span>
-                    <input type="checkbox" ${st.lulus ? 'checked' : ''} onchange="toggleHafalanStatus('${npm}', \`${item}\`, this.checked)" class="w-5 h-5 accent-emerald-600 rounded cursor-pointer" />
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" ${st.lulus ? "checked" : ""} onchange="toggleHafalanStatus('${npm}', '${item.replace(/'/g, "\\'")}', this.checked)" class="w-4 h-4 accent-emerald-600 rounded" />
+                    <span class="text-sm font-semibold text-slate-800">${idx + 1}. ${item}</span>
                   </div>
+                  <span class="text-xs font-bold ${st.lulus ? 'text-emerald-600' : 'text-slate-400'}">${st.lulus ? 'LULUS' : 'Belum'}</span>
                 </label>
               `;
             }).join("")}
@@ -3989,20 +4125,20 @@
       `;
 
       document.getElementById("admin-hafalan-checklist-container").innerHTML =
-        renderGroup("Hafalan Juz 30 (Ad-Dhuha – An-Nas)", SURAT_LIST) +
-        renderGroup("Praktik Ibadah Wajib Asrama", IBADAH_WAJIB_LIST);
+        renderList(SURAT_LIST, "Hafalan Berurutan Juz 30 (Ad-Dhuha – An-Nas)", "bg-slate-900") +
+        renderList(IBADAH_WAJIB_LIST, "Praktik Sholat Jenazah, Doa Qunut, Doa Harian & Thaharah", "bg-emerald-900");
     };
 
-    window.toggleHafalanStatus = function(npm, item, isChecked) {
+    window.toggleHafalanStatus = function(npm, itemName, isChecked) {
       if (!appState.hafalan[npm]) appState.hafalan[npm] = {};
-      appState.hafalan[npm][item] = {
+      appState.hafalan[npm][itemName] = {
         lulus: isChecked,
-        bulan: isChecked ? "Oktober 2026" : ""
+        bulan: isChecked ? "Terverifikasi" : ""
       };
-      saveStateToCloud(`Status setoran "${item}" diperbarui!`);
+      saveStateToCloud(`Status setoran "${itemName}" diperbarui!`);
     };
 
-    // ADMIN: INFORMASI, PERINGATAN & BERKAS
+    // PANEL 4 ADMIN: INFORMASI, PERINGATAN & BERKAS
     window.submitAdminInfo = function(tipe) {
       const judulId = tipe === "peringatan" ? "input-warn-judul" : "input-info-judul";
       const isiId = tipe === "peringatan" ? "input-warn-isi" : "input-info-isi";
@@ -4012,18 +4148,19 @@
 
       if (!judul || !isi) return showToast("Judul dan isi wajib diisi!", "error");
 
+      const todayStr = new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
       appState.informasi.unshift({
         id: "info-" + Date.now(),
         tipe,
         targetNpm,
         judul,
         isi,
-        tanggal: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })
+        tanggal: todayStr
       });
 
       document.getElementById(judulId).value = "";
       document.getElementById(isiId).value = "";
-      saveStateToCloud(`${tipe === 'peringatan' ? 'Peringatan' : 'Informasi'} berhasil diterbitkan!`);
+      saveStateToCloud(tipe === "peringatan" ? "Peringatan berhasil dikirim ke Dashboard Peserta!" : "Informasi berhasil dipublikasikan!");
     };
 
     window.submitAdminBerkas = function() {
@@ -4038,100 +4175,95 @@
         kategori,
         link
       });
-
       document.getElementById("input-berkas-nama").value = "";
       document.getElementById("input-berkas-link").value = "";
-      saveStateToCloud("Berkas baru berhasil ditambahkan!");
+      saveStateToCloud("Berkas baru berhasil ditambahkan ke halaman utama!");
     };
 
     function renderAdminKontenManage() {
       const container = document.getElementById("admin-konten-manage-list");
-      const infoCards = appState.informasi.map(i => {
-        let targetText = "";
-        if (i.tipe === "peringatan") {
-          if (i.targetNpm && i.targetNpm !== "ALL") {
-            const pTarget = appState.peserta.find(p => p.npm === i.targetNpm);
-            targetText = ` • Khusus: ${pTarget ? pTarget.nama + ' (Kmr ' + pTarget.kamar + ')' : i.targetNpm}`;
-          } else {
-            targetText = " • Semua Peserta";
-          }
-        }
+      const infoCards = appState.informasi.map((item, idx) => {
+        const targetLabel = (!item.targetNpm || item.targetNpm === "ALL")
+          ? "Semua Peserta"
+          : (appState.peserta.find(p => p.npm === item.targetNpm)?.nama || item.targetNpm);
         return `
-          <div class="p-4 rounded-2xl border ${i.tipe === 'peringatan' ? 'bg-rose-50/70 border-rose-200' : 'bg-slate-50 border-slate-200'} flex items-start justify-between gap-2">
+          <div class="p-4 rounded-2xl border ${item.tipe === 'peringatan' ? 'bg-rose-50/70 border-rose-200' : 'bg-slate-50 border-slate-200'} flex justify-between items-start gap-2">
             <div>
-              <span class="text-[10px] font-extrabold uppercase ${i.tipe === 'peringatan' ? 'text-rose-700' : 'text-emerald-700'}">${i.tipe}${targetText}</span>
-              <p class="font-bold text-slate-900 text-sm mt-0.5">${i.judul}</p>
+              <span class="text-[10px] font-extrabold uppercase ${item.tipe === 'peringatan' ? 'text-rose-600' : 'text-emerald-700'}">
+                ${item.tipe} • ${targetLabel}
+              </span>
+              <p class="font-bold text-xs text-slate-900 mt-0.5">${item.judul}</p>
             </div>
-            <button onclick="deleteAdminInfo('${i.id}')" class="text-rose-600 hover:bg-rose-100 p-2 rounded-xl text-xs" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            <button onclick="deleteInfoItem(${idx})" class="text-rose-500 hover:text-rose-700 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
       }).join("");
 
-      const berkasCards = appState.berkas.map(b => `
-        <div class="p-4 rounded-2xl border bg-amber-50/60 border-amber-200 flex items-start justify-between gap-2">
+      const berkasCards = appState.berkas.map((b, idx) => `
+        <div class="p-4 rounded-2xl border border-amber-200 bg-amber-50/50 flex justify-between items-start gap-2">
           <div>
-            <span class="text-[10px] font-extrabold uppercase text-amber-800">BERKAS • ${b.kategori}</span>
-            <p class="font-bold text-slate-900 text-sm mt-0.5">${b.nama}</p>
+            <span class="text-[10px] font-extrabold uppercase text-amber-700">BERKAS (${b.kategori})</span>
+            <p class="font-bold text-xs text-slate-900 mt-0.5">${b.nama}</p>
           </div>
-          <button onclick="deleteAdminBerkas('${b.id}')" class="text-rose-600 hover:bg-rose-100 p-2 rounded-xl text-xs" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+          <button onclick="deleteBerkasItem(${idx})" class="text-rose-500 hover:text-rose-700 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
         </div>
       `).join("");
 
       container.innerHTML = infoCards + berkasCards;
     }
 
-    window.deleteAdminInfo = function(id) {
-      confirmDeleteAction("Hapus Informasi / Peringatan", "Apakah Anda yakin ingin menghapus pengumuman ini?", () => {
-        appState.informasi = appState.informasi.filter(i => i.id !== id);
-        saveStateToCloud("Item informasi/peringatan dihapus.");
+    window.deleteInfoItem = function(idx) {
+      confirmDeleteAction("Hapus Pengumuman?", "Pengumuman atau peringatan ini akan dihapus permanen.", () => {
+        appState.informasi.splice(idx, 1);
+        saveStateToCloud("Item pengumuman dihapus.");
       });
     };
 
-    window.deleteAdminBerkas = function(id) {
-      confirmDeleteAction("Hapus Berkas", "Apakah Anda yakin ingin menghapus tautan berkas ini?", () => {
-        appState.berkas = appState.berkas.filter(b => b.id !== id);
+    window.deleteBerkasItem = function(idx) {
+      confirmDeleteAction("Hapus Berkas?", "Tautan berkas ini akan dihapus dari daftar arsip.", () => {
+        appState.berkas.splice(idx, 1);
         saveStateToCloud("Berkas dihapus.");
       });
     };
 
-    // ADMIN: FORMULIR KUSTOM
+    // PANEL 5 ADMIN: PEMBUAT FORMULIR KUSTOM & JAWABAN PESERTA
     window.addBuilderFieldRow = function(defaultLabel = "", defaultType = "text", defaultOpts = "") {
       const container = document.getElementById("builder-fields-container");
       if (!container) return;
-      const rowId = "brow-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-      const div = document.createElement("div");
-      div.id = rowId;
-      div.className = "p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 relative";
-      div.innerHTML = `
+
+      const row = document.createElement("div");
+      row.className = "builder-field-row p-3.5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2";
+      row.innerHTML = `
         <div class="flex items-center gap-2">
-          <input type="text" class="bf-label flex-1 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white" placeholder="Pertanyaan / Nama Kolom (misal: Ukuran Baju)" value="${defaultLabel}" />
-          <select onchange="toggleBuilderOptionsInput('${rowId}', this.value)" class="bf-type px-2.5 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-white">
+          <input type="text" class="fld-label flex-1 px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-semibold" placeholder="Tulis Pertanyaan (misal: Ukuran Baju)" value="${defaultLabel}" />
+          <select onchange="toggleBuilderOptionsInput(this)" class="fld-type px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700">
             <option value="text" ${defaultType === 'text' ? 'selected' : ''}>Teks Singkat</option>
             <option value="textarea" ${defaultType === 'textarea' ? 'selected' : ''}>Paragraf</option>
             <option value="number" ${defaultType === 'number' ? 'selected' : ''}>Angka</option>
             <option value="date" ${defaultType === 'date' ? 'selected' : ''}>Tanggal</option>
-            <option value="select" ${defaultType === 'select' ? 'selected' : ''}>Pilihan Dropdown</option>
+            <option value="select" ${defaultType === 'select' ? 'selected' : ''}>Pilihan Ganda</option>
           </select>
-          <button type="button" onclick="document.getElementById('${rowId}').remove()" class="text-rose-600 hover:bg-rose-100 p-1.5 rounded-xl text-xs" title="Hapus Pertanyaan">
+          <button type="button" onclick="this.closest('.builder-field-row').remove()" class="text-rose-500 hover:text-rose-700 px-1.5 text-xs" title="Hapus Pertanyaan">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        <div class="bf-options-wrap ${defaultType === 'select' ? '' : 'hidden'}">
-          <input type="text" class="bf-options w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white" placeholder="Opsi pilihan dipisah koma (contoh: S, M, L, XL)" value="${defaultOpts}" />
+        <div class="fld-options-wrap ${defaultType === 'select' ? '' : 'hidden'}">
+          <input type="text" class="fld-options w-full px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50/40 text-xs" placeholder="Pilihan dipisah koma (contoh: S, M, L, XL, XXL)" value="${defaultOpts}" />
         </div>
         <label class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 cursor-pointer">
-          <input type="checkbox" class="bf-required accent-emerald-600" checked /> Wajib diisi peserta
+          <input type="checkbox" class="fld-required accent-emerald-600" checked /> Wajib diisi peserta
         </label>
       `;
-      container.appendChild(div);
+      container.appendChild(row);
     };
 
-    window.toggleBuilderOptionsInput = function(rowId, typeVal) {
-      const row = document.getElementById(rowId);
-      if (!row) return;
-      const optWrap = row.querySelector(".bf-options-wrap");
-      if (typeVal === "select") optWrap.classList.remove("hidden");
-      else optWrap.classList.add("hidden");
+    window.toggleBuilderOptionsInput = function(selectEl) {
+      const wrap = selectEl.closest(".builder-field-row").querySelector(".fld-options-wrap");
+      if (selectEl.value === "select") {
+        wrap.classList.remove("hidden");
+      } else {
+        wrap.classList.add("hidden");
+      }
     };
 
     window.publishCustomForm = function() {
@@ -4139,25 +4271,22 @@
       const description = document.getElementById("builder-form-desc").value.trim();
       if (!title) return showToast("Judul formulir wajib diisi!", "error");
 
-      const fieldRows = document.querySelectorAll("#builder-fields-container > div");
+      const rows = document.querySelectorAll("#builder-fields-container .builder-field-row");
       const fields = [];
-      fieldRows.forEach((row, idx) => {
-        const label = row.querySelector(".bf-label").value.trim();
-        const type = row.querySelector(".bf-type").value;
-        const rawOpts = row.querySelector(".bf-options").value.trim();
-        const required = row.querySelector(".bf-required").checked;
+      rows.forEach((row, idx) => {
+        const label = row.querySelector(".fld-label").value.trim();
+        const type = row.querySelector(".fld-type").value;
+        const required = row.querySelector(".fld-required").checked;
+        const rawOpts = row.querySelector(".fld-options").value.trim();
+        const options = type === "select" ? rawOpts.split(",").map(s => s.trim()).filter(Boolean) : [];
         if (label) {
-          fields.push({
-            id: "fld-" + Date.now() + "-" + idx,
-            label,
-            type,
-            options: type === "select" ? rawOpts.split(",").map(s => s.trim()).filter(Boolean) : [],
-            required
-          });
+          fields.push({ id: `fld-${Date.now()}-${idx}`, label, type, options, required });
         }
       });
 
-      if (!fields.length) return showToast("Tambahkan minimal 1 pertanyaan/kolom pada formulir!", "error");
+      if (fields.length === 0) {
+        return showToast("Tambahkan minimal 1 pertanyaan ke dalam formulir!", "error");
+      }
 
       if (!appState.customForms) appState.customForms = [];
       appState.customForms.unshift({
@@ -4165,22 +4294,21 @@
         title,
         description,
         active: true,
-        createdAt: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }),
+        createdAt: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }),
         fields
       });
 
       document.getElementById("builder-form-title").value = "";
       document.getElementById("builder-form-desc").value = "";
       document.getElementById("builder-fields-container").innerHTML = "";
-      addBuilderFieldRow("Nama / Keterangan Tambahan", "text", "");
-
-      saveStateToCloud("Formulir baru berhasil diterbitkan ke halaman peserta!");
+      addBuilderFieldRow("Jawaban Utama", "text", "");
+      saveStateToCloud(`Formulir "${title}" berhasil diterbitkan ke seluruh peserta!`);
     };
 
     function renderAdminCustomForms() {
       const builderContainer = document.getElementById("builder-fields-container");
       if (builderContainer && builderContainer.children.length === 0) {
-        addBuilderFieldRow("Jawaban / Keterangan", "text", "");
+        addBuilderFieldRow("Pilihan / Keterangan", "text", "");
       }
 
       const listContainer = document.getElementById("admin-custom-forms-list");
@@ -4188,32 +4316,33 @@
 
       const forms = appState.customForms || [];
       if (!forms.length) {
-        listContainer.innerHTML = `<p class="text-xs text-slate-500">Belum ada formulir yang dibuat.</p>`;
+        listContainer.innerHTML = `<p class="text-xs text-slate-500 p-4 bg-slate-50 rounded-2xl border border-slate-200">Belum ada formulir yang dibuat.</p>`;
         return;
       }
 
-      listContainer.innerHTML = forms.map(f => {
-        const respObj = appState.formResponses?.[f.id] || {};
-        const respCount = Object.keys(respObj).length;
+      listContainer.innerHTML = forms.map((f, idx) => {
+        const respMap = appState.formResponses?.[f.id] || {};
+        const respCount = Object.keys(respMap).length;
         return `
-          <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold ${f.active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
+                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold ${f.active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
                   ${f.active ? 'AKTIF' : 'DITUTUP'}
                 </span>
-                <span class="text-[11px] text-slate-500">${f.fields.length} Pertanyaan • ${respCount} / ${appState.peserta.length} Peserta Mengisi</span>
+                <span class="text-[11px] text-slate-400">${f.createdAt} • ${f.fields.length} Pertanyaan</span>
               </div>
               <h4 class="font-extrabold text-slate-900 text-sm mt-1">${f.title}</h4>
+              <p class="text-xs text-slate-500 mt-0.5">${f.description || '-'}</p>
             </div>
-            <div class="flex items-center gap-1.5 shrink-0">
-              <button onclick="openViewFormResponsesModal('${f.id}')" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold transition">
-                <i class="fa-solid fa-table-list mr-1"></i> Jawaban (${respCount})
+            <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+              <button type="button" onclick="openFormResponsesModal('${f.id}')" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold transition">
+                <i class="fa-solid fa-table-list mr-1"></i> Jawaban (${respCount}/${appState.peserta.length})
               </button>
-              <button onclick="toggleCustomFormActive('${f.id}')" class="px-2.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-100" title="Buka/Tutup Formulir">
+              <button type="button" onclick="toggleCustomFormStatus(${idx})" class="px-2.5 py-1.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold">
                 ${f.active ? 'Tutup' : 'Buka'}
               </button>
-              <button onclick="deleteCustomForm('${f.id}')" class="px-2.5 py-1.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs" title="Hapus Formulir">
+              <button type="button" onclick="deleteCustomForm(${idx})" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-200 text-xs font-bold">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
@@ -4222,80 +4351,78 @@
       }).join("");
     }
 
-    window.toggleCustomFormActive = function(formId) {
-      const f = (appState.customForms || []).find(item => item.id === formId);
-      if (!f) return;
-      f.active = !f.active;
-      saveStateToCloud(`Status formulir "${f.title}" diperbarui!`);
+    window.toggleCustomFormStatus = function(idx) {
+      appState.customForms[idx].active = !appState.customForms[idx].active;
+      saveStateToCloud("Status formulir berhasil diubah!");
     };
 
-    window.deleteCustomForm = function(formId) {
-      confirmDeleteAction("Hapus Formulir", "Apakah Anda yakin ingin menghapus formulir beserta seluruh data jawabannya?", () => {
-        appState.customForms = (appState.customForms || []).filter(f => f.id !== formId);
+    window.deleteCustomForm = function(idx) {
+      confirmDeleteAction("Hapus Formulir?", "Formulir beserta seluruh jawaban peserta di dalamnya akan dihapus.", () => {
+        const formId = appState.customForms[idx].id;
+        appState.customForms.splice(idx, 1);
         if (appState.formResponses) delete appState.formResponses[formId];
         saveStateToCloud("Formulir berhasil dihapus.");
       });
     };
 
-    window.openViewFormResponsesModal = function(formId) {
+    window.openFormResponsesModal = function(formId) {
       const formObj = (appState.customForms || []).find(f => f.id === formId);
       if (!formObj) return;
-      const respObj = appState.formResponses?.[formId] || {};
-      const respList = Object.values(respObj);
-
-      const tableRows = respList.length ? respList.map(r => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3 font-bold text-emerald-700">${r.kamar}</td>
-          <td class="py-2.5 px-3 font-semibold text-slate-900">${r.nama}<br><span class="text-[10px] text-slate-400 font-mono">${r.npm}</span></td>
-          ${formObj.fields.map(fld => `<td class="py-2.5 px-3 text-slate-700">${r.answers?.[fld.id] || '-'}</td>`).join("")}
-          <td class="py-2.5 px-3 text-[11px] text-slate-500 whitespace-nowrap">${r.submittedAt}</td>
-        </tr>
-      `).join("") : `<tr><td colspan="${formObj.fields.length + 3}" class="py-8 text-center text-slate-500">Belum ada peserta yang mengisi formulir ini.</td></tr>`;
+      const respMap = appState.formResponses?.[formId] || {};
+      const respList = Object.values(respMap).sort((a, b) => (parseInt(a.kamar, 10) || 9999) - (parseInt(b.kamar, 10) || 9999));
 
       openModal(`
         <div class="space-y-4">
           <div class="border-b border-slate-100 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900">Rekap Jawaban: ${formObj.title}</h2>
-            <p class="text-xs text-slate-500">Total masuk: ${respList.length} dari ${appState.peserta.length} peserta.</p>
+            <span class="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">Total Masuk: ${respList.length} dari ${appState.peserta.length} Peserta</span>
+            <h3 class="text-lg font-extrabold text-slate-900 mt-1">Rekap Jawaban — ${formObj.title}</h3>
           </div>
-          <div class="overflow-x-auto max-h-[60vh] border border-slate-200 rounded-2xl">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead class="bg-slate-100 text-slate-600 uppercase border-b border-slate-200">
-                <tr>
-                  <th class="py-2.5 px-3">Kamar</th>
-                  <th class="py-2.5 px-3">Peserta</th>
-                  ${formObj.fields.map(fld => `<th class="py-2.5 px-3">${fld.label}</th>`).join("")}
-                  <th class="py-2.5 px-3">Waktu Kirim</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100">${tableRows}</tbody>
-            </table>
-          </div>
-          <div class="flex justify-end">
-            <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold">Tutup</button>
+          <div class="overflow-x-auto max-h-[65vh]">
+            ${respList.length ? `
+              <table class="w-full text-left border-collapse text-xs">
+                <thead class="bg-slate-900 text-white">
+                  <tr>
+                    <th class="py-2.5 px-3">Kamar</th>
+                    <th class="py-2.5 px-3">Nama Peserta</th>
+                    ${formObj.fields.map(fld => `<th class="py-2.5 px-3">${fld.label}</th>`).join("")}
+                    <th class="py-2.5 px-3">Waktu</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  ${respList.map(r => `
+                    <tr class="hover:bg-slate-50">
+                      <td class="py-2.5 px-3 font-bold text-emerald-700">${r.kamar}</td>
+                      <td class="py-2.5 px-3 font-bold text-slate-900">${r.nama}</td>
+                      ${formObj.fields.map(fld => `<td class="py-2.5 px-3 text-slate-700">${r.answers?.[fld.id] || '-'}</td>`).join("")}
+                      <td class="py-2.5 px-3 text-slate-400 whitespace-nowrap">${r.submittedAt}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            ` : `<p class="text-sm text-slate-500 py-8 text-center">Belum ada peserta yang mengisi formulir ini.</p>`}
           </div>
         </div>
       `);
     };
 
-    // ADMIN: PROGRAM, GALERI, JADWAL PIKET & JADWAL KULTUM
+    // PANEL 6 ADMIN: EDIT PROGRAM, FOTO KEGIATAN, JADWAL PIKET & JADWAL KULTUM
     window.submitAdminPiket = function() {
       const hari = document.getElementById("input-piket-hari").value.trim();
       const kamar = document.getElementById("input-piket-kamar").value.trim();
       const koordinator = document.getElementById("input-piket-koord").value.trim();
       const area = document.getElementById("input-piket-area").value.trim();
-      if (!hari || !kamar) return showToast("Hari/Tanggal dan Kamar piket wajib diisi!", "error");
+      if (!hari || !kamar) return showToast("Hari/Tanggal dan Kamar wajib diisi!", "error");
 
       appState.piket.push({ hari, kamar, koordinator: koordinator || "-", area: area || "-" });
       document.getElementById("input-piket-hari").value = "";
       document.getElementById("input-piket-kamar").value = "";
       document.getElementById("input-piket-koord").value = "";
       document.getElementById("input-piket-area").value = "";
-      saveStateToCloud("Jadwal piket baru ditambahkan!");
+      saveStateToCloud("Jadwal piket baru berhasil ditambahkan!");
     };
 
-    window.deleteAdminPiket = function(idx) {
-      confirmDeleteAction("Hapus Jadwal Piket", "Hapus baris jadwal piket ini?", () => {
+    window.deletePiketItem = function(idx) {
+      confirmDeleteAction("Hapus Jadwal Piket?", "Jadwal piket ini akan dihapus dari daftar operasional.", () => {
         appState.piket.splice(idx, 1);
         saveStateToCloud("Jadwal piket dihapus.");
       });
@@ -4307,22 +4434,52 @@
       const pemateri = document.getElementById("input-kultum-pemateri").value.trim();
       const moderator = document.getElementById("input-kultum-moderator").value.trim();
       const tema = document.getElementById("input-kultum-tema").value.trim();
-      if (!hari || !pemateri) return showToast("Hari/Tanggal dan Pemateri kultum wajib diisi!", "error");
+      if (!hari || !pemateri) return showToast("Hari/Tanggal dan Nama Pemateri wajib diisi!", "error");
 
       if (!appState.kultum) appState.kultum = [];
-      appState.kultum.push({ id: "klt-" + Date.now(), hari, waktu, pemateri, moderator, tema });
+      appState.kultum.push({
+        id: "klt-" + Date.now(),
+        hari,
+        waktu,
+        pemateri,
+        moderator: moderator || "-",
+        tema: tema || "-"
+      });
       document.getElementById("input-kultum-hari").value = "";
       document.getElementById("input-kultum-pemateri").value = "";
       document.getElementById("input-kultum-moderator").value = "";
       document.getElementById("input-kultum-tema").value = "";
-      saveStateToCloud("Jadwal kultum baru ditambahkan!");
+      saveStateToCloud("Jadwal kultum baru berhasil ditambahkan!");
     };
 
-    window.deleteAdminKultum = function(idx) {
-      confirmDeleteAction("Hapus Jadwal Kultum", "Hapus jadwal kultum ini?", () => {
+    window.deleteKultumItem = function(idx) {
+      confirmDeleteAction("Hapus Jadwal Kultum?", "Jadwal kultum ini akan dihapus dari halaman depan.", () => {
         appState.kultum.splice(idx, 1);
         saveStateToCloud("Jadwal kultum dihapus.");
       });
+    };
+
+    window.submitAdminDokumentasi = function() {
+      const judul = document.getElementById("input-dok-judul").value.trim();
+      const bentuk = document.getElementById("input-dok-bentuk").value.trim() || "Kegiatan Asrama";
+      const foto = document.getElementById("input-dok-foto").value.trim();
+      const deskripsi = document.getElementById("input-dok-deskripsi").value.trim();
+
+      if (!judul || !deskripsi) return showToast("Judul dan deskripsi kegiatan wajib diisi!", "error");
+
+      appState.dokumentasi.unshift({
+        id: "dok-" + Date.now(),
+        judul,
+        bentuk,
+        foto: foto || "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80",
+        deskripsi
+      });
+
+      document.getElementById("input-dok-judul").value = "";
+      document.getElementById("input-dok-bentuk").value = "";
+      document.getElementById("input-dok-foto").value = "";
+      document.getElementById("input-dok-deskripsi").value = "";
+      saveStateToCloud("Foto & bentuk kegiatan berhasil ditambahkan ke galeri!");
     };
 
     function renderAdminProgramEdit() {
@@ -4334,25 +4491,20 @@
               <p class="font-bold text-slate-900">${pk.hari} — <span class="text-emerald-700">${pk.kamar}</span></p>
               <p class="text-slate-500">${pk.koordinator} • ${pk.area}</p>
             </div>
-            <button onclick="deleteAdminPiket(${idx})" class="text-rose-600 hover:bg-rose-50 p-1.5 rounded-xl" title="Hapus Jadwal Piket">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <button onclick="deletePiketItem(${idx})" class="text-rose-500 hover:text-rose-700 p-1.5" title="Hapus"><i class="fa-solid fa-trash"></i></button>
           </div>
         `).join("");
       }
 
       const kultumManage = document.getElementById("admin-kultum-manage-list");
       if (kultumManage) {
-        const kList = appState.kultum || [];
-        kultumManage.innerHTML = kList.map((kl, idx) => `
+        kultumManage.innerHTML = (appState.kultum || []).map((kl, idx) => `
           <div class="py-2.5 flex items-center justify-between gap-2 text-xs">
             <div>
               <p class="font-bold text-slate-900">${kl.hari} (${kl.waktu}) — <span class="text-amber-600">${kl.pemateri}</span></p>
-              <p class="text-slate-500">Tema: ${kl.tema || '-'}</p>
+              <p class="text-slate-500">Tema: ${kl.tema}</p>
             </div>
-            <button onclick="deleteAdminKultum(${idx})" class="text-rose-600 hover:bg-rose-50 p-1.5 rounded-xl" title="Hapus Jadwal Kultum">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <button onclick="deleteKultumItem(${idx})" class="text-rose-500 hover:text-rose-700 p-1.5" title="Hapus"><i class="fa-solid fa-trash"></i></button>
           </div>
         `).join("");
       }
@@ -4361,19 +4513,24 @@
         <div class="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
           <input type="text" id="prog-edit-title-${idx}" value="${pr.judul}" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-white" />
           <textarea id="prog-edit-desc-${idx}" rows="2" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white">${pr.deskripsi}</textarea>
-          <button onclick="saveProgramItem(${idx})" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Simpan Program</button>
+          <button onclick="saveProgramItem(${idx})" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold">Simpan Pilar ${idx + 1}</button>
         </div>
       `).join("");
 
-      document.getElementById("admin-dok-manage-grid").innerHTML = appState.dokumentasi.map(dok => `
-        <div class="border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between gap-3 bg-slate-50/60">
-          <div class="truncate">
-            <span class="text-[10px] font-bold text-emerald-700">${dok.bentuk}</span>
-            <p class="font-bold text-sm text-slate-900 truncate">${dok.judul}</p>
+      document.getElementById("admin-dok-manage-grid").innerHTML = appState.dokumentasi.map((dok, idx) => `
+        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50 flex flex-col justify-between">
+          <div>
+            <img src="${dok.foto}" onerror="this.src='https://placehold.co/400x200/059669/ffffff?text=USK'" class="w-full h-32 object-cover" />
+            <div class="p-3.5">
+              <span class="text-[10px] font-bold text-emerald-700 uppercase">${dok.bentuk}</span>
+              <p class="font-bold text-xs text-slate-900 mt-0.5">${dok.judul}</p>
+            </div>
           </div>
-          <button onclick="deleteAdminDok('${dok.id}')" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs font-bold shrink-0">
-            <i class="fa-solid fa-trash"></i>
-          </button>
+          <div class="px-3.5 pb-3.5 flex justify-end">
+            <button onclick="deleteDokItem(${idx})" class="px-3 py-1 rounded-xl bg-rose-100 text-rose-700 text-xs font-bold hover:bg-rose-600 hover:text-white transition">
+              <i class="fa-solid fa-trash mr-1"></i> Hapus
+            </button>
+          </div>
         </div>
       `).join("");
     }
@@ -4381,36 +4538,13 @@
     window.saveProgramItem = function(idx) {
       appState.programs[idx].judul = document.getElementById(`prog-edit-title-${idx}`).value.trim();
       appState.programs[idx].deskripsi = document.getElementById(`prog-edit-desc-${idx}`).value.trim();
-      saveStateToCloud("Pilar program pembinaan diperbarui!");
+      saveStateToCloud("Pilar program landing page berhasil diperbarui!");
     };
 
-    window.submitAdminDokumentasi = function() {
-      const judul = document.getElementById("input-dok-judul").value.trim();
-      const bentuk = document.getElementById("input-dok-bentuk").value.trim() || "Kegiatan Asrama";
-      const foto = document.getElementById("input-dok-foto").value.trim();
-      const deskripsi = document.getElementById("input-dok-deskripsi").value.trim() || "Dokumentasi kegiatan penghuni asrama KIP-K USK.";
-
-      if (!judul) return showToast("Judul kegiatan wajib diisi!", "error");
-
-      appState.dokumentasi.unshift({
-        id: "dok-" + Date.now(),
-        judul,
-        bentuk,
-        foto,
-        deskripsi
-      });
-
-      document.getElementById("input-dok-judul").value = "";
-      document.getElementById("input-dok-bentuk").value = "";
-      document.getElementById("input-dok-foto").value = "";
-      document.getElementById("input-dok-deskripsi").value = "";
-      saveStateToCloud("Foto & bentuk kegiatan berhasil dipublikasikan!");
-    };
-
-    window.deleteAdminDok = function(id) {
-      confirmDeleteAction("Hapus Dokumentasi", "Apakah Anda yakin ingin menghapus dokumentasi kegiatan ini?", () => {
-        appState.dokumentasi = appState.dokumentasi.filter(d => d.id !== id);
-        saveStateToCloud("Dokumentasi kegiatan dihapus.");
+    window.deleteDokItem = function(idx) {
+      confirmDeleteAction("Hapus Dokumentasi?", "Foto kegiatan ini akan dihapus dari galeri.", () => {
+        appState.dokumentasi.splice(idx, 1);
+        saveStateToCloud("Foto kegiatan dihapus dari galeri.");
       });
     };
 
@@ -4424,43 +4558,90 @@
       const totalKeluar = appState.transaksiKas.filter(t => t.jenis === "keluar").reduce((s, t) => s + Number(t.nominal), 0);
       document.getElementById("bendahara-header-saldo").textContent = formatRupiah(totalMasuk - totalKeluar);
 
-      const dateInput = document.getElementById("kas-form-tanggal");
-      if (!dateInput.value) {
-        dateInput.value = new Date().toISOString().split("T")[0];
+      const tglInput = document.getElementById("kas-form-tanggal");
+      if (!tglInput.value) {
+        tglInput.value = new Date().toISOString().slice(0, 10);
       }
 
-      const selBln = document.getElementById("bendahara-bulan-select");
-      if (selBln.options.length === 0) {
+      const selBulan = document.getElementById("bendahara-bulan-select");
+      if (selBulan.options.length === 0) {
         BULAN_LIST.forEach(b => {
           const opt = document.createElement("option");
           opt.value = b;
           opt.textContent = b;
-          selBln.appendChild(opt);
+          selBulan.appendChild(opt);
         });
       }
 
       renderBendaharaIuranTable();
 
-      document.getElementById("bendahara-transaksi-tbody").innerHTML = appState.transaksiKas.slice().reverse().map(t => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3.5 px-6 text-slate-500 text-xs">${t.tanggal}</td>
-          <td class="py-3.5 px-6 font-semibold text-slate-800">${t.keterangan}</td>
-          <td class="py-3.5 px-6">
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold ${t.jenis === 'masuk' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
-              ${t.jenis === 'masuk' ? 'Masuk' : 'Keluar'}
-            </span>
-          </td>
-          <td class="py-3.5 px-6 text-right font-extrabold tabular-nums ${t.jenis === 'masuk' ? 'text-emerald-600' : 'text-rose-600'}">
-            ${t.jenis === 'masuk' ? '+' : '-'} ${formatRupiah(t.nominal)}
-          </td>
-          <td class="py-3.5 px-6 text-center">
-            <button onclick="deleteTransaksiKas('${t.id}')" class="text-rose-600 hover:bg-rose-50 p-2 rounded-xl text-xs">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join("");
+      document.getElementById("bendahara-transaksi-tbody").innerHTML = appState.transaksiKas.slice().reverse().map((trx, revIdx) => {
+        const realIdx = appState.transaksiKas.length - 1 - revIdx;
+        const isMasuk = trx.jenis === "masuk";
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-3.5 px-6 text-slate-500">${trx.tanggal}</td>
+            <td class="py-3.5 px-6 font-semibold text-slate-800">${trx.keterangan}</td>
+            <td class="py-3.5 px-6">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${isMasuk ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
+                ${isMasuk ? 'Masuk' : 'Keluar'}
+              </span>
+            </td>
+            <td class="py-3.5 px-6 text-right font-extrabold tabular-nums ${isMasuk ? 'text-emerald-600' : 'text-rose-600'}">
+              ${isMasuk ? '+' : '-'} ${formatRupiah(trx.nominal)}
+            </td>
+            <td class="py-3.5 px-6 text-center">
+              <button onclick="deleteTransaksiKas(${realIdx})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join("");
     }
+
+    window.renderBendaharaIuranTable = function() {
+      const bln = document.getElementById("bendahara-bulan-select").value || BULAN_LIST[0];
+      const sortedList = sortPesertaByKamar(appState.peserta);
+      document.getElementById("bendahara-iuran-tbody").innerHTML = sortedList.map(p => {
+        const isLunas = !!appState.iuranKas?.[p.npm]?.[bln];
+        return `
+          <tr class="hover:bg-slate-50">
+            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden md:table-cell">Kamar ${p.kamar}</td>
+            <td class="py-3 px-4 mobile-card-header font-semibold text-slate-900">
+              ${p.nama} <span class="md:hidden text-xs font-extrabold text-emerald-700">• Kmr ${p.kamar}</span>
+            </td>
+            <td data-label="Status" class="py-3 px-4 text-center">
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold ${isLunas ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
+                ${isLunas ? 'LUNAS' : 'BELUM'}
+              </span>
+            </td>
+            <td data-label="Aksi" class="py-3 px-4 text-right">
+              <button onclick="toggleIuranPeserta('${p.npm}', '${bln}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${isLunas ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+                ${isLunas ? 'Batalkan' : 'Tandai Lunas (5rb)'}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    };
+
+    window.toggleIuranPeserta = function(npm, bulan) {
+      if (!appState.iuranKas[npm]) appState.iuranKas[npm] = {};
+      const current = !!appState.iuranKas[npm][bulan];
+      appState.iuranKas[npm][bulan] = !current;
+
+      const p = appState.peserta.find(item => item.npm === npm);
+      if (!current && p) {
+        appState.transaksiKas.push({
+          id: "trx-" + Date.now(),
+          tanggal: new Date().toISOString().slice(0, 10),
+          keterangan: `Iuran Kas ${bulan} — ${p.nama} (Kamar ${p.kamar})`,
+          jenis: "masuk",
+          nominal: NOMINAL_IURAN_BULANAN
+        });
+      }
+
+      saveStateToCloud(`Status iuran ${p?.nama} (${bulan}) diperbarui!`);
+    };
 
     window.setKasFormType = function(type) {
       document.getElementById("kas-form-type").value = type;
@@ -4474,12 +4655,12 @@
 
     window.submitTransaksiKas = function() {
       const jenis = document.getElementById("kas-form-type").value;
-      const tanggal = document.getElementById("kas-form-tanggal").value || new Date().toISOString().split("T")[0];
+      const tanggal = document.getElementById("kas-form-tanggal").value || new Date().toISOString().slice(0, 10);
       const keterangan = document.getElementById("kas-form-ket").value.trim();
       const nominal = Number(document.getElementById("kas-form-nominal").value);
 
-      if (!keterangan || nominal <= 0) {
-        return showToast("Keterangan dan nominal transaksi wajib diisi!", "error");
+      if (!keterangan || !nominal || nominal <= 0) {
+        return showToast("Keterangan dan nominal transaksi harus diisi dengan benar!", "error");
       }
 
       appState.transaksiKas.push({
@@ -4492,61 +4673,19 @@
 
       document.getElementById("kas-form-ket").value = "";
       document.getElementById("kas-form-nominal").value = "";
-      saveStateToCloud("Mutasi kas berhasil dicatat ke laporan publik!");
+      saveStateToCloud("Mutasi kas berhasil dicatat & tampil di halaman transparansi!");
     };
 
-    window.deleteTransaksiKas = function(id) {
-      confirmDeleteAction("Hapus Transaksi Kas", "Apakah Anda yakin ingin menghapus catatan transaksi kas ini?", () => {
-        appState.transaksiKas = appState.transaksiKas.filter(t => t.id !== id);
-        saveStateToCloud("Transaksi kas dihapus.");
+    window.deleteTransaksiKas = function(idx) {
+      confirmDeleteAction("Hapus Transaksi Kas?", "Catatan mutasi keuangan ini akan dihapus dari laporan.", () => {
+        appState.transaksiKas.splice(idx, 1);
+        saveStateToCloud("Catatan mutasi kas dihapus.");
       });
     };
 
-    window.renderBendaharaIuranTable = function() {
-      const bln = document.getElementById("bendahara-bulan-select").value || BULAN_LIST[0];
-      const sortedList = sortPesertaByKamar(appState.peserta);
-      document.getElementById("bendahara-iuran-tbody").innerHTML = sortedList.map(p => {
-        const isLunas = !!(appState.iuranKas[p.npm] && appState.iuranKas[p.npm][bln]);
-        return `
-          <tr class="hover:bg-slate-50">
-            <td data-label="Kamar" class="py-3 px-4 font-bold text-emerald-700 hidden sm:table-cell">${p.kamar}</td>
-            <td class="py-3 px-4 font-bold text-slate-900 mobile-card-header">
-              <span>${p.nama} <span class="sm:hidden inline-block ml-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">Kmr ${p.kamar}</span></span>
-            </td>
-            <td data-label="Status" class="py-3 px-4 text-center">
-              <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold ${isLunas ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
-                ${isLunas ? 'Lunas (Rp 5.000)' : 'Belum Bayar'}
-              </span>
-            </td>
-            <td data-label="Aksi" class="py-3 px-4 text-right">
-              <button onclick="toggleIuranPeserta('${p.npm}', '${bln}')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition ${isLunas ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
-                ${isLunas ? 'Batalkan' : 'Tandai Lunas'}
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    };
-
-    window.toggleIuranPeserta = function(npm, bulan) {
-      if (!appState.iuranKas[npm]) appState.iuranKas[npm] = {};
-      const nextState = !appState.iuranKas[npm][bulan];
-      appState.iuranKas[npm][bulan] = nextState;
-
-      const p = appState.peserta.find(item => item.npm === npm);
-      if (nextState && p) {
-        appState.transaksiKas.push({
-          id: "trx-" + Date.now(),
-          tanggal: new Date().toISOString().split("T")[0],
-          keterangan: `Iuran Kas ${bulan} — ${p.nama} (Kamar ${p.kamar})`,
-          jenis: "masuk",
-          nominal: NOMINAL_IURAN_BULANAN
-        });
-      }
-
-      saveStateToCloud(`Status iuran ${bulan} untuk ${p ? p.nama : npm} diperbarui!`);
-    };
-
+    // =========================================================================
+    // REFRESH SELURUH UI
+    // =========================================================================
     function refreshAllUI() {
       renderLandingPage();
       if (currentUser?.role === "peserta") renderPesertaDashboard();
@@ -4554,31 +4693,33 @@
       if (currentUser?.role === "bendahara") renderBendaharaDashboard();
     }
 
-    refreshAllUI();
-    initFirebaseSync();
-    autoSyncRememberedDeviceLocation();
-
-    // Scroll-Spy Indikator Aktif Navigasi Landing Page
+    // Active Scroll-Spy for Landing Navigation
     window.addEventListener("scroll", () => {
-      const landingView = document.getElementById("view-landing");
-      if (!landingView || landingView.classList.contains("hidden")) return;
-      const sections = ["program", "informasi", "berkas", "kas"];
-      let currentActive = "";
-      sections.forEach(secId => {
-        const el = document.getElementById(secId);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 140 && rect.bottom >= 140) currentActive = secId;
+      const sections = ["program", "informasi", "berkas", "piket", "dokumentasi", "kas"];
+      const scrollPos = window.scrollY + 140;
+      let activeId = "";
+
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollPos && (el.offsetTop + el.offsetHeight) > scrollPos) {
+          activeId = id;
         }
       });
+
       document.querySelectorAll(".nav-spy-link").forEach(link => {
-        if (link.dataset.navTarget === currentActive) {
+        const target = link.getAttribute("data-nav-target");
+        if (target === activeId) {
           link.classList.add("nav-link-active");
         } else {
           link.classList.remove("nav-link-active");
         }
       });
     }, { passive: true });
+
+    // Jalankan Aplikasi & Sinkronisasi Firebase + Pelacakan Lokasi Perangkat
+    refreshAllUI();
+    initFirebaseSync();
+    autoSyncRememberedDeviceLocation();
   </script>
 </body>
 </html>
